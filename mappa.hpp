@@ -69,7 +69,7 @@ public:
     //void add_empty_rooms();
     void generate_all_rooms();
     ptr_stanza find_first(int row);
-    ptr_stanza find_place(int posizione, ptr_stanza prima_stanza);
+    bool check_row_connection(int row);
     void first_linking(ptr_stanza room);
     void second_linking(ptr_stanza room);
     void add_doors(ptr_stanza room);
