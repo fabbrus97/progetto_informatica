@@ -116,6 +116,8 @@ void mappa::generate_all_rooms() {
         stanza ultima_stanza(x, y, (int) (n_livello * alfa));
         ultima_stanza.is_emtpy = false;
         ultima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = 'S';
+        //aggiungiamo anche la porta per tornare al livello precedente;
+        p[prima_stanza.coor_x][prima_stanza.coor_y]->punti_stanza[3][0]='B';
         p[x][y] = new stanza(x, y);
         *p[x][y] = ultima_stanza;
         contatore_stanze++;
@@ -334,6 +336,16 @@ void mappa::second_linking(ptr_stanza room) {
                 stanza nuova_stanza(room->coor_x+x, room->coor_y, contatore_stanze);
                 nuova_stanza.is_emtpy = false;
                 p[room->coor_x + x][room->coor_y] = new stanza(room->coor_x + x, room->coor_y);
+                //aggiungiamo le porte, dato che in alcuni casi non le aggiunge
+                //perché prova a mettere delle porte a stanze già connesse
+                if (room->coor_y == 0)
+                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][max_colonne-1]='+';
+                else if (room->coor_y == j-1)
+                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][0]='+';
+                else {
+                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][0] = '+';
+                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][max_colonne-1]='+';
+                }
                 *p[room->coor_x + x][room->coor_y] = nuova_stanza;
                 contatore_stanze++;
 
