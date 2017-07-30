@@ -5,6 +5,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <cmath>
+#include "oggetti_mappa.hpp"
 
 using namespace std;
 
@@ -12,9 +13,7 @@ const int max_righe=10;
 const int max_colonne=20;
 const double alfa=1.5;
 
-/*
- * struttura stanza
- */
+// struttura stanza
 
 class stanza;
 
@@ -29,13 +28,14 @@ typedef connessioni * ptr_connessioni;
 
 class stanza {
 protected:
-    int n_stanza;
-    bool is_link=false;
+    int n_stanza; //l'ordine con cui viene generata la stanza
+    bool is_link=false; //la stanza è isolata dalle altre
 public:
-    bool is_emtpy=true;
-    int coor_x;
-    int coor_y;
-    char punti_stanza[max_righe][max_colonne];
+    bool is_emtpy=true; //la stanza contiene solo spazi (o eventualmente tunnel)
+    int coor_x; //coordinate della stanza all'interno della mappa
+    int coor_y; //coordinate della stanza all'interno della mappa
+    //item punti_stanza[max_righe][max_colonne];
+    ptr_item** punti_stanza = new ptr_item*[max_righe];
     ptr_connessioni lista_connessioni=NULL;
 
     stanza(int x, int y, int n_room);
@@ -62,11 +62,7 @@ protected:
 public:
     mappa(int n);
     bool check_room(int x, int y);
-    /*DA MODIFICARE...? */
     /********************/
-    //void save_room(ptr_stanza);
-    //stanza initialize_room(int n_stanza);
-    //void add_empty_rooms();
     void generate_all_rooms();
     ptr_stanza find_first(int row);
     bool check_row_connection(int row);
