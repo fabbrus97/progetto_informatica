@@ -424,7 +424,14 @@ void mappa::generate_map() {
     second_linking(first);
 
     //ESEMPIO DI USO DI ARMI
+
+    //cerchiamo la prima stanza e
+    // salviamola nel puntatore
+    // chiamato "first" e piazziamoci
+    // delle armi
+
     first=find_first(0);
+
     first->punti_stanza[3][3]=&pungolo;
     first->punti_stanza[3][4]=&arcoBase;
 
