@@ -117,10 +117,12 @@ bool stanza::check_connection(ptr_stanza stanza_di_partenza, ptr_stanza stanza_d
 }
 
 bool stanza::has_connection(ptr_stanza room){
+    //se la stanza ha almeno una connessione, la funzione restituisce true
     return (room->lista_connessioni!=NULL);
 }
 
 bool mappa::check_room(int x, int y) {
+    //ritorna true se una stanza esiste, false altrimenti
     return (x>=0 && x<i && y>=0 && y<j && p[x][y]!=NULL);
 }
 
@@ -176,6 +178,13 @@ void mappa::generate_all_rooms() {
                 p[tmp_i][tmp_j] = new stanza(x, y);
                 //p[tmp_i][tmp_j]->is_emtpy=true;
             }
+
+    //funzione da togliere: impostazione corretta delle coordinate
+    for (int a=0; a<i; a++)
+        for (int b=0; b<j; b++){
+            p[a][b]->coor_x=a;
+            p[a][b]->coor_y=b;
+        }
 }
 
 void mappa::add_doors(ptr_stanza room) {
@@ -254,67 +263,84 @@ ptr_stanza mappa::find_first(int row) {
     return p[row][tmp_j];
 }
 
-void mappa::first_linking(ptr_stanza room){
-    if (room==NULL)
+void mappa::first_linking(ptr_stanza room, bool force_linking) {
+    cout << "sono in first_linking" << endl;
+    ptr_stanza tmp = NULL;
+
+    if (room == NULL) {//condizione di arresto 1: room è NULL
+        cout << "la stanza in input è NULL" << endl;
         return;
-    //il check_room per la stanza successiva è analogo al p->next!=NULL;
-    if (check_room(room->coor_x, room->coor_y+1) && !p[room->coor_x][room->coor_y+1]->is_emtpy) {
-        return first_linking(p[room->coor_x][room->coor_y + 1]);
-    } else if (!check_room(room->coor_x, room->coor_y+1)) {
-        if (!check_room(room->coor_x + 1, room->coor_y)) {
-            return; //non ci sono altre celle sottostanti, la mappa è finita
-        }
-        else {
-            ptr_stanza first = find_first(room->coor_x + 1);
-            if (first!=NULL) {
-                //return first_linking(first);
-                return first_linking(p[first->coor_x][first->coor_y]);
-            } else
-                return;
-        }
     }
-    else if (p[room->coor_x][room->coor_y+1]->is_emtpy){
-        for (int scroll=room->coor_y+1; scroll<j; scroll++){
-            if (!p[room->coor_x][scroll]->is_emtpy)
-                if (room->has_connection(p[room->coor_x][scroll]) && room->has_connection(room))
-                    return first_linking(p[room->coor_x][scroll]);
-                else {
-                    for (int a=room->coor_y+1; a<scroll; a++)
-                        for (int b=0; b<max_colonne; b++)
-                            p[room->coor_x][a]->punti_stanza[max_righe/2][b]=&tunnel;
-                    p[room->coor_x][scroll]->punti_stanza[max_righe/2][0]=&porta;
-                    p[room->coor_x][room->coor_y]->punti_stanza[max_righe/2][max_colonne-1]=&porta;
 
-                    room->aggiungi_stanza_a_lista_connessioni(room, p[room->coor_x][scroll]);
-                    room->aggiungi_stanza_a_lista_connessioni(p[room->coor_x][scroll], room);
+    //if (force_linking && room->coor_y==j-1) return; //con questa condizione, non si riesegue su tutte le righe F_L ma sono su quella interessata
 
-                    add_doors(p[room->coor_x][scroll]);
-                    add_doors(room);
+    if (room->coor_y < j - 1) { //room->coor_y non può essere j-1, perché tmp sarebbe in una stanza inesistente
+        tmp = p[room->coor_x][room->coor_y + 1];
+        cout << "ora tmp è diverso da NULL con coordinate " << room->coor_x << ", " << room->coor_y + 1 << "( "
+             << tmp->coor_x << ", " <<
+             tmp->coor_y << ")" << endl;
+    } else if (room->coor_y == j - 1 && room->coor_x < i - 1)
+        return first_linking(find_first(room->coor_x + 1),
+                             false); //se siamo nell'ultima cella della riga, facciamo ripartire subito la funzione
+    else return; //condizione di arresto due: raggiunta ultima cella della mappa
 
-                    return first_linking(p[room->coor_x][scroll]);
+    while (tmp != NULL && tmp->coor_y < j) {
+        cout << "sono nel while" << endl;
+        cout << "le coordinate di tmp sono " << tmp->coor_x << ", " << tmp->coor_y << endl;
+        if (tmp->is_emtpy) {
+            if (tmp->coor_y + 1 < j) {
+                tmp = p[tmp->coor_x][tmp->coor_y + 1];
+                cout << "la stanza " << tmp->coor_x << ", " << tmp->coor_y << " è vuota; faccio scorrere tmp avanti"
+                     << endl;
+            } else return first_linking(tmp, false);
+        } else {
+            cout << "la stanza " << tmp->coor_x << ", " << tmp->coor_y << " è piena; devo fare qualcosa" << endl;
+            if (tmp->coor_y == room->coor_y + 1 && force_linking) {
+                cout << "poiché room è nella posizione " << room->coor_x << ", " << room->coor_y
+                     << " forzo la costruzione di porte" << endl;
+                //forza la scrittura di porte
+                room->punti_stanza[max_righe / 2][max_colonne - 1] = &porta;
+                tmp->punti_stanza[max_righe / 2][0] = &porta;
+                return first_linking(tmp, true);
+            } else if (tmp->coor_y == room->coor_y + 1 && !force_linking) {
+                return first_linking(tmp, false);
+            } else if (tmp->coor_y > room->coor_y + 1) {
+                cout << "poiché room è nella posizione " << room->coor_x << ", " << room->coor_y
+                     << " costruisco un tunnel" << endl;
+                //costruisci il tunnel solo se la stanza non risulta già connessa
+                if (!room->has_connection(tmp) || !room->has_connection(room)) {
+                    for (int a = room->coor_y + 1; a < tmp->coor_y; a++)
+                        for (int b = 0; b < max_colonne; b++)
+                            p[room->coor_x][a]->punti_stanza[max_righe / 2][b] = &tunnel;
+                    tmp->punti_stanza[max_righe / 2][0] = &porta;
+                    room->punti_stanza[max_righe / 2][max_colonne - 1] = &porta;
+                    room->aggiungi_stanza_a_lista_connessioni(room, tmp);
+                    tmp->aggiungi_stanza_a_lista_connessioni(tmp, room);
+
+                    add_doors(tmp); add_doors(room);
                 }
-
-            if (!check_room(room->coor_x, scroll+1)){
-                if (!check_room(room->coor_x+1, room->coor_y))
-                    return; //non ci sono altre celle sottostanti, la mappa è finita
-                else {
-                    ptr_stanza first=find_first(room->coor_x+1);
-                    return first_linking(first);
-                }
+                return first_linking(tmp, false);
             }
         }
     }
+    return;
 }
 
 bool mappa::check_row_connection(int row) {
-
+    int h;
     ptr_stanza tmp=NULL;
-    tmp=find_first(row);
-    bool is_linked=false; //questo booleano dice se la riga data è linked con la riga sottostante
+    if (find_first(row)!=NULL) {
+        tmp = find_first(row);
+    }
+    else return false;
+    if ((tmp->coor_x+1)<i && find_first(tmp->coor_x + 1)!=NULL)
+        h = find_first(tmp->coor_x + 1)->coor_x;
+    else return false;
+    bool is_linked=false; //questo booleano dice se la riga data è collegata con la prima riga non vuota sottostante
     for (int scroll=tmp->coor_y; scroll<j; scroll++){
         if (!p[row][scroll]->is_emtpy){
             tmp=p[row][scroll];
-            if (tmp->check_connection(tmp, p[row+1][scroll]))
+            if (tmp->check_connection(tmp, p[h][scroll]))
                 is_linked = true;
         }
     }
@@ -323,104 +349,109 @@ bool mappa::check_row_connection(int row) {
 }
 
 void mappa::second_linking(ptr_stanza room) {
-
-    if (room==NULL || room->coor_x==i-1) {
+    cout << "sono in second linking" << endl;
+    if (room==NULL)
         return;
-    } else {
-        cout << "analisi in corso della stanza " << room->coor_x << "," << room->coor_y << endl;
+
+    if (room->coor_x==i-1 || find_first(room->coor_x+1)==NULL) {
+        //se find_first restituisce NULL significa
+        //che sotto la stanza room non ci sono altre
+        //stanze, e la funzione termina.
+        cout << "find_first(room->coor_x+1)==NULL; faccio il return" << endl;
+        return;
     }
 
     if (check_row_connection(room->coor_x)){
-        cout << "verifichiamo che la riga " << room->coor_x << " sia collegata con la riga successiva" << endl;
+        cout << "la riga in esame è connessa con quella sottostanze; rilancio second_linking" << endl;
         return second_linking(find_first(room->coor_x+1));
-    } else if (find_first(room->coor_x+1)==NULL){
-        cout << "le righe non sono collegate" << endl;
-        int x=2; bool flag=false;
-        while (!flag) {
-            if (room->coor_x + x >= i) {
-                cout << "non ci sono altre righe da collegare, fine funzione" << endl;
-                return;
-            } else if (!p[room->coor_x+x][room->coor_y]->is_emtpy){
-                cout << "trovata una stanza, stampo un tunnel per collegare le righe" << endl;
-                for (int altezza=room->coor_x+1; altezza < room->coor_x+x; altezza++){
-                    for (int a=0; a<max_righe; a++)
-                        p[altezza][room->coor_y]->punti_stanza[a][max_colonne/2]=&tunnel;
-                    room->punti_stanza[max_righe-1][max_colonne/2]=&porta;
-                    p[room->coor_x+x][room->coor_y]->punti_stanza[0][max_colonne/2]=&porta;
-                }
-                return second_linking(p[room->coor_x+x][room->coor_y]);
-            } else if (room->coor_x+x < i) {
-                cout << "controllo la riga sotto (aumento la variabile x)" << endl;
-                x++;
-            } else {
-                cout << "siamo arrivati alla fine, verifichiamo che ci siano delle stanze di fianco" << endl;
-                for (int scroll = room->coor_y; scroll < j; scroll++){
-
-                    if (!p[room->coor_x][scroll]->is_emtpy) {
-                        cout << "fortunatamente ne ho trovata una" << endl;
-                        return second_linking(p[room->coor_x][scroll]);
-                    }
-                }
-
-                cout << "nessuna stanza trovata, generazione nuova stanza e tunnel" << endl;
-
-                room=find_first(room->coor_x);
-                stanza nuova_stanza(room->coor_x+x, room->coor_y, contatore_stanze);
-                nuova_stanza.is_emtpy = false;
-                p[room->coor_x + x][room->coor_y] = new stanza(room->coor_x + x, room->coor_y);
-                //aggiungiamo le porte, dato che in alcuni casi non le aggiunge
-                //perché prova a mettere delle porte a stanze già connesse
-                if (room->coor_y == 0)
-                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][max_colonne-1]=&porta;
-                else if (room->coor_y == j-1)
-                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][0]=&porta;
-                else {
-                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][0] = &porta;
-                    p[room->coor_x + x][room->coor_y]->punti_stanza[max_righe/2][max_colonne-1]=&porta;
-                }
-                *p[room->coor_x + x][room->coor_y] = nuova_stanza;
-                contatore_stanze++;
-
-                add_doors(room);
-                first_linking(find_first(room->coor_x + x)); //first_linking va da sx a dx, quindi bisogna dargli la prima stanza come input
-
-                cout << "rilancio second_linking sulla stessa stanza per creare tunnel" << endl;
-                return second_linking(room);
-            }
-            x++;
-        }
     } else {
-        cout << "la riga sotto non è vuota, ma non ci sono stanze a cui collegarsi" << endl;
-        for (int scroll=room->coor_y; scroll<j; scroll++) {
-            if (p[room->coor_x + 1][scroll]->is_emtpy) {
-                cout << "quindi creo una stanza" << endl;
-                stanza nuova_stanza(room->coor_x + 1, room->coor_y, contatore_stanze);
-                nuova_stanza.is_emtpy = false;
-                p[room->coor_x + 1][room->coor_y] = new stanza(room->coor_x + 1, room->coor_y);
-                *p[room->coor_x + 1][room->coor_y] = nuova_stanza;
-                contatore_stanze++;
+        ptr_stanza tmp=find_first(room->coor_x+1);
 
-                add_doors(room);
-                first_linking(find_first(room->coor_x+1)); //first_linking va da sx a dx, quindi bisogna dargli la prima stanza come input
-                cout << "rilancio second_linking sulla stanza appena creata" << endl;
-                return second_linking(p[room->coor_x + 1][room->coor_y]);
-            }
+        //caso 1)
+        //non si fa niente, si convoglia nel caso 2
+        if (room->coor_y==tmp->coor_y) { //caso 2: le stanze sono nella stessa colonna
+            cout << "le stanze " << room->coor_x << "," << room->coor_y << " e " << tmp->coor_x << "," << tmp->coor_y
+                 << " sono nella stessa colonna" << endl;
+            //stampa il tunnel
+            for (int altezza = room->coor_x + 1; altezza < tmp->coor_x; altezza++)
+                for (int a = 0; a < max_righe; a++)
+                    p[altezza][room->coor_y]->punti_stanza[a][max_colonne / 2] = &tunnel;
+            room->punti_stanza[max_righe - 1][max_colonne / 2] = &porta;
+            cout << "aggiungo una porta in fondo alla stanza " << room->coor_x << "," << room->coor_y << endl;
+            tmp->punti_stanza[0][max_colonne / 2] = &porta;
+            cout << "aggiungo una porta in cima alla stanza " << tmp->coor_x << "," << tmp->coor_y << endl;
+            room->aggiungi_stanza_a_lista_connessioni(room, tmp);
+            tmp->aggiungi_stanza_a_lista_connessioni(tmp, room);
+
+            return second_linking(find_first(room->coor_x + 1));
+        } else { //caso 3: le stanze non sono nella stessa colonna, bisogna generare una nuova stanza
+            cout << "le stanze " << room->coor_x << "," << room->coor_y << " e " << tmp->coor_x << "," << tmp->coor_y << " non sono nella stessa colonna" << endl;
+            //genera la nuova stanza
+            cout << "genero una nuova stanza " << tmp->coor_x << "," << room->coor_y << " che è vuota (" << p[tmp->coor_x][room->coor_y]->is_emtpy << ")" << endl;
+            stanza nuova_stanza(tmp->coor_x, room->coor_y, contatore_stanze); //genero una nuova stanza nella stessa colonna di room e nella stessa riga di tmp
+            nuova_stanza.is_emtpy = false;
+            p[tmp->coor_x][room->coor_y] = new stanza(tmp->coor_x, room->coor_y);
+            *p[tmp->coor_x][room->coor_y] = nuova_stanza;
+            contatore_stanze++;
+            //adesso c'è una stanza sotto room, posso rilanciare second_linking (dopo aver collegato le stanze della riga di tmp)
+            first_linking(find_first(nuova_stanza.coor_x), true);
+            room->aggiungi_stanza_a_lista_connessioni(room, p[tmp->coor_x][room->coor_y]);
+            tmp->aggiungi_stanza_a_lista_connessioni(p[tmp->coor_x][room->coor_y], room);
+            return second_linking(room);
+            //return second_linking(find_first(room->coor_x+1));
         }
-
     }
-
 }
 
 void mappa::generate_map() {
     generate_all_rooms();
-    //ricerca la prima porta della mappa
 
+    /*contatore_stanze--;
+
+    p[0][0]=new stanza(0,0,0);
+    p[0][0]->is_emtpy=false;
+    p[0][1]=new stanza(0,1);
+    p[0][1]->is_emtpy=true;
+    p[0][2]=new stanza(0,2);
+    p[0][2]->is_emtpy=true;
+    p[0][3]=new stanza(0,3,1);
+    p[0][3]->is_emtpy=false;
+
+    p[1][0]=new stanza(1,0);
+    p[1][0]->is_emtpy=true;
+    p[1][1]=new stanza(1,1,2);
+    p[1][1]->is_emtpy=false;
+    p[1][2]=new stanza(1,2,3);
+    p[1][2]->is_emtpy=false;
+    p[1][3]=new stanza(1,3);
+    p[1][3]->is_emtpy=true;
+
+    p[2][0]=new stanza(2,0,4);
+    p[2][0]->is_emtpy=false;
+    p[2][1]=new stanza(2,1,5);
+    p[2][1]->is_emtpy=false;
+    p[2][2]=new stanza(2,2);
+    p[2][2]->is_emtpy=true;
+    p[2][3]=new stanza(2,3,6);
+    p[2][3]->is_emtpy=false;
+    */
+
+    //ricerca la prima porta della mappa
     ptr_stanza first=NULL;
     //find first trova la prima stanza partendo da una riga in input, e restituisce un puntatore alla stanza.
     first = find_first(0);
     add_doors(first);
 
-    first_linking(first);
+    /*for (int a=0; a<i; a++)
+        for (int b=0; b<j; b++){
+            ptr_stanza stanza=p[a][b];
+            cout << "a,b: " << a << "," << b << endl;
+            cout << "coordinate p[a][b]: " << p[a][b]->coor_x << "," << p[a][b]->coor_y << endl;
+            cout << "coordinate stanza: " << stanza->coor_x << "," << stanza->coor_y << endl;
+        }
+    */
+
+    first_linking(first, false);
     second_linking(first);
 
     //ESEMPIO DI USO DI ARMI

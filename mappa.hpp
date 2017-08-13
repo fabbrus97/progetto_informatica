@@ -66,7 +66,7 @@ public:
     void generate_all_rooms();
     ptr_stanza find_first(int row);
     bool check_row_connection(int row);
-    void first_linking(ptr_stanza room);
+    void first_linking(ptr_stanza room, bool force_linking);
     void second_linking(ptr_stanza room);
     void add_doors(ptr_stanza room);
     void generate_map();
