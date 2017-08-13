@@ -171,20 +171,13 @@ void mappa::generate_all_rooms() {
             contatore_stanze++;
         }
     }
-    //cerchiamo eventuali stanze rimaste vuote e stampiamo una stanza vuota
+    //cerchiamo eventuali stanze rimaste vuote e stampiamo (?) una stanza vuota
     for (int tmp_i = 0; tmp_i < i; tmp_i++)
         for (int tmp_j = 0; tmp_j < j; tmp_j++)
             if (p[tmp_i][tmp_j] == NULL) {
-                p[tmp_i][tmp_j] = new stanza(x, y);
+                p[tmp_i][tmp_j] = new stanza(tmp_i, tmp_j);
                 //p[tmp_i][tmp_j]->is_emtpy=true;
             }
-
-    //funzione da togliere: impostazione corretta delle coordinate
-    for (int a=0; a<i; a++)
-        for (int b=0; b<j; b++){
-            p[a][b]->coor_x=a;
-            p[a][b]->coor_y=b;
-        }
 }
 
 void mappa::add_doors(ptr_stanza room) {
@@ -287,6 +280,7 @@ void mappa::first_linking(ptr_stanza room, bool force_linking) {
     while (tmp != NULL && tmp->coor_y < j) {
         cout << "sono nel while" << endl;
         cout << "le coordinate di tmp sono " << tmp->coor_x << ", " << tmp->coor_y << endl;
+        if (force_linking && tmp->coor_y==j-1) return; //questa riga evita di rieseguire first_linking su tutta la mappa, ma lo esegue solo sulla riga interessata
         if (tmp->is_emtpy) {
             if (tmp->coor_y + 1 < j) {
                 tmp = p[tmp->coor_x][tmp->coor_y + 1];
@@ -302,6 +296,7 @@ void mappa::first_linking(ptr_stanza room, bool force_linking) {
                 room->punti_stanza[max_righe / 2][max_colonne - 1] = &porta;
                 tmp->punti_stanza[max_righe / 2][0] = &porta;
                 return first_linking(tmp, true);
+
             } else if (tmp->coor_y == room->coor_y + 1 && !force_linking) {
                 return first_linking(tmp, false);
             } else if (tmp->coor_y > room->coor_y + 1) {
@@ -404,9 +399,9 @@ void mappa::second_linking(ptr_stanza room) {
 }
 
 void mappa::generate_map() {
-    generate_all_rooms();
+    //generate_all_rooms();
 
-    /*contatore_stanze--;
+    contatore_stanze--;
 
     p[0][0]=new stanza(0,0,0);
     p[0][0]->is_emtpy=false;
@@ -434,7 +429,7 @@ void mappa::generate_map() {
     p[2][2]->is_emtpy=true;
     p[2][3]=new stanza(2,3,6);
     p[2][3]->is_emtpy=false;
-    */
+
 
     //ricerca la prima porta della mappa
     ptr_stanza first=NULL;
@@ -442,14 +437,14 @@ void mappa::generate_map() {
     first = find_first(0);
     add_doors(first);
 
-    /*for (int a=0; a<i; a++)
+    for (int a=0; a<i; a++)
         for (int b=0; b<j; b++){
             ptr_stanza stanza=p[a][b];
             cout << "a,b: " << a << "," << b << endl;
             cout << "coordinate p[a][b]: " << p[a][b]->coor_x << "," << p[a][b]->coor_y << endl;
             cout << "coordinate stanza: " << stanza->coor_x << "," << stanza->coor_y << endl;
         }
-    */
+
 
     first_linking(first, false);
     second_linking(first);
@@ -470,4 +465,5 @@ void mappa::generate_map() {
     first->punti_stanza[3][4]->damage();
 
     first->punti_stanza[3][2]->damage();
+
 }
