@@ -399,37 +399,7 @@ void mappa::second_linking(ptr_stanza room) {
 }
 
 void mappa::generate_map() {
-    //generate_all_rooms();
-
-    contatore_stanze--;
-
-    p[0][0]=new stanza(0,0,0);
-    p[0][0]->is_emtpy=false;
-    p[0][1]=new stanza(0,1);
-    p[0][1]->is_emtpy=true;
-    p[0][2]=new stanza(0,2);
-    p[0][2]->is_emtpy=true;
-    p[0][3]=new stanza(0,3,1);
-    p[0][3]->is_emtpy=false;
-
-    p[1][0]=new stanza(1,0);
-    p[1][0]->is_emtpy=true;
-    p[1][1]=new stanza(1,1,2);
-    p[1][1]->is_emtpy=false;
-    p[1][2]=new stanza(1,2,3);
-    p[1][2]->is_emtpy=false;
-    p[1][3]=new stanza(1,3);
-    p[1][3]->is_emtpy=true;
-
-    p[2][0]=new stanza(2,0,4);
-    p[2][0]->is_emtpy=false;
-    p[2][1]=new stanza(2,1,5);
-    p[2][1]->is_emtpy=false;
-    p[2][2]=new stanza(2,2);
-    p[2][2]->is_emtpy=true;
-    p[2][3]=new stanza(2,3,6);
-    p[2][3]->is_emtpy=false;
-
+    generate_all_rooms();
 
     //ricerca la prima porta della mappa
     ptr_stanza first=NULL;
