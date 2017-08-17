@@ -27,10 +27,9 @@ struct connessioni{
 typedef connessioni * ptr_connessioni;
 
 class stanza {
-protected:
-    int n_stanza; //l'ordine con cui viene generata la stanza
-    bool is_link=false; //la stanza è isolata dalle altre
 public:
+    int n_stanza; //l'ordine con cui viene generata la stanza
+    //bool is_link=false; //la stanza è isolata dalle altre
     bool is_emtpy=true; //la stanza contiene solo spazi (o eventualmente tunnel)
     int coor_x; //coordinate della stanza all'interno della mappa
     int coor_y; //coordinate della stanza all'interno della mappa
@@ -44,6 +43,8 @@ public:
     ptr_connessioni aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
     bool check_connection(ptr_stanza stanza_di_partenza, ptr_stanza stanza_da_controllare);
     bool has_connection(ptr_stanza room);
+
+    bool posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tentativo);
     };
 
 //void aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
@@ -58,16 +59,18 @@ protected:
     int i;
     int j;
     //stanza nuova_stanza;
+    public:
     ptr_stanza** p =new ptr_stanza*[i];
-public:
+
     mappa(int n);
+    mappa();
     bool check_room(int x, int y);
     /********************/
     void generate_all_rooms();
     ptr_stanza find_first(int row);
     bool check_row_connection(int row);
-    void first_linking(ptr_stanza room);
-    void second_linking(ptr_stanza room);
+    void first_linking(ptr_stanza room, bool force_linking);
+    void second_linking(ptr_stanza room, ptr_stanza known_room);
     void add_doors(ptr_stanza room);
     void generate_map();
     void print_map();
