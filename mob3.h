@@ -1,7 +1,7 @@
 #ifndef MOB3_H
 #define MOB3_H
 
-#include <mob1.h>
+#include "mob1.h"
 
 
 class mob3 : public mob1

@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <cmath>
-#include "oggetti_mappa.hpp"
+#include "item.h"
 
 using namespace std;
 

@@ -1,8 +1,8 @@
 #ifndef PERSONAGGIO_H
 #define PERSONAGGIO_H
 #define CONST_LENGTH 100
-#include <item.h>
-#include <arma.h>
+#include "item.h"
+#include "arma.h"
 
 
 class personaggio : public item

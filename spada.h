@@ -1,6 +1,6 @@
 #ifndef SPADA_H
 #define SPADA_H
-#include <arma.h>
+#include "arma.h"
 
 
 class spada : public arma

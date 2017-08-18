@@ -1,7 +1,7 @@
 #ifndef PG_H
 #define PG_H
-#include <arma.h>
-#include <personaggio.h>
+#include "arma.h"
+#include "personaggio.h"
 
 
 class pg : public personaggio
