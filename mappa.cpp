@@ -3,6 +3,8 @@
 //
 
 #include "mappa.hpp"
+#include "spada.h"
+#include "coltello.h"
 
 //contatore stanze
 int contatore_stanze=1;
@@ -176,8 +178,9 @@ void mappa::print_map() {
         for (int x = 0; x < MAX_RIGHE; x++) {
             for (int tmp_j = 0; tmp_j < j; tmp_j++) {
                 stanza tmp = *p[tmp_i][tmp_j];
+
                 for (int y = 0; y < MAX_COLONNE; y++) {
-                    cout << tmp.punti_stanza[x][y]->carattere;
+                    cout << tmp.punti_stanza[x][y]->icon;
                 }
             }
             cout << endl;
@@ -402,22 +405,21 @@ void mappa::generate_map() {
     first_linking(first, false);
     second_linking(first, NULL);
 
-    /*
-    //ESEMPIO DI USO DI ARMI
+    spada anduril; //spada di Aragorn
+    *first->punti_stanza[3][4]=anduril;
 
-    //cerchiamo la prima stanza e
-    // salviamola nel puntatore
-    // chiamato "first" e piazziamoci
-    // delle armi
 
-    first=find_first(0);
+    spada glamdring; //spada di Ganjalf
+    ptr_connessioni tmp=first->lista_connessioni;
+    while(first->lista_connessioni->next!=NULL)
+        tmp=first->lista_connessioni->next;
+    *tmp->stanza_puntata->punti_stanza[2][max_colonne-3]=glamdring;
 
-    first->punti_stanza[3][3]=&pungolo;
-    first->punti_stanza[3][4]=&arcoBase;
+    //un modo per scoprire se una stanza esiste (cioè è formata da muri, punti etc e non da soli spazi) è tramite il booleano
+    //is_empty:
 
-    first->punti_stanza[3][3]->damage();
-    first->punti_stanza[3][4]->damage();
+    coltello pugnale_morgul;
 
-    first->punti_stanza[3][2]->damage();
-    */
+    if (!p[0][2]->is_emtpy)
+        *p[0][2]->punti_stanza[5][6]=pugnale_morgul;
 }

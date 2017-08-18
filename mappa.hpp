@@ -8,8 +8,8 @@
 #include <ctime>
 #include <cstdlib>
 #include <cmath>
-#include "oggetti_mappa.hpp"
 #include "stanza.hpp"
+#include "item.h"
 
 using namespace std;
 
