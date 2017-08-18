@@ -1,51 +1,19 @@
 //
 // Created by simone on 14/03/17.
 //
+#ifndef MAPPA_HPP
+#define MAPPA_HPP
+
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
 #include <cmath>
 #include "oggetti_mappa.hpp"
+#include "stanza.hpp"
 
 using namespace std;
 
-const int max_righe=10;
-const int max_colonne=20;
 const double alfa=1.5;
-
-// struttura stanza
-
-class stanza;
-
-typedef stanza* ptr_stanza;
-
-struct connessioni{
-    ptr_stanza stanza_puntata;
-    connessioni *next;
-};
-
-typedef connessioni * ptr_connessioni;
-
-class stanza {
-public:
-    int n_stanza; //l'ordine con cui viene generata la stanza
-    //bool is_link=false; //la stanza è isolata dalle altre
-    bool is_emtpy=true; //la stanza contiene solo spazi (o eventualmente tunnel)
-    int coor_x; //coordinate della stanza all'interno della mappa
-    int coor_y; //coordinate della stanza all'interno della mappa
-    //item punti_stanza[max_righe][max_colonne];
-    ptr_item** punti_stanza = new ptr_item*[max_righe];
-    ptr_connessioni lista_connessioni=NULL;
-
-    stanza(int x, int y, int n_room);
-    stanza(int x, int y);
-
-    ptr_connessioni aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
-    bool check_connection(ptr_stanza stanza_di_partenza, ptr_stanza stanza_da_controllare);
-    bool has_connection(ptr_stanza room);
-
-    bool posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tentativo);
-    };
 
 //void aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
 
@@ -60,7 +28,7 @@ protected:
     int j;
     //stanza nuova_stanza;
     public:
-    ptr_stanza** p =new ptr_stanza*[i];
+    ptr_stanza** p;
 
     mappa(int n);
     mappa();
@@ -75,3 +43,5 @@ protected:
     void generate_map();
     void print_map();
 };
+
+#endif

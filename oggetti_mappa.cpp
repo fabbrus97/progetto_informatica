@@ -6,6 +6,7 @@
 using namespace std;
 
 item::item(char c, bool b){
+    dam=0;
     carattere=c;
     is_passable=b;
     /*pos[0]=x;
@@ -52,4 +53,3 @@ bow::bow(int d, char c, bool b){
 void bow::damage(){
     cout << "danno arco: " << dam << endl;
 }
-

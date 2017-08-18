@@ -1,4 +1,6 @@
 //#include "mappa.hpp"
+#ifndef OGGETTI_MAPPA_HPP
+#define OGGETTI_MAPPA_HPP
 
 typedef int posizione[4];
 /* posizione[0] è la coordinata x rispetto alla mappa
@@ -20,7 +22,7 @@ public:
 
 
     //weapons:
-    int dam=0;
+    int dam;
     virtual void damage();
 };
 
@@ -50,3 +52,6 @@ public:
     bow(int d, char c, bool b);
     void damage();
 };
+
+
+#endif
