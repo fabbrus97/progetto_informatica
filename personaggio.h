@@ -1,3 +1,10 @@
+#ifndef PERSONAGGIO_H
+#define PERSONAGGIO_H
+#define CONST_LENGTH 100
+#include "item.h"
+#include "arma.h"
+
+
 class personaggio : public item
 {
 protected:
@@ -6,7 +13,7 @@ protected:
     arma armaInUso;
 
 public:
-    personaggio(int pExp, int pVita, arma inUso);
+    personaggio();
     int getPuntiVita();
     void setPuntiVita (int new_puntiVita);
     int getPuntiEsperienza();

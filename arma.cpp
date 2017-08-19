@@ -1,12 +1,11 @@
 #include "arma.h"
 #include "item.h"
 
-arma::arma(int ra, int dam, int exp):
-    item("Arma", 'W', true, true, -1, -1, -1, -1)
+
+arma::arma():item()
 {
-    range = ra;
-    danniArma = dam;
-    exp_richiesti = exp;
+    arma::setAttraversabile(true);
+    arma::setRaccoglibile(true);
 }
 
 int arma::getRange()
