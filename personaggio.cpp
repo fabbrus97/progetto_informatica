@@ -1,19 +1,14 @@
 #include "personaggio.h"
 #include "item.h"
-#include "coltello.h"
+#include "arma.h"
 #define CONST_LENGTH 100
 
-personaggio::personaggio():item()
+personaggio::personaggio(int pExp, int pVita, arma inUso):
+   item("Personaggio", 'P', false, false, -1, -1, -1, -1)
 {
-    char nomePersonaggio[CONST_LENGTH] = {'U', 'T', 'E', 'N', 'T', 'E', '\0'};
-    personaggio::setNomeCompleto(nomePersonaggio);
-    coltello armaDiPartenza = coltello();
-    personaggio::setArmaInUso(armaDiPartenza);
-    personaggio::setIcon('@');
-    personaggio::setPuntiVita(300);
-    personaggio::setPuntiEsperienza(0);
-    personaggio::setAttraversabile(false);
-    personaggio::setRaccoglibile(false);
+    puntiEsperienza = pExp;
+    puntiVita = pVita;
+    armaInUso = inUso;
 }
 
 int personaggio::getPuntiVita()
