@@ -2,19 +2,24 @@
 #define ITEM_H
 #define CONST_LENGTH 100
 
+typedef int posizione[4];
+/* posizione[0] è la coordinata x rispetto alla mappa
+ * posizione[1] è la coordinata y rispetto alla mappa
+ * posizione[2] è la coordinata x rispetto alla stanza
+ * posizione[3] è la coordinata y rispetto alla stanza
+ */
+
 class item
 {
 protected:
     char nomeCompleto[CONST_LENGTH];
-    char icon;
     bool attraversabile;
     bool raccoglibile;
-    int posizioneX; //coordinata x rispetto alla mappa
-    int posizioneY; //coordinata y rispetto alla mappa
-    int posizioneXX; //coordinata x rispetto alla stanza
-    int posizioneYY; //coordinata y rispetto alla stanza
 public:
-    item(char nome[], char icona, bool isAttraversabile, bool isRaccoglibile, int positionX, int positionY, int positionXX, int positionYY);
+    char icon;
+    posizione pos;
+    item();
+    item(char carattere, bool attr, bool racc);
     void stampaNomeCompleto(char nome[]);
     char getIcon();
     bool getAttraversabile();
@@ -23,14 +28,10 @@ public:
     void setAttraversabile(bool isAttraversabile);
     void setRaccoglibile(bool isRaccoglibile);
     void setIcon(char newIcon);
-    int getPositionX();
-    int getPositionY();
-    int getPositionXX();
-    int getPositionYY();
-    void setPositionX(int newPositionX);
-    void setPositionY(int newPositionY);
-    void setPositionXX(int newPositionXX);
-    void setPositionYY(int newPositionYY);
+    void get_position(int x, int y, int xx, int yy);
+
 };
+
+typedef item * ptr_item;
 
 #endif // ITEM_H

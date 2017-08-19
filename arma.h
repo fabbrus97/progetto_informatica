@@ -10,7 +10,7 @@ protected:
     int danniArma;
     int exp_richiesti;
 public:
-    arma(int ra, int dam, int exp);
+    arma();
     int getRange();
     int getDanniArma();
     int getExpRichiesti();
