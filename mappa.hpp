@@ -34,8 +34,8 @@ public:
     int coor_x; //coordinate della stanza all'interno della mappa
     int coor_y; //coordinate della stanza all'interno della mappa
     //item punti_stanza[max_righe][max_colonne];
-    ptr_item** punti_stanza = new ptr_item*[max_righe];
-    ptr_connessioni lista_connessioni=NULL;
+    ptr_item** punti_stanza; // = new ptr_item*[max_righe];
+    ptr_connessioni lista_connessioni;//=NULL;
 
     stanza(int x, int y, int n_room);
     stanza(int x, int y);
@@ -60,7 +60,7 @@ protected:
     int j;
     //stanza nuova_stanza;
     public:
-    ptr_stanza** p =new ptr_stanza*[i];
+    ptr_stanza** p = new ptr_stanza*[i];
 
     mappa(int n);
     mappa();

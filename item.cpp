@@ -1,16 +1,24 @@
 #include "item.h"
 #include <cstring>
 
+item::item(){}
 
-item::item()
-{
+item::item(char icona, bool isAttraversabile, bool isRaccoglibile){
+    icon = icona;
+    attraversabile = isAttraversabile;
+    raccoglibile = isRaccoglibile;
 }
 
-item::item(char carattere, bool attr, bool racc){
-    nomeCompleto[0]='\0';
-    icon=carattere;
-    attraversabile=attr;
-    raccoglibile=racc;
+item::item(char nome[], char icona, bool isAttraversabile, bool isRaccoglibile, int positionX, int positionY, int positionXX, int positionYY)
+{
+    strcpy(nomeCompleto, nome);
+    icon = icona;
+    attraversabile = isAttraversabile;
+    raccoglibile = isRaccoglibile;
+    posizioneX = positionX;
+    posizioneY = positionY;
+    posizioneXX = positionXX;
+    posizioneYY = positionYY;
 }
 
 bool item::getAttraversabile()
@@ -48,16 +56,47 @@ void item::setNomeCompleto(char newNomeCompleto[])
     strcpy(newNomeCompleto, nomeCompleto);
 }
 
-void item::get_position(int x, int y, int xx, int yy) {
-    /* x è la coordinata x della stanza rispetto alla mappa
-     * y è la coordinata y della stanza rispetto alla mappa
-     * xx è la coordinata x del punto rispetto alla stanza
-     * yy è la coordinata y del punto rispetto alla stanza
-     */
-    pos[0]=x;
-    pos[1]=y;
-    pos[2]=xx;
-    pos[3]=yy;
+int item::getPositionX()
+{
+    return posizioneX;
 }
+
+int item::getPositionY()
+{
+    return posizioneY;
+}
+
+int item::getPositionXX()
+{
+    return posizioneXX;
+}
+
+int item::getPositionYY()
+{
+    return posizioneYY;
+}
+
+void item::setPositionX(int newPositionX, int newPositionY, int newPositionXX, int newPositionYY)
+{
+    posizioneX = newPositionX;
+    posizioneY = newPositionY;
+    posizioneXX = newPositionXX;
+    posizioneYY = newPositionYY;
+}
+
+/*void item::setPositionY(int newPositionY)
+{
+    posizioneY = newPositionY;
+}
+
+void item::setPositionXX(int newPositionXX)
+{
+    posizioneXX = newPositionXX;
+}
+
+void item::setPositionYY(int newPositionYY)
+{
+    posizioneYY = newPositionYY;
+}*/
 
 
