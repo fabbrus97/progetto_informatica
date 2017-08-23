@@ -6,17 +6,21 @@
 #include <cstdlib>
 #include <cmath>
 #include "item.h"
-
 using namespace std;
 
-const int max_righe=10;
-const int max_colonne=20;
-const double alfa=1.5;
+/*
+ * variabili globali
+ */
 
-// struttura stanza
+const int max_righe=10; //indica il numero di righe in una stanza
+const int max_colonne=20; //indica il numero di colonne in una stanza
+const double alfa=1.5; //valore usato per calcolare il numero di stanze in un livello o mappa
+
+/*
+ * stanza
+ */
 
 class stanza;
-
 typedef stanza* ptr_stanza;
 
 struct connessioni{
@@ -26,28 +30,34 @@ struct connessioni{
 
 typedef connessioni * ptr_connessioni;
 
+
 class stanza {
-public:
+protected:
     int n_stanza; //l'ordine con cui viene generata la stanza
-    //bool is_link=false; //la stanza è isolata dalle altre
     bool is_emtpy=true; //la stanza contiene solo spazi (o eventualmente tunnel)
     int coor_x; //coordinate della stanza all'interno della mappa
     int coor_y; //coordinate della stanza all'interno della mappa
-    //item punti_stanza[max_righe][max_colonne];
-    ptr_item** punti_stanza; // = new ptr_item*[max_righe];
-    ptr_connessioni lista_connessioni;//=NULL;
+public:
+    ptr_item** punti_stanza;
+    ptr_connessioni lista_connessioni; //la lista di puntatori a stanze a cui la stanza è connessa
 
     stanza(int x, int y, int n_room);
     stanza(int x, int y);
 
+    int getN_stanza() const;
+    void setN_stanza(int n_stanza);
+    bool isIs_emtpy() const;
+    void setIs_emtpy(bool is_emtpy);
+    int getCoor_x() const;
+    void setCoor_x(int coor_x);
+    int getCoor_y() const;
+    void setCoor_y(int coor_y);
+
     ptr_connessioni aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
     bool check_connection(ptr_stanza stanza_di_partenza, ptr_stanza stanza_da_controllare);
     bool has_connection(ptr_stanza room);
-
     bool posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tentativo);
-    };
-
-//void aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
+};
 
 /*
  * classe mappa

@@ -25,7 +25,6 @@ stanza::stanza(int x, int y, int n_room){
     lista_connessioni=NULL;
     punti_stanza=new ptr_item*[max_righe];
 
-
     //crea l'array bidimensionale
     for(int tmp = 0; tmp < max_righe; tmp++) {
         punti_stanza[tmp] = new ptr_item[max_colonne];
@@ -81,6 +80,38 @@ stanza::stanza(int x, int y) {
             punti_stanza[x][y]->setPositionX(coor_x, coor_y, x, y);
         }
 
+}
+
+int stanza::getN_stanza() const {
+    return n_stanza;
+}
+
+void stanza::setN_stanza(int n_stanza) {
+    stanza::n_stanza = n_stanza;
+}
+
+bool stanza::isIs_emtpy() const {
+    return is_emtpy;
+}
+
+void stanza::setIs_emtpy(bool is_emtpy) {
+    stanza::is_emtpy = is_emtpy;
+}
+
+int stanza::getCoor_x() const {
+    return coor_x;
+}
+
+void stanza::setCoor_x(int coor_x) {
+    stanza::coor_x = coor_x;
+}
+
+int stanza::getCoor_y() const {
+    return coor_y;
+}
+
+void stanza::setCoor_y(int coor_y) {
+    stanza::coor_y = coor_y;
 }
 
 mappa::mappa(int n) {
@@ -177,11 +208,11 @@ void mappa::generate_all_rooms() {
     cout << "sto per allocare la prima stanza" << endl;
     stanza prima_stanza(x, y, 1);
     cout << "ho allocato la prima stanza" << endl;
-    prima_stanza.is_emtpy = false;
+    prima_stanza.setIs_emtpy(false);
     if (n_livello == 1) {
         prima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = new item;
         *prima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = porta_liv_succ;
-        prima_stanza.punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(prima_stanza.coor_x, prima_stanza.coor_y, max_righe/2, max_colonne-1);
+        prima_stanza.punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(prima_stanza.getCoor_x(), prima_stanza.getCoor_y(), max_righe/2, max_colonne-1);
     }
     cout << "inseriamo la prima stanza nella mappa" << endl;
     p[x][y] = new stanza(x, y);
@@ -195,27 +226,26 @@ void mappa::generate_all_rooms() {
         y = j - 1;
         cout << "ultima stanza " << x << "," << y << endl;
         stanza ultima_stanza(x, y, (int) (n_livello * alfa));
-        ultima_stanza.is_emtpy = false;
+        ultima_stanza.setIs_emtpy(false);
         ultima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = new item;
         *ultima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = porta_liv_succ;
-        ultima_stanza.punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(ultima_stanza.coor_x, ultima_stanza.coor_y, max_righe/2, max_colonne-1);
+        ultima_stanza.punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(ultima_stanza.getCoor_x(), ultima_stanza.getCoor_y(), max_righe/2, max_colonne-1);
 
         //aggiungiamo anche la porta per tornare al livello precedente;
         prima_stanza.punti_stanza[3][0]= new item;
         *prima_stanza.punti_stanza[3][0]= porta_liv_prec;
-        prima_stanza.punti_stanza[3][0]->setPositionX(prima_stanza.coor_x, prima_stanza.coor_y, 3, 0);
+        prima_stanza.punti_stanza[3][0]->setPositionX(prima_stanza.getCoor_x(), prima_stanza.getCoor_y(), 3, 0);
 
         p[x][y] = new stanza(x, y);
         *p[x][y] = ultima_stanza;
         contatore_stanze++;
     }
-
     //continuiamo a generare stanze finché non raggiungiamo il massimo consentito dal livello
     while (contatore_stanze <= (int) (n_livello * alfa)) {
         x = (rand() % i);
         y = (rand() % j);
         stanza nuova_stanza(x, y, contatore_stanze);
-        nuova_stanza.is_emtpy = false;
+        nuova_stanza.setIs_emtpy(false);
         //controlliamo che la stanza sia presente o meno;
         if (!check_room(x, y)) {
             cout << "stanza " << x << "," << y << endl;
@@ -236,67 +266,68 @@ void mappa::generate_all_rooms() {
 void mappa::add_doors(ptr_stanza room) {
 
     //stanza a destra
-    if (check_room(room->coor_x, room->coor_y+1) && !p[room->coor_x][room->coor_y+1]->is_emtpy && !room->has_connection(p[room->coor_x][room->coor_y+1])){
+    if (check_room(room->getCoor_x(), room->getCoor_y()+1) && !p[room->getCoor_x()][room->getCoor_y()+1]->isIs_emtpy() && !room->has_connection(p[room->getCoor_x()][room->getCoor_y()+1])){
+        //se esiste la stanza xy, non è vuota e non ha alcuna connessione
         room->punti_stanza[max_righe/2][max_colonne-1]=new item;
         *room->punti_stanza[max_righe/2][max_colonne-1]=porta;
-        room->punti_stanza[max_righe/2][max_colonne-1]->setPositionX(room->coor_x, room->coor_y, max_righe/2, max_colonne-1);
+        room->punti_stanza[max_righe/2][max_colonne-1]->setPositionX(room->getCoor_x(), room->getCoor_y(), max_righe/2, max_colonne-1);
 
-        p[room->coor_x][room->coor_y+1]->punti_stanza[max_righe/2][0]=new item;
-        *p[room->coor_x][room->coor_y+1]->punti_stanza[max_righe/2][0]=porta;
-        p[room->coor_x][room->coor_y+1]->punti_stanza[max_righe/2][0]->setPositionX(room->coor_x, room->coor_y, room->coor_x, room->coor_y+1);
+        p[room->getCoor_x()][room->getCoor_y()+1]->punti_stanza[max_righe/2][0]=new item;
+        *p[room->getCoor_x()][room->getCoor_y()+1]->punti_stanza[max_righe/2][0]=porta;
+        p[room->getCoor_x()][room->getCoor_y()+1]->punti_stanza[max_righe/2][0]->setPositionX(room->getCoor_x(), room->getCoor_y()+1, max_righe/2, 0);
 
-        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->coor_x][room->coor_y+1]);
-        p[room->coor_x][room->coor_y+1]->aggiungi_stanza_a_lista_connessioni(p[room->coor_x][room->coor_y+1], room);
+        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->getCoor_x()][room->getCoor_y()+1]);
+        p[room->getCoor_x()][room->getCoor_y()+1]->aggiungi_stanza_a_lista_connessioni(p[room->getCoor_x()][room->getCoor_y()+1], room);
 
-        add_doors(p[room->coor_x][room->coor_y+1]);
+        add_doors(p[room->getCoor_x()][room->getCoor_y()+1]);
     }
 
     //stanza sopra
-    if (check_room(room->coor_x-1, room->coor_y) && !p[room->coor_x-1][room->coor_y]->is_emtpy && !room->has_connection(p[room->coor_x-1][room->coor_y])){
+    if (check_room(room->getCoor_x()-1, room->getCoor_y()) && !p[room->getCoor_x()-1][room->getCoor_y()]->isIs_emtpy() && !room->has_connection(p[room->getCoor_x()-1][room->getCoor_y()])){
         room->punti_stanza[0][max_colonne/2]=new item;
         *room->punti_stanza[0][max_colonne/2]=porta;
-        room->punti_stanza[0][max_colonne/2]->setPositionX(room->coor_x, room->coor_y, 0, max_colonne/2);
+        room->punti_stanza[0][max_colonne/2]->setPositionX(room->getCoor_x(), room->getCoor_y(), 0, max_colonne/2);
 
-        p[room->coor_x-1][room->coor_y]->punti_stanza[max_righe-1][max_colonne/2]=new item;
-        *p[room->coor_x-1][room->coor_y]->punti_stanza[max_righe-1][max_colonne/2]=porta;
-        p[room->coor_x-1][room->coor_y]->punti_stanza[max_righe-1][max_colonne/2]->setPositionX(room->coor_x-1, room->coor_y, max_righe-1, max_colonne/2);
+        p[room->getCoor_x()-1][room->getCoor_y()]->punti_stanza[max_righe-1][max_colonne/2]=new item;
+        *p[room->getCoor_x()-1][room->getCoor_y()]->punti_stanza[max_righe-1][max_colonne/2]=porta;
+        p[room->getCoor_x()-1][room->getCoor_y()]->punti_stanza[max_righe-1][max_colonne/2]->setPositionX(room->getCoor_x()-1, room->getCoor_y(), max_righe-1, max_colonne/2);
 
-        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->coor_x-1][room->coor_y]);
-        p[room->coor_x-1][room->coor_y]->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(p[room->coor_x-1][room->coor_y], room);
+        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->getCoor_x()-1][room->getCoor_y()]);
+        p[room->getCoor_x()-1][room->getCoor_y()]->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(p[room->getCoor_x()-1][room->getCoor_y()], room);
 
-        add_doors(p[room->coor_x-1][room->coor_y]);
+        add_doors(p[room->getCoor_x()-1][room->getCoor_y()]);
     }
 
     //stanza sotto
-    if (check_room(room->coor_x+1, room->coor_y) && !p[room->coor_x+1][room->coor_y]->is_emtpy && !room->has_connection(p[room->coor_x+1][room->coor_y])){
+    if (check_room(room->getCoor_x()+1, room->getCoor_y()) && !p[room->getCoor_x()+1][room->getCoor_y()]->isIs_emtpy() && !room->has_connection(p[room->getCoor_x()+1][room->getCoor_y()])){
         room->punti_stanza[max_righe-1][max_colonne/2]=new item;
         *room->punti_stanza[max_righe-1][max_colonne/2]=porta;
-        room->punti_stanza[max_righe-1][max_colonne/2]->setPositionX(room->coor_x, room->coor_y, max_righe-1, max_colonne/2);
+        room->punti_stanza[max_righe-1][max_colonne/2]->setPositionX(room->getCoor_x(), room->getCoor_y(), max_righe-1, max_colonne/2);
 
-        p[room->coor_x+1][room->coor_y]->punti_stanza[0][max_colonne/2]=new item;
-        *p[room->coor_x+1][room->coor_y]->punti_stanza[0][max_colonne/2]=porta;
-        p[room->coor_x+1][room->coor_y]->punti_stanza[0][max_colonne/2]->setPositionX(room->coor_x+1, room->coor_y, 0, max_colonne/2);
+        p[room->getCoor_x()+1][room->getCoor_y()]->punti_stanza[0][max_colonne/2]=new item;
+        *p[room->getCoor_x()+1][room->getCoor_y()]->punti_stanza[0][max_colonne/2]=porta;
+        p[room->getCoor_x()+1][room->getCoor_y()]->punti_stanza[0][max_colonne/2]->setPositionX(room->getCoor_x()+1, room->getCoor_y(), 0, max_colonne/2);
 
-        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->coor_x+1][room->coor_y]);
-        p[room->coor_x+1][room->coor_y]->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(p[room->coor_x+1][room->coor_y], room);
+        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->getCoor_x()+1][room->getCoor_y()]);
+        p[room->getCoor_x()+1][room->getCoor_y()]->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(p[room->getCoor_x()+1][room->getCoor_y()], room);
 
-        add_doors(p[room->coor_x+1][room->coor_y]);
+        add_doors(p[room->getCoor_x()+1][room->getCoor_y()]);
     }
 
     //stanza a sinistra
-    if (check_room(room->coor_x, room->coor_y-1) && !p[room->coor_x][room->coor_y-1]->is_emtpy && !room->has_connection(p[room->coor_x][room->coor_y-1])){
+    if (check_room(room->getCoor_x(), room->getCoor_y()-1) && !p[room->getCoor_x()][room->getCoor_y()-1]->isIs_emtpy() && !room->has_connection(p[room->getCoor_x()][room->getCoor_y()-1])){
         room->punti_stanza[max_righe/2][0]=new item;
         *room->punti_stanza[max_righe/2][0]=porta;
-        room->punti_stanza[max_righe/2][0]->setPositionX(room->coor_x, room->coor_y, max_righe/2, 0);
+        room->punti_stanza[max_righe/2][0]->setPositionX(room->getCoor_x(), room->getCoor_y(), max_righe/2, 0);
 
-        p[room->coor_x][room->coor_y-1]->punti_stanza[max_righe/2][max_colonne-1]=new item;
-        *p[room->coor_x][room->coor_y-1]->punti_stanza[max_righe/2][max_colonne-1]=porta;
-        p[room->coor_x][room->coor_y-1]->punti_stanza[max_righe/2][max_colonne-1]->setPositionX(room->coor_x, room->coor_y-1, max_righe/2, max_colonne-1);
+        p[room->getCoor_x()][room->getCoor_y()-1]->punti_stanza[max_righe/2][max_colonne-1]=new item;
+        *p[room->getCoor_x()][room->getCoor_y()-1]->punti_stanza[max_righe/2][max_colonne-1]=porta;
+        p[room->getCoor_x()][room->getCoor_y()-1]->punti_stanza[max_righe/2][max_colonne-1]->setPositionX(room->getCoor_x(), room->getCoor_y()-1, max_righe/2, max_colonne-1);
 
-        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->coor_x][room->coor_y-1]);
-        p[room->coor_x][room->coor_y-1]->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(p[room->coor_x][room->coor_y-1], room);
+        room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[room->getCoor_x()][room->getCoor_y()-1]);
+        p[room->getCoor_x()][room->getCoor_y()-1]->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(p[room->getCoor_x()][room->getCoor_y()-1], room);
 
-        add_doors(p[room->coor_x][room->coor_y-1]);
+        add_doors(p[room->getCoor_x()][room->getCoor_y()-1]);
     }
 }
 
@@ -317,7 +348,7 @@ void mappa::print_map() {
 ptr_stanza mappa::find_first(int row) {
     //trova la prima stanza in una riga
     int tmp_j=0;
-    while (p[row][tmp_j]->is_emtpy){
+    while (p[row][tmp_j]->isIs_emtpy()){
         //if (p[i][j]->is_emtpy)
         tmp_j++;
         if (tmp_j==j) { //se arrivi in fondo alla riga senza trovare nulla, la riga è vuota
@@ -341,62 +372,51 @@ void mappa::first_linking(ptr_stanza room, bool force_linking) {
 
     //if (force_linking && room->coor_y==j-1) return; //con questa condizione, non si riesegue su tutte le righe F_L ma sono su quella interessata
 
-    if (room->coor_y < j - 1) { //room->coor_y non può essere j-1, perché tmp sarebbe in una stanza inesistente
-        tmp = p[room->coor_x][room->coor_y + 1];
-        cout << "ora tmp è diverso da NULL con coordinate " << room->coor_x << ", " << room->coor_y + 1 << "( "
-             << tmp->coor_x << ", " <<
-             tmp->coor_y << ")" << endl;
-    } else if (room->coor_y == j - 1 && room->coor_x < i - 1)
-        return first_linking(find_first(room->coor_x + 1),
+    if (room->getCoor_y() < j - 1) { //room->coor_y non può essere j-1, perché tmp sarebbe in una stanza inesistente
+        tmp = p[room->getCoor_x()][room->getCoor_y() + 1];
+    } else if (room->getCoor_y() == j - 1 && room->getCoor_x() < i - 1)
+        return first_linking(find_first(room->getCoor_x() + 1),
                              false); //se siamo nell'ultima cella della riga, facciamo ripartire subito la funzione
     else return; //condizione di arresto due: raggiunta ultima cella della mappa
 
-    while (tmp != NULL && tmp->coor_y < j) {
+    while (tmp != NULL && tmp->getCoor_y() < j) {
         cout << "sono nel while" << endl;
-        cout << "le coordinate di tmp sono " << tmp->coor_x << ", " << tmp->coor_y << endl;
         //if (force_linking && tmp->coor_y==j-1) return; //questa riga evita di rieseguire first_linking su tutta la mappa, ma lo esegue solo sulla riga interessata
-        if (tmp->is_emtpy) {
-            if (tmp->coor_y + 1 < j) {
-                tmp = p[tmp->coor_x][tmp->coor_y + 1];
-                cout << "la stanza " << tmp->coor_x << ", " << tmp->coor_y << " è vuota; faccio scorrere tmp avanti"
-                     << endl;
+        if (tmp->isIs_emtpy()) {
+            if (tmp->getCoor_y() + 1 < j) {
+                tmp = p[tmp->getCoor_x()][tmp->getCoor_y() + 1];
             } else return first_linking(tmp, false);
         } else {
-            cout << "la stanza " << tmp->coor_x << ", " << tmp->coor_y << " è piena; devo fare qualcosa" << endl;
-            if (tmp->coor_y == room->coor_y + 1 && force_linking) {
-                cout << "poiché room è nella posizione " << room->coor_x << ", " << room->coor_y
-                     << " forzo la costruzione di porte" << endl;
+            if (tmp->getCoor_y() == room->getCoor_y() + 1 && force_linking) {
                 //forza la scrittura di porte
                 room->punti_stanza[max_righe / 2][max_colonne - 1] = new item;
                 *room->punti_stanza[max_righe / 2][max_colonne - 1] = porta;
-                room->punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(room->coor_x, room->coor_y, max_righe/2, max_colonne-1);
+                room->punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(room->getCoor_x(), room->getCoor_y(), max_righe/2, max_colonne-1);
 
                 tmp->punti_stanza[max_righe / 2][0] = new item;
                 *tmp->punti_stanza[max_righe / 2][0] = porta;
-                tmp->punti_stanza[max_righe/2][0]->setPositionX(room->coor_x, room->coor_y, max_righe/2, 0);
+                tmp->punti_stanza[max_righe/2][0]->setPositionX(room->getCoor_x(), room->getCoor_y(), max_righe/2, 0);
 
                 return first_linking(tmp, true);
 
-            } else if (tmp->coor_y == room->coor_y + 1 && !force_linking) {
+            } else if (tmp->getCoor_y() == room->getCoor_y() + 1 && !force_linking) {
                 return first_linking(tmp, false);
-            } else if (tmp->coor_y > room->coor_y + 1) {
-                cout << "poiché room è nella posizione " << room->coor_x << ", " << room->coor_y
-                     << " costruisco un tunnel" << endl;
+            } else if (tmp->getCoor_y() > room->getCoor_y() + 1) {
                 //costruisci il tunnel solo se la stanza non risulta già connessa
                 if (!room->has_connection(tmp) || !room->has_connection(room)) {
-                    for (int a = room->coor_y + 1; a < tmp->coor_y; a++)
+                    for (int a = room->getCoor_y() + 1; a < tmp->getCoor_y(); a++)
                         for (int b = 0; b < max_colonne; b++) {
-                            p[room->coor_x][a]->punti_stanza[max_righe / 2][b] = new item;
-                            *p[room->coor_x][a]->punti_stanza[max_righe / 2][b] = tunnel;
-                            p[room->coor_x][a]->punti_stanza[max_righe / 2][b]->setPositionX(room->coor_x, a, max_righe/2, b);
+                            p[room->getCoor_x()][a]->punti_stanza[max_righe / 2][b] = new item;
+                            *p[room->getCoor_x()][a]->punti_stanza[max_righe / 2][b] = tunnel;
+                            p[room->getCoor_x()][a]->punti_stanza[max_righe / 2][b]->setPositionX(room->getCoor_x(), a, max_righe/2, b);
                         }
                     tmp->punti_stanza[max_righe / 2][0] = new item;
                     *tmp->punti_stanza[max_righe / 2][0] = porta;
-                    tmp->punti_stanza[max_righe / 2][0]->setPositionX(tmp->coor_x, tmp->coor_y, max_righe/2, 0);
+                    tmp->punti_stanza[max_righe / 2][0]->setPositionX(tmp->getCoor_x(), tmp->getCoor_y(), max_righe/2, 0);
 
                     room->punti_stanza[max_righe / 2][max_colonne - 1] = new item;
                     *room->punti_stanza[max_righe / 2][max_colonne - 1] = porta;
-                    room->punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(room->coor_x, room->coor_y, max_righe/2, max_colonne-1);
+                    room->punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(room->getCoor_x(), room->getCoor_y(), max_righe/2, max_colonne-1);
 
                     room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, tmp);
                     tmp->lista_connessioni=tmp->aggiungi_stanza_a_lista_connessioni(tmp, room);
@@ -418,16 +438,14 @@ bool mappa::check_row_connection(int row) {
         tmp = find_first(row);
     }
     else return false;
-    if ((tmp->coor_x+1)<i && find_first(tmp->coor_x + 1)!=NULL)
-        h = find_first(tmp->coor_x + 1)->coor_x;
+    if ((tmp->getCoor_x()+1)<i && find_first(tmp->getCoor_x() + 1)!=NULL)
+        h = find_first(tmp->getCoor_x() + 1)->getCoor_x();
     else return false;
     bool is_linked=false; //questo booleano dice se la riga data è collegata con la prima riga non vuota sottostante
-    for (int scroll=tmp->coor_y; scroll<j; scroll++){
-        cout << "sto esaminando la stanza " << p[row][scroll]->coor_x << "," << p[row][scroll]->coor_y << endl;
-        if (!p[row][scroll]->is_emtpy){
+    for (int scroll=tmp->getCoor_y(); scroll<j; scroll++){
+        if (!p[row][scroll]->isIs_emtpy()){
             tmp=p[row][scroll];
             if (tmp->check_connection(tmp, p[h][scroll])) {
-                cout << "esiste una connessione tra la stanza " << tmp->coor_x << "," << tmp->coor_y << " e la stanza " << p[h][scroll]->coor_x << "," << p[h][scroll]->coor_y << endl;
                 is_linked = true;
             }
         }
@@ -441,62 +459,55 @@ void mappa::second_linking(ptr_stanza room, ptr_stanza known_room) {
     if (room==NULL)
         return;
 
-    if (room->coor_x==i-1 || find_first(room->coor_x+1)==NULL) {
+    if (room->getCoor_x()==i-1 || find_first(room->getCoor_x()+1)==NULL) {
         //se find_first restituisce NULL significa
         //che sotto la stanza room non ci sono altre
         //stanze, e la funzione termina.
-        cout << "find_first(room->coor_x+1 - riga " << room->coor_x+1 << " -)==NULL; faccio il return" << endl;
         return;
     }
 
-    if (check_row_connection(room->coor_x)){
+    if (check_row_connection(room->getCoor_x())){
         cout << "la riga in esame è connessa con quella sottostanze; rilancio second_linking" << endl;
-        return second_linking(find_first(room->coor_x+1), NULL);
+        return second_linking(find_first(room->getCoor_x()+1), NULL);
     } else {
-        ptr_stanza tmp=find_first(room->coor_x+1);
+        ptr_stanza tmp=find_first(room->getCoor_x()+1);
         if (known_room!=NULL)
             tmp=known_room;
 
-        //caso 1)
+        //caso 1: le stanze sono attaccate
         //non si fa niente, si convoglia nel caso 2
-        if (room->coor_y==tmp->coor_y) { //caso 2: le stanze sono nella stessa colonna
-            cout << "le stanze " << room->coor_x << "," << room->coor_y << " e " << tmp->coor_x << "," << tmp->coor_y
-                 << " sono nella stessa colonna" << endl;
+        if (room->getCoor_y()==tmp->getCoor_y()) { //caso 2: le stanze sono nella stessa colonna
             //stampa il tunnel
-            for (int altezza = room->coor_x + 1; altezza < tmp->coor_x; altezza++)
+            for (int altezza = room->getCoor_x() + 1; altezza < tmp->getCoor_x(); altezza++)
                 for (int a = 0; a < max_righe; a++) {
-                    p[altezza][room->coor_y]->punti_stanza[a][max_colonne / 2] = new item;
-                    *p[altezza][room->coor_y]->punti_stanza[a][max_colonne / 2] = tunnel;
-                    p[altezza][room->coor_y]->punti_stanza[a][max_colonne / 2]->setPositionX(altezza, room->coor_y, a, max_colonne/2);
+                    p[altezza][room->getCoor_y()]->punti_stanza[a][max_colonne / 2] = new item;
+                    *p[altezza][room->getCoor_y()]->punti_stanza[a][max_colonne / 2] = tunnel;
+                    p[altezza][room->getCoor_y()]->punti_stanza[a][max_colonne / 2]->setPositionX(altezza, room->getCoor_y(), a, max_colonne/2);
                 }
             room->punti_stanza[max_righe - 1][max_colonne / 2] = new item;
             *room->punti_stanza[max_righe - 1][max_colonne / 2] = porta;
-            room->punti_stanza[max_righe - 1][max_colonne / 2]->setPositionX(room->coor_x, room->coor_y, max_righe-1, max_colonne/2);
+            room->punti_stanza[max_righe - 1][max_colonne / 2]->setPositionX(room->getCoor_x(), room->getCoor_y(), max_righe-1, max_colonne/2);
 
-            cout << "aggiungo una porta in fondo alla stanza " << room->coor_x << "," << room->coor_y << endl;
             tmp->punti_stanza[0][max_colonne / 2] = new item;
             *tmp->punti_stanza[0][max_colonne / 2] = porta;
-            tmp->punti_stanza[0][max_colonne / 2]->setPositionX(tmp->coor_x, tmp->coor_y, 0, max_colonne/2);
+            tmp->punti_stanza[0][max_colonne / 2]->setPositionX(tmp->getCoor_x(), tmp->getCoor_y(), 0, max_colonne/2);
 
-            cout << "aggiungo una porta in cima alla stanza " << tmp->coor_x << "," << tmp->coor_y << endl;
             room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, tmp);
             tmp->lista_connessioni=tmp->aggiungi_stanza_a_lista_connessioni(tmp, room);
 
-            return second_linking(find_first(room->coor_x + 1), NULL);
+            return second_linking(find_first(room->getCoor_x() + 1), NULL);
         } else { //caso 3: le stanze non sono nella stessa colonna, bisogna generare una nuova stanza
-            cout << "le stanze " << room->coor_x << "," << room->coor_y << " e " << tmp->coor_x << "," << tmp->coor_y << " non sono nella stessa colonna" << endl;
             //genera la nuova stanza
-            cout << "genero una nuova stanza " << tmp->coor_x << "," << room->coor_y << " che è vuota (" << p[tmp->coor_x][room->coor_y]->is_emtpy << ")" << endl;
-            stanza nuova_stanza(tmp->coor_x, room->coor_y, contatore_stanze); //genero una nuova stanza nella stessa colonna di room e nella stessa riga di tmp
-            nuova_stanza.is_emtpy = false;
-            p[tmp->coor_x][room->coor_y] = new stanza(tmp->coor_x, room->coor_y);
-            *p[tmp->coor_x][room->coor_y] = nuova_stanza;
+            stanza nuova_stanza(tmp->getCoor_x(), room->getCoor_y(), contatore_stanze); //genero una nuova stanza nella stessa colonna di room e nella stessa riga di tmp
+            nuova_stanza.setIs_emtpy(false);
+            p[tmp->getCoor_x()][room->getCoor_y()] = new stanza(tmp->getCoor_x(), room->getCoor_y());
+            *p[tmp->getCoor_x()][room->getCoor_y()] = nuova_stanza;
             contatore_stanze++;
             //adesso c'è una stanza sotto room, posso rilanciare second_linking (dopo aver collegato le stanze della riga di tmp)
-            first_linking(find_first(nuova_stanza.coor_x), true);
+            first_linking(find_first(nuova_stanza.getCoor_x()), true);
             //room->lista_connessioni=room->aggiungi_stanza_a_lista_connessioni(room, p[tmp->coor_x][room->coor_y]);
             //tmp->lista_connessioni=tmp->aggiungi_stanza_a_lista_connessioni(p[tmp->coor_x][room->coor_y], room);
-            return second_linking(room, p[tmp->coor_x][room->coor_y]);
+            return second_linking(room, p[tmp->getCoor_x()][room->getCoor_y()]);
             //return second_linking(find_first(room->coor_x+1));
         }
     }
@@ -575,7 +586,7 @@ void mappa::generate_map() {
     arma pugnale_morgul(4,5,6);
     pugnale_morgul.setIcon('P');
 
-    if (!p[0][2]->is_emtpy)
+    if (!p[0][2]->isIs_emtpy())
         *p[0][2]->punti_stanza[5][6]=pugnale_morgul;
 
     cout << "la funzione generate_map è terminata" << endl;

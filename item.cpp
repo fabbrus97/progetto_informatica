@@ -84,19 +84,4 @@ void item::setPositionX(int newPositionX, int newPositionY, int newPositionXX, i
     posizioneYY = newPositionYY;
 }
 
-/*void item::setPositionY(int newPositionY)
-{
-    posizioneY = newPositionY;
-}
-
-void item::setPositionXX(int newPositionXX)
-{
-    posizioneXX = newPositionXX;
-}
-
-void item::setPositionYY(int newPositionYY)
-{
-    posizioneYY = newPositionYY;
-}*/
-
 
