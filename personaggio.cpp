@@ -1,4 +1,4 @@
-#include "personaggio.h"
+#include "personaggio.hpp"
 #define CONST_LENGTH 100
 
 personaggio::personaggio(int pExp, int pVita, arma inUso):item("Personaggio", 'P', false, false, '1', '1', '1', '1'){

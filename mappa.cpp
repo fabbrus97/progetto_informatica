@@ -3,7 +3,7 @@
 //
 
 #include "mappa.hpp"
-#include "arma.h"
+#include "arma.hpp"
 
 //contatore stanze
 int contatore_stanze=1;

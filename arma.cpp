@@ -1,5 +1,5 @@
-#include "arma.h"
-#include "item.h"
+#include "arma.hpp"
+#include "item.hpp"
 
 arma::arma(){}
 

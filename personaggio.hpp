@@ -1,7 +1,7 @@
 #ifndef PERSONAGGIO_H
 #define PERSONAGGIO_H
-#include "item.h"
-#include "arma.h"
+#include "item.hpp"
+#include "arma.hpp"
 
 class personaggio : public item
 {
