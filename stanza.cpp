@@ -2,8 +2,8 @@
 using namespace std;
 
 stanza::stanza(int x, int y, int n_room){
-    item punto_stanza('.',true);
-    item muro('#',false);
+    item punto_stanza('.',true,false);
+    item muro('#',false,false);
     coor_x=x;
     coor_y=y;
     n_stanza=n_room;
@@ -46,7 +46,7 @@ stanza::stanza(int x, int y, int n_room){
 }
 
 stanza::stanza(int x, int y) {
-    item spazio(' ',false);
+    item spazio(' ',false,false);
     is_emtpy = true;
     punti_stanza = new ptr_item*[MAX_RIGHE];
     lista_connessioni = NULL;
@@ -105,7 +105,7 @@ bool stanza::posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tent
     x = (rand() % (MAX_RIGHE-1))+1;
     y = (rand() % (MAX_COLONNE-1))+1;
 
-    if (stanza->punti_stanza[x][y]->carattere=='.'){
+    if (stanza->punti_stanza[x][y]->icon=='.'){
         stanza->punti_stanza[x][y]=oggetto;
         return true;
     } else

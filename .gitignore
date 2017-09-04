@@ -8,3 +8,5 @@
 *.exe
 *.out
 game
+
+cmake-build-debug

@@ -3,8 +3,8 @@
 //
 
 #include "mappa.hpp"
-#include "spada.h"
-#include "coltello.h"
+#include "includes/spada.h"
+#include "includes/coltello.h"
 
 //contatore stanze
 int contatore_stanze=1;
@@ -42,8 +42,8 @@ bool mappa::check_room(int x, int y) {
 }
 
 void mappa::generate_all_rooms() {
-    item porta_liv_succ('S',true);
-    item porta_liv_prec('B',true);
+    item porta_liv_succ('S',true,false);
+    item porta_liv_prec('B',true,false);
 
     //bisogna generare anzitutto la prima stanza e l'ultima
     //perché occupano posizioni privilegiate
@@ -106,7 +106,7 @@ void mappa::generate_all_rooms() {
 }
 
 void mappa::add_doors(ptr_stanza room) {
-    item porta('+', true);
+    item porta('+', true,false);
 
     //stanza a destra
     if (check_room(room->coor_x, room->coor_y+1) && !p[room->coor_x][room->coor_y+1]->is_emtpy && !room->has_connection(p[room->coor_x][room->coor_y+1])){
@@ -205,8 +205,8 @@ ptr_stanza mappa::find_first(int row) {
 }
 
 void mappa::first_linking(ptr_stanza room, bool force_linking) {
-    item tunnel('x',true);
-    item porta('+', true);
+    item tunnel('x',true,false);
+    item porta('+', true,false);
     ptr_stanza tmp = NULL;
 
     if (room == NULL) {//condizione di arresto 1: room è NULL
@@ -295,8 +295,8 @@ bool mappa::check_row_connection(int row) {
 }
 
 void mappa::second_linking(ptr_stanza room, ptr_stanza known_room) {
-    item tunnel('x',true);
-    item porta('+', true);
+    item tunnel('x',true,false);
+    item porta('+', true,false);
     if (room==NULL)
         return;
 
@@ -413,7 +413,7 @@ void mappa::generate_map() {
     ptr_connessioni tmp=first->lista_connessioni;
     while(first->lista_connessioni->next!=NULL)
         tmp=first->lista_connessioni->next;
-    *tmp->stanza_puntata->punti_stanza[2][max_colonne-3]=glamdring;
+    *tmp->stanza_puntata->punti_stanza[2][MAX_COLONNE-3]=glamdring;
 
     //un modo per scoprire se una stanza esiste (cioè è formata da muri, punti etc e non da soli spazi) è tramite il booleano
     //is_empty:

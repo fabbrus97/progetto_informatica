@@ -2,7 +2,7 @@
 #define STANZA_HPP
 
 #include <iostream>
-#include "oggetti_mappa.hpp"
+#include "includes/item.h"
 
 #define MAX_RIGHE 10
 #define MAX_COLONNE 20
