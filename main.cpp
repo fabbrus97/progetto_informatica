@@ -17,7 +17,7 @@ int main() {
 
     head->map->print_map();
 
-    //nuova_mappa.print_map();
+    nuova_mappa.print_map();
 
     return 0;
 }

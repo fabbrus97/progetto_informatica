@@ -147,20 +147,20 @@ ptr_connessioni stanza::aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di
 }
 
 bool stanza::check_connection(ptr_stanza stanza_di_partenza, ptr_stanza stanza_da_controllare) {
-    cout << "sono in check_connection" << endl;
+    //cout << "sono in check_connection" << endl;
     ptr_connessioni tmp = stanza_di_partenza->lista_connessioni;
-    cout << "la stanza di partenza è " << stanza_di_partenza->coor_x << "," << stanza_di_partenza->coor_y << "; tmp è "
-         << tmp << endl;
+    //cout << "la stanza di partenza è " << stanza_di_partenza->coor_x << "," << stanza_di_partenza->coor_y << "; tmp è "
+    //     << tmp << endl;
     while (tmp != NULL) {
 
-        cout << "sto controllando la stanza " << stanza_da_controllare->coor_x << "," << stanza_da_controllare->coor_y
-             << endl;
+        //cout << "sto controllando la stanza " << stanza_da_controllare->coor_x << "," << stanza_da_controllare->coor_y
+        //     << endl;
 
         /* Se il ptr alla stanza in lista_connessioni della stanza_di_partenza è uguale al ptr stanza_da_controllare,
          * la funzione ritorna "true", che significa: la stanza è già presente nella lista, ovvero le stanze sono già connesse
          */
         if (tmp->stanza_puntata == stanza_da_controllare) {
-            cout << "le stanze sono collegate " << endl;
+            //cout << "le stanze sono collegate " << endl;
             return true;
         }
         tmp = tmp->next;
@@ -204,27 +204,27 @@ void mappa::generate_all_rooms() {
     int x, y;
     x = (rand() % i);
     y = 0;
-    cout << "prima stanza " << x << "," << y << endl;
-    cout << "sto per allocare la prima stanza" << endl;
+    //cout << "prima stanza " << x << "," << y << endl;
+    //cout << "sto per allocare la prima stanza" << endl;
     stanza prima_stanza(x, y, 1);
-    cout << "ho allocato la prima stanza" << endl;
+    //cout << "ho allocato la prima stanza" << endl;
     prima_stanza.setIs_emtpy(false);
     if (n_livello == 1) {
         prima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = new item;
         *prima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = porta_liv_succ;
         prima_stanza.punti_stanza[max_righe / 2][max_colonne - 1]->setPositionX(prima_stanza.getCoor_x(), prima_stanza.getCoor_y(), max_righe/2, max_colonne-1);
     }
-    cout << "inseriamo la prima stanza nella mappa" << endl;
+    //cout << "inseriamo la prima stanza nella mappa" << endl;
     p[x][y] = new stanza(x, y);
-    cout << "ho allocato una stanza vuota" << endl;
+    //cout << "ho allocato una stanza vuota" << endl;
     *p[x][y] = prima_stanza;
     contatore_stanze++;
     //se non siamo nel primo livello, generiamo l'ultima stanza (che va nell'ultima colonna);
-    cout << "adesso ci occupiamo dell'ultima stanza" << endl;
+    //cout << "adesso ci occupiamo dell'ultima stanza" << endl;
     if (n_livello != 1) {
         x = (rand() % i);
         y = j - 1;
-        cout << "ultima stanza " << x << "," << y << endl;
+        //cout << "ultima stanza " << x << "," << y << endl;
         stanza ultima_stanza(x, y, (int) (n_livello * alfa));
         ultima_stanza.setIs_emtpy(false);
         ultima_stanza.punti_stanza[max_righe / 2][max_colonne - 1] = new item;
@@ -248,7 +248,7 @@ void mappa::generate_all_rooms() {
         nuova_stanza.setIs_emtpy(false);
         //controlliamo che la stanza sia presente o meno;
         if (!check_room(x, y)) {
-            cout << "stanza " << x << "," << y << endl;
+            //cout << "stanza " << x << "," << y << endl;
             p[x][y] = new stanza(x, y);
             *p[x][y] = nuova_stanza;
             contatore_stanze++;
@@ -362,11 +362,11 @@ ptr_stanza mappa::find_first(int row) {
 }
 
 void mappa::first_linking(ptr_stanza room, bool force_linking) {
-    cout << "sono in first_linking" << endl;
+    //cout << "sono in first_linking" << endl;
     ptr_stanza tmp = NULL;
 
     if (room == NULL) {//condizione di arresto 1: room è NULL
-        cout << "la stanza in input è NULL" << endl;
+        //cout << "la stanza in input è NULL" << endl;
         return;
     }
 
@@ -380,7 +380,7 @@ void mappa::first_linking(ptr_stanza room, bool force_linking) {
     else return; //condizione di arresto due: raggiunta ultima cella della mappa
 
     while (tmp != NULL && tmp->getCoor_y() < j) {
-        cout << "sono nel while" << endl;
+        //cout << "sono nel while" << endl;
         //if (force_linking && tmp->coor_y==j-1) return; //questa riga evita di rieseguire first_linking su tutta la mappa, ma lo esegue solo sulla riga interessata
         if (tmp->isIs_emtpy()) {
             if (tmp->getCoor_y() + 1 < j) {
@@ -431,7 +431,7 @@ void mappa::first_linking(ptr_stanza room, bool force_linking) {
 }
 
 bool mappa::check_row_connection(int row) {
-    cout << "sono in check_row_connection" << endl;
+    //cout << "sono in check_row_connection" << endl;
     int h;
     ptr_stanza tmp=NULL;
     if (find_first(row)!=NULL) {
@@ -455,7 +455,7 @@ bool mappa::check_row_connection(int row) {
 }
 
 void mappa::second_linking(ptr_stanza room, ptr_stanza known_room) {
-    cout << "sono in second linking" << endl;
+    //cout << "sono in second linking" << endl;
     if (room==NULL)
         return;
 
@@ -467,7 +467,7 @@ void mappa::second_linking(ptr_stanza room, ptr_stanza known_room) {
     }
 
     if (check_row_connection(room->getCoor_x())){
-        cout << "la riga in esame è connessa con quella sottostanze; rilancio second_linking" << endl;
+        //cout << "la riga in esame è connessa con quella sottostanze; rilancio second_linking" << endl;
         return second_linking(find_first(room->getCoor_x()+1), NULL);
     } else {
         ptr_stanza tmp=find_first(room->getCoor_x()+1);
@@ -565,7 +565,7 @@ void mappa::generate_map() {
     first_linking(first, false);
     second_linking(first, NULL);
 
-    cout << "la funzione second_linking è terminata" << endl;
+    //cout << "la funzione second_linking è terminata" << endl;
 
     /*tre modi per trovare una stanza e piazzarci un oggetto*/
 
@@ -574,7 +574,7 @@ void mappa::generate_map() {
 
     arma glamdring(1,2,3); //spada di Ganjalf
     ptr_connessioni tmp=first->lista_connessioni;
-    cout << "questo è il while in generate_map" << endl;
+    //cout << "questo è il while in generate_map" << endl;
     while(tmp->next!=NULL) {
         tmp = first->lista_connessioni->next;
     }
@@ -589,5 +589,5 @@ void mappa::generate_map() {
     if (!p[0][2]->isIs_emtpy())
         *p[0][2]->punti_stanza[5][6]=pugnale_morgul;
 
-    cout << "la funzione generate_map è terminata" << endl;
+    //cout << "la funzione generate_map è terminata" << endl;
 }
