@@ -1,6 +1,6 @@
 #ifndef ARMA_H
 #define ARMA_H
-#include "item.h"
+#include "item.hpp"
 
 
 class arma : public item
@@ -11,6 +11,7 @@ protected:
     int exp_richiesti;
 public:
     arma();
+    arma(int ra, int dam, int exp);
     int getRange();
     int getDanniArma();
     int getExpRichiesti();

@@ -10,3 +10,6 @@
 game
 
 cmake-build-debug
+.idea
+.idea/
+CMakeLists.txt

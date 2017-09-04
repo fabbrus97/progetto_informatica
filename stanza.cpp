@@ -19,20 +19,20 @@ stanza::stanza(int x, int y, int n_room){
     for (int i=0; i<MAX_RIGHE; i++){
         punti_stanza[i][0]=new item;
         *punti_stanza[i][0]=muro;
-        punti_stanza[i][0]->get_position(x, y, i, 0);
+        punti_stanza[i][0]->setPositionX(x, y, i, 0);
 
         punti_stanza[i][MAX_COLONNE-1]=new item;
         *punti_stanza[i][MAX_COLONNE-1]=muro;
-        punti_stanza[i][MAX_COLONNE-1]->get_position(x, y, i, MAX_COLONNE-1);
+        punti_stanza[i][MAX_COLONNE-1]->setPositionX(x, y, i, MAX_COLONNE-1);
     }
     for (int j=0; j<MAX_COLONNE; j++){
         punti_stanza[0][j]=new item;
         *punti_stanza[0][j]=muro;
-        punti_stanza[0][j]->get_position(x, y, 0, j);
+        punti_stanza[0][j]->setPositionX(x, y, 0, j);
 
         punti_stanza[MAX_RIGHE-1][j]=new item;
         *punti_stanza[MAX_RIGHE-1][j]=muro;
-        punti_stanza[MAX_RIGHE-1][j]->get_position(x, y, MAX_RIGHE-1, j);
+        punti_stanza[MAX_RIGHE-1][j]->setPositionX(x, y, MAX_RIGHE-1, j);
     }
 
     //costruiamo l'interno della stanza
@@ -40,13 +40,13 @@ stanza::stanza(int x, int y, int n_room){
         for (int j=1; j<MAX_COLONNE-1; j++) {
             punti_stanza[i][j] = new item;
             *punti_stanza[i][j] = punto_stanza;
-            punti_stanza[i][j]->get_position(x, y, i, j);
+            punti_stanza[i][j]->setPositionX(x, y, i, j);
         }
 
 }
 
 stanza::stanza(int x, int y) {
-    item spazio(' ',false,false);
+    item punto_stanza('.',true,false);
     is_emtpy = true;
     punti_stanza = new ptr_item*[MAX_RIGHE];
     lista_connessioni = NULL;
@@ -58,16 +58,46 @@ stanza::stanza(int x, int y) {
         punti_stanza[tmp] = new ptr_item[MAX_COLONNE];
     }
     //inizializza l'array a NULL
-    for (int x=MAX_RIGHE-1; x>=0; x--)
-        for (int y=MAX_COLONNE-1; y>=0; y--) {
-            punti_stanza[x][y] = new item;
-            *punti_stanza[x][y] = spazio;
+    for (int i=1; i<MAX_RIGHE-1; i++)
+        for (int j=1; j<MAX_COLONNE-1; j++) {
+            punti_stanza[i][j] = new item;
+            *punti_stanza[i][j] = punto_stanza;
             //in realtà inizializzare le posizioni di questi punti è inutile
-            punti_stanza[x][y]->get_position(coor_x, coor_y, x, y);
         }
 
 }
 
+int stanza::getN_stanza() const {
+    return n_stanza;
+}
+
+void stanza::setN_stanza(int n_stanza) {
+    stanza::n_stanza = n_stanza;
+}
+
+bool stanza::isIs_emtpy() const {
+    return is_emtpy;
+}
+
+void stanza::setIs_emtpy(bool is_emtpy) {
+    stanza::is_emtpy = is_emtpy;
+}
+
+int stanza::getCoor_x() const {
+    return coor_x;
+}
+
+void stanza::setCoor_x(int coor_x) {
+    stanza::coor_x = coor_x;
+}
+
+int stanza::getCoor_y() const {
+    return coor_y;
+}
+
+void stanza::setCoor_y(int coor_y) {
+    stanza::coor_y = coor_y;
+}
 
 ptr_connessioni stanza::aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere){
     ptr_connessioni tmp = new connessioni;
@@ -105,7 +135,7 @@ bool stanza::posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tent
     x = (rand() % (MAX_RIGHE-1))+1;
     y = (rand() % (MAX_COLONNE-1))+1;
 
-    if (stanza->punti_stanza[x][y]->icon=='.'){
+    if (stanza->punti_stanza[x][y]->getIcon()=='.'){
         stanza->punti_stanza[x][y]=oggetto;
         return true;
     } else

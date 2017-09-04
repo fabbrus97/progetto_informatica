@@ -7,7 +7,7 @@ using namespace std;
     };
 int main() {
 
-    mappa nuova_mappa(3);
+    mappa nuova_mappa(5);
     nuova_mappa.generate_map();
 
     lista_mappe * head=NULL;
@@ -17,7 +17,7 @@ int main() {
 
     head->map->print_map();
 
-    //nuova_mappa.print_map();
+    nuova_mappa.print_map();
 
     return 0;
 }
