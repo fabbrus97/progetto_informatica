@@ -14,11 +14,15 @@ item::item(char icona, bool isAttraversabile, bool isRaccoglibile, int col){
     colore = col;
 }
 
+item::item(char icona, bool isAttraversabile, bool isRaccoglibile, int col, char nome[]){
+    item(icona,isAttraversabile,isRaccoglibile,col);
+    strcpy(nomeCompleto, nome);
+}
+
 item::item(char icona, bool isAttraversabile, bool isRaccoglibile, int colore,
            char nome[], int positionX, int positionY, int positionXX, int positionYY)
 {
-    item(icona,isAttraversabile,isRaccoglibile,colore);
-    strcpy(nomeCompleto, nome);
+    item(icona,isAttraversabile,isRaccoglibile,colore,nome);
     posizioneX = positionX;
     posizioneY = positionY;
     posizioneXX = positionXX;

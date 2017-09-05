@@ -18,6 +18,7 @@ public:
     item();
     item(char icon, bool isAttraversabile, bool isRaccoglibile);
     item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore);
+    item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[]);
     item(char icona, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[], int positionX, int positionY, int positionXX, int positionYY);
     void stampaNomeCompleto(char nome[]);
     char getIcon();
