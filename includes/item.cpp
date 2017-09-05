@@ -66,7 +66,7 @@ void item::setIcon(char newIcon)
 
 void item::setNomeCompleto(char newNomeCompleto[])
 {
-    strcpy(newNomeCompleto, nomeCompleto);
+    strcpy(nomeCompleto,newNomeCompleto);
 }
 
 int item::getPositionX()
