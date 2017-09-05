@@ -16,7 +16,11 @@
 #define ICON_TUNNEL 'x'
 #define ICON_LIV_SUCC '>'
 #define ICON_LIV_PREC '<'
+
 #define ICON_GIOCATORE 'G'
+#define ICON_MOB 'm'
+
+#define ICON_ARMA 'w'
 
 class GameObjects {
 public:
@@ -34,4 +38,4 @@ public:
 };
 
 
-#endif GAMEOBJECTS_H
+#endif
