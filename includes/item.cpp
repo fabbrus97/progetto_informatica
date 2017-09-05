@@ -9,12 +9,16 @@ item::item(char icona, bool isAttraversabile, bool isRaccoglibile){
     raccoglibile = isRaccoglibile;
 }
 
-item::item(char nome[], char icona, bool isAttraversabile, bool isRaccoglibile, int positionX, int positionY, int positionXX, int positionYY)
+item::item(char icona, bool isAttraversabile, bool isRaccoglibile, int col){
+    item(icona,isAttraversabile,isRaccoglibile);
+    colore = col;
+}
+
+item::item(char icona, bool isAttraversabile, bool isRaccoglibile, int colore,
+           char nome[], int positionX, int positionY, int positionXX, int positionYY)
 {
+    item(icona,isAttraversabile,isRaccoglibile,colore);
     strcpy(nomeCompleto, nome);
-    icon = icona;
-    attraversabile = isAttraversabile;
-    raccoglibile = isRaccoglibile;
     posizioneX = positionX;
     posizioneY = positionY;
     posizioneXX = positionXX;
@@ -44,6 +48,11 @@ void item::setRaccoglibile(bool isRaccoglibile)
 char item::getIcon()
 {
     return icon;
+}
+
+int item::getColore()
+{
+    return colore;
 }
 
 void item::setIcon(char newIcon)

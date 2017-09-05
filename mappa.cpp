@@ -2,6 +2,7 @@
 // Created by simone on 14/03/17.
 //
 
+#include <sstream>
 #include "mappa.hpp"
 #include "includes/gameobjects.hpp"
 #include "includes/item.hpp"
@@ -168,19 +169,25 @@ void mappa::add_doors(ptr_stanza room) {
 }
 
 void mappa::print_map() {
-    //cout << "\033[33m";
+    //cout << "\033[37;46m"; //cl white, bg cyano
     for (int tmp_i = 0; tmp_i < i; tmp_i++) {
         for (int x = 0; x < MAX_RIGHE; x++) {
             for (int tmp_j = 0; tmp_j < j; tmp_j++) {
                 stanza tmp = *p[tmp_i][tmp_j];
 
                 for (int y = 0; y < MAX_COLONNE; y++) {
+                    //std::stringstream s;
+                    //s << "\033[";
+                    //s << (tmp.punti_stanza[x][y]->getColore() + 30);
+                    //s << ";46m";
+                    //cout << s.str();
                     cout << tmp.punti_stanza[x][y]->getIcon();
                 }
             }
             cout << endl;
         }
     }
+    //cout << "\033[37;40m"; //cl white, bg nero
 }
 
 ptr_stanza mappa::find_first(int row) {
