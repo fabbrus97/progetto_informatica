@@ -356,13 +356,4 @@ void mappa::generate_map() {
 
     first_linking(first, false);
     second_linking(first, NULL);
-
-
-    arma pugnale_morgul(4,5,6);
-    pugnale_morgul.setIcon('m');
-
-    if (!p[0][2]->isIs_emtpy())
-        *p[0][2]->punti_stanza[5][6]=pugnale_morgul;
-
-    //cout << "la funzione generate_map è terminata" << endl;
 }
