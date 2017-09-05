@@ -3,8 +3,8 @@
 
 arma::arma(){}
 
-arma::arma(int ra, int dam, int exp):
-    item('W', true, true, 7, "Arma",  -1, -1, -1, -1)
+arma::arma(char nome[], int ra, int dam, int exp):
+    item('W', true, true, 7, nome,  -1, -1, -1, -1)
 {
     range = ra;
     danniArma = dam;
