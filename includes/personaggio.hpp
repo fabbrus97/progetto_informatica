@@ -11,7 +11,7 @@ protected:
     arma armaInUso;
 
 public:
-    personaggio(int pExp, int pVita, arma inUso);
+    personaggio(char icon, char nome[], int pExp, int pVita, arma inUso);
     int getPuntiVita();
     void setPuntiVita (int new_puntiVita);
     int getPuntiEsperienza();

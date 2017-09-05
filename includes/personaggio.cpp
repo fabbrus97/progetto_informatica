@@ -1,8 +1,8 @@
 #include "personaggio.hpp"
 #define CONST_LENGTH 100
 
-personaggio::personaggio(int pExp, int pVita, arma inUso)
-        :item('P', false, false, 7, "Personaggio", '1', '1', '1', '1'){
+personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma inUso)
+        :item(icon, false, false, 7, nome, -1, -1, -1, -1){
     puntiEsperienza = pExp;
     puntiVita = pVita;
     armaInUso = inUso;
