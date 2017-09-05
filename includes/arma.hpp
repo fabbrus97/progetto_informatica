@@ -11,7 +11,7 @@ protected:
     int exp_richiesti;
 public:
     arma();
-    arma(int ra, int dam, int exp);
+    arma(char nome[], int ra, int dam, int exp);
     int getRange();
     int getDanniArma();
     int getExpRichiesti();
@@ -19,5 +19,7 @@ public:
     void setExpRichiesti(int exp);
     void setRange(int ra);
 };
+
+typedef arma* ptr_arma;
 
 #endif // ARMA_H

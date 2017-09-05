@@ -1,10 +1,11 @@
 #include "arma.hpp"
 #include "item.hpp"
+#include "gameobjects.hpp"
 
 arma::arma(){}
 
-arma::arma(int ra, int dam, int exp):
-    item("Arma", 'W', true, true, -1, -1, -1, -1)
+arma::arma(char nome[], int ra, int dam, int exp):
+    item(ICON_ARMA, true, true, 7, nome,  -1, -1, -1, -1)
 {
     range = ra;
     danniArma = dam;

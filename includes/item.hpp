@@ -7,6 +7,7 @@ class item
 protected:
     char nomeCompleto[CONST_LENGTH];
     char icon;
+    int colore; //0-8
     bool attraversabile;
     bool raccoglibile;
     int posizioneX; //coordinata x rispetto alla mappa
@@ -16,9 +17,12 @@ protected:
 public:
     item();
     item(char icon, bool isAttraversabile, bool isRaccoglibile);
-    item(char nome[], char icona, bool isAttraversabile, bool isRaccoglibile, int positionX, int positionY, int positionXX, int positionYY);
+    item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore);
+    item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[]);
+    item(char icona, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[], int positionX, int positionY, int positionXX, int positionYY);
     void stampaNomeCompleto(char nome[]);
     char getIcon();
+    int getColore();
     bool getAttraversabile();
     bool getRaccoglibile();
     void setNomeCompleto (char newNomeCompleto[]);

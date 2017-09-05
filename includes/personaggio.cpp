@@ -1,7 +1,16 @@
 #include "personaggio.hpp"
+#include "gameobjects.hpp"
 #define CONST_LENGTH 100
 
-personaggio::personaggio(int pExp, int pVita, arma inUso):item("Personaggio", 'P', false, false, '1', '1', '1', '1'){
+personaggio::personaggio() {
+    icon = ICON_MOB;
+    setNomeCompleto("Mob");
+    puntiEsperienza = 0;
+    puntiVita = 100;
+}
+
+personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma inUso)
+        :item(icon, false, false, 7, nome, -1, -1, -1, -1){
     puntiEsperienza = pExp;
     puntiVita = pVita;
     armaInUso = inUso;
