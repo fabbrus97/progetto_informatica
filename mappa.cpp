@@ -366,3 +366,24 @@ void mappa::generate_map() {
     first_linking(first, false);
     second_linking(first, NULL);
 }
+
+void mappa::posiziona(ptr_item it, int xm, int ym, int xs, int ys) {
+    ptr_stanza stanza = p[ym][xm];
+    ptr_item oldItem = stanza->punti_stanza[ys][xs];
+    stanza->punti_stanza[ys][xs] = it;
+    it->setPositionX(xm,ym,xs,ys);
+    //delete oldItem
+}
+
+void mappa::sposta(ptr_item from, ptr_item to) {
+    int xm = from->getPositionX();
+    int ym = from->getPositionY();
+    int xs = from->getPositionXX();
+    int ys = from->getPositionYY();
+
+    posiziona(from, to->getPositionX(), to->getPositionY(), to->getPositionXX(), to->getPositionYY());
+
+    ptr_item newItem = GameObjects::getNewPunto();
+    newItem->setPositionX(xm,ym,xs,ys);
+    p[ym][xm]->punti_stanza[ys][xs] = newItem;
+}
