@@ -17,7 +17,9 @@ mappa::mappa(int n) {
     i=1; j=2;
 
     int n_stanze=(int)(n_livello*alfa);
-
+    if(n_stanze < 5) {
+        n_stanze = 5;
+    }
     while (i*j < n_stanze) {
         i = i + 1;
         j = j + 1;
