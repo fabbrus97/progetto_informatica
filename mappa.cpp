@@ -42,28 +42,26 @@ bool mappa::check_room(int x, int y) {
 }
 
 void mappa::generate_all_rooms() {
-    item porta_liv_succ('S',true,false);
-    item porta_liv_prec('B',true,false);
+    //item porta_liv_succ('S',true,false);
+    //item porta_liv_prec('B',true,false);
 
     //bisogna generare anzitutto la prima stanza e l'ultima
     //perché occupano posizioni privilegiate
     srand(time(0));
     //la prima stanza va nella prima riga
     int x, y;
+
     x = (rand() % i);
     y = 0;
-    stanza prima_stanza(x, y, 1);
+    stanza *prima_stanza = new stanza(x, y, 1);
     //cout << "ho allocato la prima stanza" << endl;
-    prima_stanza.setIs_emtpy(false);
+    prima_stanza->setIs_emtpy(false);
     if (n_livello == 1) {
-        prima_stanza.punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1] = new item;
-        *prima_stanza.punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1] = porta_liv_succ;
-        prima_stanza.punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1]->setPositionX(prima_stanza.getCoor_x(), prima_stanza.getCoor_y(), MAX_RIGHE/2, MAX_COLONNE-1);
+        prima_stanza->punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1] = new item('B',true,false);
+        prima_stanza->punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1]->setPositionX(prima_stanza->getCoor_x(), prima_stanza->getCoor_y(), MAX_RIGHE/2, MAX_COLONNE-1);
     }
-    //cout << "inseriamo la prima stanza nella mappa" << endl;
-    p[x][y] = new stanza(x, y);
-    //cout << "ho allocato una stanza vuota" << endl;
-    *p[x][y] = prima_stanza;
+
+    p[x][y] = prima_stanza;
     contatore_stanze++;
     //se non siamo nel primo livello, generiamo l'ultima stanza (che va nell'ultima colonna);
     //cout << "adesso ci occupiamo dell'ultima stanza" << endl;
@@ -74,14 +72,12 @@ void mappa::generate_all_rooms() {
         stanza ultima_stanza(x, y, (int) (n_livello * alfa));
 
         ultima_stanza.setIs_emtpy(false);
-        ultima_stanza.punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1] = new item;
-        *ultima_stanza.punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1] = porta_liv_succ;
+        ultima_stanza.punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1] = new item('S',true,false);
         ultima_stanza.punti_stanza[MAX_RIGHE / 2][MAX_COLONNE - 1]->setPositionX(ultima_stanza.getCoor_x(), ultima_stanza.getCoor_y(), MAX_RIGHE/2, MAX_COLONNE-1);
 
         //aggiungiamo anche la porta per tornare al livello precedente;
-        prima_stanza.punti_stanza[3][0]= new item;
-        *prima_stanza.punti_stanza[3][0]= porta_liv_prec;
-        prima_stanza.punti_stanza[3][0]->setPositionX(prima_stanza.getCoor_x(), prima_stanza.getCoor_y(), 3, 0);
+        prima_stanza->punti_stanza[3][0]= new item('B',true,false);
+        prima_stanza->punti_stanza[3][0]->setPositionX(prima_stanza->getCoor_x(), prima_stanza->getCoor_y(), 3, 0);
 
 
         p[x][y] = new stanza(x, y);
@@ -92,12 +88,11 @@ void mappa::generate_all_rooms() {
     while (contatore_stanze <= (int) (n_livello * alfa)) {
         x = (rand() % i);
         y = (rand() % j);
-        stanza nuova_stanza(x, y, contatore_stanze);
-        nuova_stanza.setIs_emtpy(false);
+
         //controlliamo che la stanza sia presente o meno;
         if (!check_room(x, y)) {
-            p[x][y] = new stanza(x, y);
-            *p[x][y] = nuova_stanza;
+            p[x][y] = new stanza(x, y, contatore_stanze);
+            p[x][y]->setIs_emtpy(false);
             contatore_stanze++;
         }
     }

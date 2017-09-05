@@ -17,7 +17,8 @@ int main() {
 
     head->map->print_map();
 
-    nuova_mappa.print_map();
+    //cout<<"porcodio4\n";
+    //nuova_mappa.print_map();
 
     return 0;
 }

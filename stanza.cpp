@@ -2,8 +2,8 @@
 using namespace std;
 
 stanza::stanza(int x, int y, int n_room){
-    item punto_stanza('.',true,false);
-    item muro('#',false,false);
+    //item punto_stanza('.',true,false);
+    //item muro('#',false,false);
     coor_x=x;
     coor_y=y;
     n_stanza=n_room;
@@ -17,54 +17,47 @@ stanza::stanza(int x, int y, int n_room){
 
     //costruiamo i muri
     for (int i=0; i<MAX_RIGHE; i++){
-        punti_stanza[i][0]=new item;
-        *punti_stanza[i][0]=muro;
+        punti_stanza[i][0]=new item('#',false,false);
         punti_stanza[i][0]->setPositionX(x, y, i, 0);
 
-        punti_stanza[i][MAX_COLONNE-1]=new item;
-        *punti_stanza[i][MAX_COLONNE-1]=muro;
+        punti_stanza[i][MAX_COLONNE-1]=new item('#',false,false);
         punti_stanza[i][MAX_COLONNE-1]->setPositionX(x, y, i, MAX_COLONNE-1);
     }
-    for (int j=0; j<MAX_COLONNE; j++){
-        punti_stanza[0][j]=new item;
-        *punti_stanza[0][j]=muro;
+    for (int j=1; j<MAX_COLONNE-1; j++){
+        punti_stanza[0][j]=new item('#',false,false);
         punti_stanza[0][j]->setPositionX(x, y, 0, j);
 
-        punti_stanza[MAX_RIGHE-1][j]=new item;
-        *punti_stanza[MAX_RIGHE-1][j]=muro;
+        punti_stanza[MAX_RIGHE-1][j]=new item('#',false,false);
         punti_stanza[MAX_RIGHE-1][j]->setPositionX(x, y, MAX_RIGHE-1, j);
     }
 
     //costruiamo l'interno della stanza
     for (int i=1; i<MAX_RIGHE-1; i++)
         for (int j=1; j<MAX_COLONNE-1; j++) {
-            punti_stanza[i][j] = new item;
-            *punti_stanza[i][j] = punto_stanza;
+            punti_stanza[i][j] = new item('.',true,false);
             punti_stanza[i][j]->setPositionX(x, y, i, j);
         }
 
 }
 
 stanza::stanza(int x, int y) {
-    item punto_stanza('.',true,false);
+    //item spazio(' ',false,false);
     is_emtpy = true;
-    punti_stanza = new ptr_item*[MAX_RIGHE];
-    lista_connessioni = NULL;
     coor_x = x;
     coor_y = y;
 
+    lista_connessioni = NULL;
+    punti_stanza = new ptr_item *[MAX_RIGHE];
+
     //crea l'array bidimensionale
-    for(int tmp = 0; tmp < MAX_RIGHE; tmp++) {
+    for (int tmp = 0; tmp < MAX_RIGHE; tmp++) {
         punti_stanza[tmp] = new ptr_item[MAX_COLONNE];
     }
     //inizializza l'array a NULL
-    for (int i=1; i<MAX_RIGHE-1; i++)
-        for (int j=1; j<MAX_COLONNE-1; j++) {
-            punti_stanza[i][j] = new item;
-            *punti_stanza[i][j] = punto_stanza;
-            //in realtà inizializzare le posizioni di questi punti è inutile
+    for (int i = 0; i < MAX_RIGHE; i++)
+        for (int j = 0; j < MAX_COLONNE; j++) {
+            punti_stanza[i][j] = new item(' ', false, false);
         }
-
 }
 
 int stanza::getN_stanza() const {
