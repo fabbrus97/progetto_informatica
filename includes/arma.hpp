@@ -20,4 +20,6 @@ public:
     void setRange(int ra);
 };
 
+typedef arma* ptr_arma;
+
 #endif // ARMA_H

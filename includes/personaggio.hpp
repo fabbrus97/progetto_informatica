@@ -22,4 +22,5 @@ public:
     arma raccogli(); //da fare
 };
 
+typedef personaggio* ptr_personaggio;
 #endif // PERSONAGGIO_H
