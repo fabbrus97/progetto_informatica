@@ -367,6 +367,10 @@ void mappa::generate_map() {
     second_linking(first, NULL);
 }
 
+/*
+ * l'item nella stanza (xm,ym) in posizione (xs,ys) viene eleminato dalla memoria
+ * e sostituito con l'item it
+ */
 void mappa::posiziona(ptr_item it, int xm, int ym, int xs, int ys) {
     ptr_stanza stanza = p[ym][xm];
     ptr_item oldItem = stanza->punti_stanza[ys][xs];
@@ -375,6 +379,10 @@ void mappa::posiziona(ptr_item it, int xm, int ym, int xs, int ys) {
     //delete oldItem
 }
 
+/*
+ * Sposta l'item from al posto dell'item to e al posto di from ci mette un item Punto
+ * Quindi libera la memoria dell'item to
+ */
 void mappa::sposta(ptr_item from, ptr_item to) {
     int xm = from->getPositionX();
     int ym = from->getPositionY();
