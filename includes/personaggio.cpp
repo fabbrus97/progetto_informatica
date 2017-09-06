@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "personaggio.hpp"
 #include "gameobjects.hpp"
 #define CONST_LENGTH 100
@@ -7,9 +8,10 @@ personaggio::personaggio() {
     setNomeCompleto("Mob");
     puntiEsperienza = 0;
     puntiVita = 100;
+    armaInUso = NULL;
 }
 
-personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma inUso)
+personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUso)
         :item(icon, false, false, 7, nome, -1, -1, -1, -1){
     puntiEsperienza = pExp;
     puntiVita = pVita;
@@ -36,12 +38,12 @@ void personaggio::setPuntiEsperienza(int new_puntiEsperienza)
     puntiEsperienza = new_puntiEsperienza;
 }
 
-arma personaggio::getArmaInUso()
+arma *personaggio::getArmaInUso()
 {
     return armaInUso;
 }
 
-void personaggio::setArmaInUso(arma new_armaInUso)
+void personaggio::setArmaInUso(arma *new_armaInUso)
 {
     armaInUso = new_armaInUso;
 }
