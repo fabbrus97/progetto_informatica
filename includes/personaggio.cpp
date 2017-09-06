@@ -46,3 +46,19 @@ void personaggio::setArmaInUso(arma *new_armaInUso) {
     armaInUso = new_armaInUso;
 }
 
+// TODO
+report_movimento personaggio::muovi(int direzione) {
+    report_movimento rm;
+    rm.itemScontrato = NULL;
+    rm.riuscito = false;
+    return rm;
+}
+
+// TODO
+report_attacco personaggio::attacca(int direzione) {
+    report_attacco ra;
+    ra.colpito = false;
+    ra.pgColpito = NULL;
+    ra.danniInflitti = 0;
+    return ra;
+}
