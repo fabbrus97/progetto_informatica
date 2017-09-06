@@ -24,7 +24,7 @@ public:
     void setPuntiEsperienza(int new_puntiEsperienza);
     arma *getArmaInUso();
     void setArmaInUso(arma *new_armaInUso);
-    personaggio attacca(); //da fare
+    personaggio *attacca(int direzione); //da fare
     bool muovi(int direzione); //da fare
     arma *raccogli(); //da fare
 };
