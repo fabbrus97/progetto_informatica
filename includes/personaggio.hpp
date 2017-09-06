@@ -39,7 +39,7 @@ public:
     void setArmaInUso(arma *new_armaInUso);
     report_attacco attacca(int direzione); //da fare
     report_movimento muovi(int direzione); //da fare
-    void raccogli(item *daRaccogliere); //da fare
+    bool raccogli(item *daRaccogliere); //da fare
     int infliggi(int danno); //da fare
 };
 

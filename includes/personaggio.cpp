@@ -102,7 +102,7 @@ report_attacco personaggio::attacca(int direzione) {
  * ritorna true o false nel caso sia rispettivamente riuscito o meno
  * a raccogliere l'oggetto
  */
-bool raccogli(item *daRaccogliere) {
+bool personaggio::raccogli(item *daRaccogliere) {
     return false;
 }
 
@@ -121,6 +121,6 @@ bool raccogli(item *daRaccogliere) {
  *
  * La funzione ritorna il danno effettivamente inflitto (al momento pari a 'danno')
  */
-int infliggi(int danno) {
+int personaggio::infliggi(int danno) {
 
 }
