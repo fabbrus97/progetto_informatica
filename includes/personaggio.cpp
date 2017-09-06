@@ -47,6 +47,25 @@ void personaggio::setArmaInUso(arma *new_armaInUso) {
 }
 
 // TODO
+/*
+ * Il personaggio prova a muoversi di una casella nella direzione scelta:
+ * Se l'item presente nella casella in cui il personaggio sta tentando di
+ * spostarsi é attraversabile allora l'item verrá eliminato dalla memoria
+ * mentre il personaggio assumerá la sua posizione grazie a mappa::sposta(this, item nella posizione)
+ * ed il report sará:
+ * {
+ *  itemScontrato = NULL
+ *  riuscito = true
+ * }
+ * Se l'item non é attraversabile il personaggio rimarrá dov'é ed il report sará:
+ * {
+ *  itemScontrato = oggettoItem
+ *  riuscito = false
+ * }
+ *
+ * Il chiamante si preoccuperá di capire se l'item é raccoglibile o meno, e nel caso raccoglierlo e quindi
+ * riprovare di spostarsi nella stessa direzione.
+ */
 report_movimento personaggio::muovi(int direzione) {
     report_movimento rm;
     rm.itemScontrato = NULL;
@@ -55,10 +74,53 @@ report_movimento personaggio::muovi(int direzione) {
 }
 
 // TODO
+/*
+ * Data la gittata dell'arma attualmente in uso il personaggio tenta di attaccare nella scelta
+ * colpendo solo il personaggio piú vicino che rientra nella gittata.
+ * Quindi evoca il metodo personaggio::infliggi(int danno) del personaggio colpito
+ *
+ */
 report_attacco personaggio::attacca(int direzione) {
     report_attacco ra;
     ra.colpito = false;
     ra.pgColpito = NULL;
     ra.danniInflitti = 0;
     return ra;
+}
+
+// TODO
+/*
+ * A questa funzione non importa dove si trovi l'oggetto da raccogliere,
+ * semplicemente prende atto che puó farlo.
+ * Se l'oggetto che sta cercando di raccogliere é per esempio una pozione di vita
+ * allora prova ad usarla (non ancora implementate), se invece é un'arma la sostituisce
+ * con quella attualmente in uso.
+ * Al posto dell'oggetto raccolto ci mette un Punto.
+ * Questa funzione NON si preoccupa di liberare la memoria dell'oggetto nel caso fosse stato usato,
+ * bensí se sostituisce l'arma attualmente in uso, quella vecchia viene eliminata.
+ *
+ * ritorna true o false nel caso sia rispettivamente riuscito o meno
+ * a raccogliere l'oggetto
+ */
+bool raccogli(item *daRaccogliere) {
+    return false;
+}
+
+// TODO
+/*
+ * Questo metodo viene invocato per infliggere danno al personaggio corrente.
+ * L'uso di un metodo apposito per questa funzione rende possibile l'eventuale implementazione
+ * di metodi per diminuire il danno subito secondo caratteristiche specifiche del personaggio.
+ * Per esempio, ponendo il caso che tutti i personaggi abbiano un valore di 'difesa', e che il danno
+ * effettivamente inflitto sia pari a ('puntiVitaMax'*'Danno')/('PuntiVitaMax'+'Difesa')
+ * Allora un personaggio con
+ * PuntiVitaMax = 100
+ * Difesa = 10
+ * nel caso venisse attaccato con 25 danni, al posto di 25 ne subirebbe effettivamente:
+ * 100*25 / (100+10) = 2500 / 110 = 22
+ *
+ * La funzione ritorna il danno effettivamente inflitto (al momento pari a 'danno')
+ */
+int infliggi(int danno) {
+
 }
