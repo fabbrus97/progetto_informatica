@@ -2,6 +2,8 @@
 #define ITEM_H
 #define MAX_NOME_COMPLETO_LENGTH 100
 
+// NB, l'icona identifica anche il tipo di item
+
 class item
 {
 protected:
