@@ -35,6 +35,8 @@ public:
     static ptr_arma getNewArmaAnduril();
     static ptr_arma getNewArmaGlamdring();
     static ptr_arma getNewArmaPugnaleMorgul();
+
+    static ptr_personaggio getNewMob();
 };
 
 
