@@ -24,6 +24,7 @@ void init_giocatore(personaggio *);
 void game_loop(personaggio *);
 livello *getNewLivello(int l);
 int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente);
+bool confermaRaccoltaItem(item *it);
 void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
 void IAMob(personaggio *mob, personaggio *giocatore);
@@ -53,6 +54,7 @@ void game_loop(personaggio *giocatore) {
     livello *livelloCorrente = primoLivello;
 
     // TODO : Posizionare il giocatore nel livello
+    //livelloCorrente->mappa->find_first(0)->;
 
     while(!end) {
         livelloCorrente->mappa->print_map();
@@ -112,13 +114,17 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
     getGiocatoreInputs(&direzione,&attacca,&muovi);
 
     if(attacca) {
-        report_attacco ra = giocatore->attacca(direzione);
-        if(ra.pgColpito == NULL) {
-            cout << "Hai attaccato a vuoto\n";
+        if(giocatore->getArmaInUso() == NULL){
+            cout << "Prima di attaccare dovrei raccogliere un'arma\n";
         } else {
-            char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
-            ra.pgColpito->getNomeCompleto(nomeAttaccato);
-            cout << "Hai inflitto'" << ra.danniInflitti << " danni a '" << nomeAttaccato << "'\n";
+            report_attacco ra = giocatore->attacca(direzione);
+            if(ra.pgColpito == NULL) {
+                cout << "Hai attaccato a vuoto\n";
+            } else {
+                char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
+                ra.pgColpito->getNomeCompleto(nomeAttaccato);
+                cout << "Hai inflitto'" << ra.danniInflitti << " danni a '" << nomeAttaccato << "'\n";
+            }
         }
 
         // TODO : report di attacco
@@ -128,22 +134,56 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
             cout << "Ti sei mosso\n";
         } else {
             if(rm.itemScontrato != NULL) {
-                switch( rm.itemScontrato->getIcon() ) {
-                    case ICON_LIV_SUCC:
-                        return 1;
-                    case ICON_LIV_PREC:
-                        return -1;
-                    case ICON_PORTA:
-                        // TODO : Segui la porta
-                        break;
-                    case ICON_ARMA:
-                        // TODO : chat cambio arma + movimento se raccolta
-                        break;
+                if(rm.itemScontrato->getRaccoglibile()) {
+                    if( confermaRaccoltaItem(rm.itemScontrato)
+                    &&  giocatore->raccogli(rm.itemScontrato)
+                    ){
+                        giocatore->muovi(direzione);
+                        // TODO : mettere a posto il report di raccolta
+                        cout << "Hai raccolto...stocazzo\n";
+                    } else {
+                        cout << "Non sei riuscito a raccogliere l'oggetto\n";
+                    }
+                } else {
+                    switch (rm.itemScontrato->getIcon()) {
+                        case ICON_LIV_SUCC:
+                            return 1;
+                        case ICON_LIV_PREC:
+                            return -1;
+                        case ICON_PORTA:
+                            // TODO : Segui la porta
+                            break;
+                    }
                 }
             }
         }
     }
     return 0;
+}
+
+bool confermaRaccoltaItem(item *it) {
+    char inConferma;
+    bool input_error;
+    bool conferma;
+    do {
+        input_error = false;
+        cout<< "Sei sicuro di volere raccogliere questo oggetto?(y/n): ";
+        cin >> inConferma;
+        switch(inConferma) {
+            case 'y':
+            case 'Y':
+                conferma = true;
+                break;
+            case 'n':
+            case 'N':
+                conferma = false;
+                break;
+            default:
+                input_error=true;
+                cout << "Comando sconosciuto\n";
+        }
+    } while(input_error);
+    return conferma;
 }
 
 void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi) {
@@ -235,7 +275,7 @@ void IAMob(personaggio *m, personaggio *g) {
         if(ra.colpito == true && ra.pgColpito == g) {
             char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
             m->getNomeCompleto(nomeAttaccato);
-            cout << "'" << nomeAttaccato << " ti ha inflitto" << ra.danniInflitti << " danni\n";
+            cout << "'" << nomeAttaccato << "' ti ha inflitto" << ra.danniInflitti << " danni\n";
         }
 
     // Altrimenti si muove verso di lui
