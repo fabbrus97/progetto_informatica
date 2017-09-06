@@ -376,7 +376,7 @@ void mappa::posiziona(ptr_item it, int xm, int ym, int xs, int ys) {
     ptr_item oldItem = stanza->punti_stanza[ys][xs];
     stanza->punti_stanza[ys][xs] = it;
     it->setPositionX(xm,ym,xs,ys);
-    //delete oldItem
+    delete oldItem;
 }
 
 /*
