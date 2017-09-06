@@ -24,6 +24,7 @@ void init_giocatore(personaggio *);
 void game_loop(personaggio *);
 livello *getNewLivello(int l);
 int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente);
+void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
 void IAMob(personaggio *mob, personaggio *giocatore);
 
@@ -51,6 +52,8 @@ void game_loop(personaggio *giocatore) {
     livello *primoLivello = getNewLivello(1);
     livello *livelloCorrente = primoLivello;
 
+    // TODO : Posizionare il giocatore nel livello
+
     while(!end) {
         livelloCorrente->mappa->print_map();
         int cambioLiv = turnoGiocatore(giocatore,livelloCorrente);
@@ -64,9 +67,11 @@ void game_loop(personaggio *giocatore) {
                 nuovoLivello->prev = livelloCorrente;
             }
             livelloCorrente = livelloCorrente->next;
+            // TODO : Posizionare il giocatore nel livello
         } else {
             if(livelloCorrente->prev != NULL) {
                 livelloCorrente = livelloCorrente->prev;
+                // TODO : Posizionare il giocatore nel livello
             }
         }
 
@@ -98,11 +103,99 @@ livello *getNewLivello(int l) {
 // se == 0 mantendo il livello corrente
 // se >0 salgo di 1 livello
 int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
-    char in;
+    int direzione;
+    bool attacca;
+    bool muovi;
+
     cout << "É il tuo turno.\n";
-    cin >> in;
-    //turno del giocatore
-    //choose what to do (a=>attacca m=>move)
+
+    getGiocatoreInputs(&direzione,&attacca,&muovi);
+
+    if(attacca) {
+        report_attacco ra = giocatore->attacca(direzione);
+        if(ra.pgColpito == NULL) {
+            cout << "Hai attaccato a vuoto\n";
+        } else {
+            char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
+            ra.pgColpito->getNomeCompleto(nomeAttaccato);
+            cout << "Hai inflitto'" << ra.danniInflitti << " danni a '" << nomeAttaccato << "'\n";
+        }
+
+        // TODO : report di attacco
+    } else if(muovi) {
+        report_movimento rm = giocatore->muovi(direzione);
+        if(rm.riuscito == true) {
+            cout << "Ti sei mosso\n";
+        } else {
+            if(rm.itemScontrato != NULL) {
+                switch( rm.itemScontrato->getIcon() ) {
+                    case ICON_LIV_SUCC:
+                        return 1;
+                    case ICON_LIV_PREC:
+                        return -1;
+                    case ICON_PORTA:
+                        // TODO : Segui la porta
+                        break;
+                    case ICON_ARMA:
+                        // TODO : chat cambio arma + movimento se raccolta
+                        break;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi) {
+    char inAzione, inDirezione;
+    bool input_error;
+
+    do {
+        *attacca = false;
+        *muovi = false;
+        input_error = false;
+
+        cout << "(a) per attaccare (m) per muoverti: ";
+        cin >> inAzione;
+
+        switch (inAzione) {
+            case 'a':
+            case 'A':
+                *attacca = true;
+                break;
+            case 'm':
+            case 'M':
+                *muovi = true;
+                break;
+            default:
+                input_error = true;
+                cout << "Azione non consentita\n";
+        }
+    } while(input_error);
+
+    do {
+        input_error = false;
+        cout << "Direzione (wasd): ";
+        cin >> inDirezione;
+
+        switch (inDirezione) {
+            case 'w':
+                *direzione = DIREZIONE_SU;
+                break;
+            case 'a':
+                *direzione = DIREZIONE_SINISTRA;
+                break;
+            case 's':
+                *direzione = DIREZIONE_GIU;
+                break;
+            case 'd':
+                *direzione = DIREZIONE_DESTRA;
+                break;
+            default:
+                input_error = true;
+                cout << "Direzione inesistente\n";
+        }
+    } while(input_error);
 }
 
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente) {
@@ -129,17 +222,37 @@ void IAMob(personaggio *m, personaggio *g) {
     if( m->getPositionXX() == g->getPositionXX() && m->getArmaInUso()->getRange() >= absDyy
     &&  m->getPositionYY() == g->getPositionYY() && m->getArmaInUso()->getRange() >= absDxx
     ) {
+        report_attacco ra;
         if (dxx < 0)
-            m->attacca(DIREZIONE_SINISTRA);
+            ra = m->attacca(DIREZIONE_SINISTRA);
         else if (dxx > 0)
-            m->attacca(DIREZIONE_DESTRA);
+            ra = m->attacca(DIREZIONE_DESTRA);
         else if (dyy < 0)
-            m->attacca(DIREZIONE_SU);
+            ra = m->attacca(DIREZIONE_SU);
         else if(dyy > 0)
-            m->attacca(DIREZIONE_GIU);
+            ra = m->attacca(DIREZIONE_GIU);
+
+        if(ra.colpito == true && ra.pgColpito == g) {
+            char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
+            m->getNomeCompleto(nomeAttaccato);
+            cout << "'" << nomeAttaccato << " ti ha inflitto" << ra.danniInflitti << " danni\n";
+        }
 
     // Altrimenti si muove verso di lui
     } else {
-
+        report_movimento rm;
+        //in questo modo si muove a "zig zag" verso il giocatore
+        //NB il mob non sa cambiare stanza/livello e nemmeno attraversare gli ostacoli
+        if(absDxx > absDyy) {
+            if (dxx < 0)
+                rm = m->muovi(DIREZIONE_SINISTRA);
+            else
+                rm = m->muovi(DIREZIONE_DESTRA);
+        } else {
+            if (dyy < 0)
+                rm = m->muovi(DIREZIONE_SU);
+            else
+                rm = m->muovi(DIREZIONE_GIU);
+        }
     }
 }
