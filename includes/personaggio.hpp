@@ -8,6 +8,17 @@
 #define DIREZIONE_DESTRA 3
 #define DIREZIONE_GIU 4
 
+struct report_attacco {
+    bool colpito;
+    personaggio *pgColpito;
+    int danniInflitti;
+};
+
+struct report_movimento {
+    bool riuscito;
+    item *itemScontrato;
+};
+
 class personaggio : public item {
 protected:
     int puntiEsperienza;
@@ -24,8 +35,8 @@ public:
     void setPuntiEsperienza(int new_puntiEsperienza);
     arma *getArmaInUso();
     void setArmaInUso(arma *new_armaInUso);
-    personaggio *attacca(int direzione); //da fare
-    bool muovi(int direzione); //da fare
+    report_attacco attacca(int direzione); //da fare
+    report_movimento muovi(int direzione); //da fare
     arma *raccogli(); //da fare
 };
 
