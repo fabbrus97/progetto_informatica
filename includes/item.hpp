@@ -10,6 +10,11 @@ protected:
     char nomeCompleto[MAX_NOME_COMPLETO_LENGTH];
     char icon;
     int colore; //0-8
+    /* Se un Item é attraversabile NON puó essere anche raccoglibile,
+     * questo perché se é attraversabile allora l'item verrá cancellato
+     * quando il personaggio ci andrá sopra poiché nelle stanze ogni punto
+     * puó contenere solo 1 item (ricordo che il personaggio é un item)
+     */
     bool attraversabile;
     bool raccoglibile;
     int posizioneX; //coordinata x rispetto alla mappa
