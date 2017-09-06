@@ -1,11 +1,13 @@
 #ifndef ITEM_H
 #define ITEM_H
-#define CONST_LENGTH 100
+#define MAX_NOME_COMPLETO_LENGTH 100
+
+// NB, l'icona identifica anche il tipo di item
 
 class item
 {
 protected:
-    char nomeCompleto[CONST_LENGTH];
+    char nomeCompleto[MAX_NOME_COMPLETO_LENGTH];
     char icon;
     int colore; //0-8
     bool attraversabile;
@@ -20,12 +22,12 @@ public:
     item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore);
     item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[]);
     item(char icona, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[], int positionX, int positionY, int positionXX, int positionYY);
-    void stampaNomeCompleto(char nome[]);
     char getIcon();
     int getColore();
     bool getAttraversabile();
     bool getRaccoglibile();
     void setNomeCompleto (char newNomeCompleto[]);
+    void getNomeCompleto(char *buff);
     void setAttraversabile(bool isAttraversabile);
     void setRaccoglibile(bool isRaccoglibile);
     void setIcon(char newIcon);

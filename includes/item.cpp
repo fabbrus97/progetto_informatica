@@ -69,6 +69,10 @@ void item::setNomeCompleto(char newNomeCompleto[])
     strcpy(nomeCompleto,newNomeCompleto);
 }
 
+void item::getNomeCompleto(char *buff) {
+    strcpy(buff,nomeCompleto);
+}
+
 int item::getPositionX()
 {
     return posizioneX;

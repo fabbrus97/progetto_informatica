@@ -42,3 +42,6 @@ ptr_arma GameObjects::getNewArmaPugnaleMorgul() {
 }
 
 // PERSONAGGI
+ptr_personaggio GameObjects::getNewMob() {
+    return new personaggio();
+}
