@@ -18,6 +18,10 @@ personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUs
     armaInUso = inUso;
 }
 
+personaggio::~personaggio() {
+    delete armaInUso;
+}
+
 int personaggio::getPuntiVita()
 {
     return puntiVita;
