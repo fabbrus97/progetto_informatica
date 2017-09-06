@@ -3,10 +3,10 @@
 #include "item.hpp"
 #include "arma.hpp"
 
-#define MUOVI_SU 0
-#define MUOVI_SINISTRA 1
-#define MUOVI_DESTRA 3
-#define MUOVI_GIU 4
+#define DIREZIONE_SU 0
+#define DIREZIONE_SINISTRA 1
+#define DIREZIONE_DESTRA 3
+#define DIREZIONE_GIU 4
 
 class personaggio : public item {
 protected:
