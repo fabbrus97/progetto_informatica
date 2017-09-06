@@ -3,8 +3,12 @@
 #include "item.hpp"
 #include "arma.hpp"
 
-class personaggio : public item
-{
+#define MUOVI_SU 0
+#define MUOVI_SINISTRA 1
+#define MUOVI_DESTRA 3
+#define MUOVI_GIU 4
+
+class personaggio : public item {
 protected:
     int puntiEsperienza;
     int puntiVita;
@@ -21,6 +25,7 @@ public:
     arma *getArmaInUso();
     void setArmaInUso(arma *new_armaInUso);
     personaggio attacca(); //da fare
+    bool muovi(int direzione); //da fare
     arma *raccogli(); //da fare
 };
 
