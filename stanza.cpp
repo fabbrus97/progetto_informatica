@@ -130,9 +130,17 @@ bool stanza::posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tent
     x = (rand() % (MAX_COLONNE-1))+1;
 
     if (stanza->punti_stanza[y][x]->getIcon()==ICON_PUNTO){
-        stanza->punti_stanza[y][x]=oggetto;
+        posiziona(oggetto,x,y);
         return true;
     } else
         return posiziona_casualmente(stanza, oggetto, tentativo+1);
 
+}
+
+void stanza::posiziona(ptr_item it, int x, int y) {
+    ptr_item oldItem = punti_stanza[y][x];
+    punti_stanza[y][x] = it;
+    it->setPositionX(getCoor_x(),getCoor_y(),x,y);
+    if(oldItem != NULL)
+        delete oldItem;
 }

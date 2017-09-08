@@ -41,7 +41,8 @@ public:
     ptr_connessioni aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
     bool check_connection(ptr_stanza stanza_di_partenza, ptr_stanza stanza_da_controllare);
     bool has_connection(ptr_stanza room);
-    static bool posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tentativo);
+    bool posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tentativo);
+    void posiziona(ptr_item it, int x, int y);
 };
 
 #endif
