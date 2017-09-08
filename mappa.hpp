@@ -29,7 +29,7 @@ protected:
     int j;
     //stanza nuova_stanza;
     public:
-    static ptr_stanza** p;
+    ptr_stanza** p;
 
     mappa(int n);
     mappa();
