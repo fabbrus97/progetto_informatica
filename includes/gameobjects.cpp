@@ -18,16 +18,16 @@ ptr_item GameObjects::getNewPunto() {
     return new item(ICON_PUNTO,true,false,0,"Punto");
 }
 ptr_item GameObjects::getNewPorta() {
-    return new item(ICON_PORTA,true,false,0,"Porta");
+    return new item(ICON_PORTA,false,false,0,"Porta");
 }
 ptr_item GameObjects::getNewTunnel() {
     return new item(ICON_TUNNEL,false,false,0,"Tunnel");
 }
 ptr_item GameObjects::getNewLivSucc() {
-    return new item(ICON_LIV_SUCC,true,false,0,"Scale Livello Successivo");
+    return new item(ICON_LIV_SUCC,false,false,0,"Scale Livello Successivo");
 }
 ptr_item GameObjects::getNewLivPrec() {
-    return new item(ICON_LIV_PREC,true,false,0,"Scale Livello Precedente");
+    return new item(ICON_LIV_PREC,false,false,0,"Scale Livello Precedente");
 }
 
 // ARMI

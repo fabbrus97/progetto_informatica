@@ -57,8 +57,8 @@ void game_loop(personaggio *giocatore) {
         giocatore,
         livelloCorrente->mappa->find_first(0)->getCoor_x(),
         livelloCorrente->mappa->find_first(0)->getCoor_y(),
-        1,
-        1
+        18,
+        5
     );
 
     while(!end) {
@@ -168,8 +168,12 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                             break;
                     }
                 }
+            } else {
+                cout << "Oggetto a NULL\n";
             }
         }
+        cout << "rmRiuscito: " << rm.riuscito << "\n";
+        cout << "rmItem: " << rm.itemScontrato << "\n";
     }
     return 0;
 }
