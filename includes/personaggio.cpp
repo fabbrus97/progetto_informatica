@@ -77,6 +77,8 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
     int xx=getPositionXX();
     int yy=getPositionYY();
 
+    cout << "muovi: " << x << "," << y << " " << xx << "," << yy << "\n";
+
     switch(direzione){
         case DIREZIONE_SU:
             if (map->p[y][x]->punti_stanza[yy-1][xx]->getAttraversabile()) {
@@ -89,6 +91,11 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
             break;
         case DIREZIONE_GIU:
             if (map->p[y][x]->punti_stanza[yy+1][xx]->getAttraversabile()) {
+
+                cout << "Metto in: " << x << "," << y << " " << xx << "," << yy+1 << "\n";
+                ptr_item it = map->p[y][x]->punti_stanza[yy + 1][xx];
+                cout << "item era: " << it->getPositionX() << "," << it->getPositionY() << " " << it->getPositionXX() << "," << it->getPositionYY() << "\n";
+
                 map->sposta(this, map->p[y][x]->punti_stanza[yy + 1][xx]);
                 rm.riuscito = true;
             }
@@ -97,15 +104,6 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
             }
             break;
         case DIREZIONE_SINISTRA:
-            if (map->p[y][x]->punti_stanza[yy][xx+1]->getAttraversabile()) {
-                map->sposta(this, map->p[y][x]->punti_stanza[yy][xx+1]);
-                rm.riuscito = true;
-            }
-            else {
-                rm.itemScontrato = map->p[y][x]->punti_stanza[yy][xx+1];
-            }
-            break;
-        case DIREZIONE_DESTRA:
             if (map->p[y][x]->punti_stanza[yy][xx-1]->getAttraversabile()) {
                 map->sposta(this, map->p[y][x]->punti_stanza[yy][xx-1]);
                 rm.riuscito = true;
@@ -114,7 +112,22 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
                 rm.itemScontrato = map->p[y][x]->punti_stanza[yy][xx-1];
             }
             break;
+        case DIREZIONE_DESTRA:
+            if (map->p[y][x]->punti_stanza[yy][xx+1]->getAttraversabile()) {
+                map->sposta(this, map->p[y][x]->punti_stanza[yy][xx+1]);
+                rm.riuscito = true;
+            }
+            else {
+                rm.itemScontrato = map->p[y][x]->punti_stanza[yy][xx+1];
+            }
+            break;
     }
+
+    x=getPositionX();
+    y=getPositionY();
+    xx=getPositionXX();
+    yy=getPositionYY();
+    cout << "muovi: " << x << "," << y << " " << xx << "," << yy << "\n";
     return rm;
 }
 

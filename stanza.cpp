@@ -1,4 +1,5 @@
 #include "stanza.hpp"
+#include "includes/gameobjects.hpp"
 using namespace std;
 
 stanza::stanza(int x, int y, int n_room){
@@ -17,25 +18,25 @@ stanza::stanza(int x, int y, int n_room){
 
     //costruiamo i muri
     for (int i=0; i<MAX_RIGHE; i++){
-        punti_stanza[i][0]=new item('#',false,false);
-        punti_stanza[i][0]->setPositionX(x, y, i, 0);
+        punti_stanza[i][0]=new item(ICON_MURO,false,false);
+        punti_stanza[i][0]->setPositionX(x, y, 0, i);
 
-        punti_stanza[i][MAX_COLONNE-1]=new item('#',false,false);
-        punti_stanza[i][MAX_COLONNE-1]->setPositionX(x, y, i, MAX_COLONNE-1);
+        punti_stanza[i][MAX_COLONNE-1]=new item(ICON_MURO,false,false);
+        punti_stanza[i][MAX_COLONNE-1]->setPositionX(x, y, MAX_COLONNE-1, i);
     }
     for (int j=1; j<MAX_COLONNE-1; j++){
-        punti_stanza[0][j]=new item('#',false,false);
-        punti_stanza[0][j]->setPositionX(x, y, 0, j);
+        punti_stanza[0][j]=new item(ICON_MURO,false,false);
+        punti_stanza[0][j]->setPositionX(x, y, j, 0);
 
-        punti_stanza[MAX_RIGHE-1][j]=new item('#',false,false);
-        punti_stanza[MAX_RIGHE-1][j]->setPositionX(x, y, MAX_RIGHE-1, j);
+        punti_stanza[MAX_RIGHE-1][j]=new item(ICON_MURO,false,false);
+        punti_stanza[MAX_RIGHE-1][j]->setPositionX(x, y, j, MAX_RIGHE-1);
     }
 
     //costruiamo l'interno della stanza
     for (int i=1; i<MAX_RIGHE-1; i++)
         for (int j=1; j<MAX_COLONNE-1; j++) {
-            punti_stanza[i][j] = new item('.',true,false);
-            punti_stanza[i][j]->setPositionX(x, y, i, j);
+            punti_stanza[i][j] = new item(ICON_PUNTO,true,false);
+            punti_stanza[i][j]->setPositionX(x, y, j, i);
         }
 
 }
@@ -56,7 +57,7 @@ stanza::stanza(int x, int y) {
     //inizializza l'array a NULL
     for (int i = 0; i < MAX_RIGHE; i++)
         for (int j = 0; j < MAX_COLONNE; j++) {
-            punti_stanza[i][j] = new item(' ', false, false);
+            punti_stanza[i][j] = new item(ICON_SPAZIO, false, false, 0, "Vuoto", coor_x, coor_y, j, i);
         }
 }
 
@@ -125,11 +126,11 @@ bool stanza::posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tent
     srand(time(0));
     int x, y;
     //x e y sono inizializzati in modo che siano un numero tra 1 e MAX_RIGHE-1 o MAX_COLONNE-1
-    x = (rand() % (MAX_RIGHE-1))+1;
-    y = (rand() % (MAX_COLONNE-1))+1;
+    y = (rand() % (MAX_RIGHE-1))+1;
+    x = (rand() % (MAX_COLONNE-1))+1;
 
-    if (stanza->punti_stanza[x][y]->getIcon()=='.'){
-        stanza->punti_stanza[x][y]=oggetto;
+    if (stanza->punti_stanza[y][x]->getIcon()==ICON_PUNTO){
+        stanza->punti_stanza[y][x]=oggetto;
         return true;
     } else
         return posiziona_casualmente(stanza, oggetto, tentativo+1);

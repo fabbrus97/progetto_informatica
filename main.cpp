@@ -34,7 +34,6 @@ int main() {
     init_giocatore(&giocatore);
     game_loop(&giocatore);
 
-
     return 0;
 }
 
@@ -54,7 +53,13 @@ void game_loop(personaggio *giocatore) {
     livello *livelloCorrente = primoLivello;
 
     // TODO : Posizionare il giocatore nel livello
-    //livelloCorrente->mappa->find_first(0)->;
+    livelloCorrente->mappa->posiziona(
+        giocatore,
+        livelloCorrente->mappa->find_first(0)->getCoor_x(),
+        livelloCorrente->mappa->find_first(0)->getCoor_y(),
+        1,
+        1
+    );
 
     while(!end) {
         livelloCorrente->mappa->print_map();
@@ -70,10 +75,18 @@ void game_loop(personaggio *giocatore) {
             }
             livelloCorrente = livelloCorrente->next;
             // TODO : Posizionare il giocatore nel livello
+            livelloCorrente->mappa->sposta(
+                    giocatore,
+                    livelloCorrente->mappa->find_first(0)->punti_stanza[1][1]
+            );
         } else {
             if(livelloCorrente->prev != NULL) {
                 livelloCorrente = livelloCorrente->prev;
                 // TODO : Posizionare il giocatore nel livello
+                livelloCorrente->mappa->sposta(
+                        giocatore,
+                        livelloCorrente->mappa->find_first(0)->punti_stanza[1][1]
+                );
             }
         }
 
@@ -220,15 +233,19 @@ void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi) {
 
         switch (inDirezione) {
             case 'w':
+            case 'W':
                 *direzione = DIREZIONE_SU;
                 break;
             case 'a':
+            case 'A':
                 *direzione = DIREZIONE_SINISTRA;
                 break;
             case 's':
+            case 'S':
                 *direzione = DIREZIONE_GIU;
                 break;
             case 'd':
+            case 'D':
                 *direzione = DIREZIONE_DESTRA;
                 break;
             default:
