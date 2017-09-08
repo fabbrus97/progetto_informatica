@@ -55,6 +55,9 @@ void game_loop(personaggio *giocatore) {
 
     // TODO : Posizionare il giocatore nel livello
     //livelloCorrente->mappa->find_first(0)->;
+    //implementazione by simon
+    //attenzione: il giocatore viene posizionato casualmente
+    stanza::posiziona_casualmente(mappa::find_room(1),giocatore,0);
 
     while(!end) {
         livelloCorrente->mappa->print_map();
@@ -70,10 +73,12 @@ void game_loop(personaggio *giocatore) {
             }
             livelloCorrente = livelloCorrente->next;
             // TODO : Posizionare il giocatore nel livello
+            stanza::posiziona_casualmente(mappa::find_room(1),giocatore,0);
         } else {
             if(livelloCorrente->prev != NULL) {
                 livelloCorrente = livelloCorrente->prev;
                 // TODO : Posizionare il giocatore nel livello
+                stanza::posiziona_casualmente(mappa::find_room(mappa::getN_livello()*alfa),giocatore,0);
             }
         }
 

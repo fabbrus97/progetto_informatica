@@ -7,7 +7,6 @@
 #include "includes/gameobjects.hpp"
 #include "includes/item.hpp"
 #include "includes/arma.hpp"
-
 //contatore stanze
 int contatore_stanze=1;
 
@@ -39,6 +38,10 @@ mappa::mappa(int n) {
 }
 
 mappa::mappa(){}
+
+int mappa::getN_livello() {
+    return n_livello;
+}
 
 bool mappa::check_room(int x, int y) {
     //ritorna true se una stanza esiste, false altrimenti
@@ -365,6 +368,21 @@ void mappa::generate_map() {
 
     first_linking(first, false);
     second_linking(first, NULL);
+}
+
+ptr_stanza mappa::find_room(int n_stanza) {
+    //questa funzione prende in input un numero, e resistuisce un puntatore alla stanza con quel numero
+    //se non esiste, ritorna null
+
+    for (int x=0; x<i; x++)
+        for (int y=0; y<j; y++){
+            if (!p[x][y]->isIs_emtpy()){
+                if (p[x][y]->getN_stanza()==n_stanza)
+                    return p[x][y];
+            }
+        }
+
+    return NULL;
 }
 
 /*

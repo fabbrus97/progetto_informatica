@@ -13,11 +13,11 @@
   <component name="ChangeListManager">
     <list default="true" id="b1359c8e-0cdb-467b-9fbc-a81cbe423651" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CMakeLists.txt" afterPath="$PROJECT_DIR$/CMakeLists.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/personaggio.cpp" afterPath="$PROJECT_DIR$/includes/personaggio.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/includes/personaggio.hpp" afterPath="$PROJECT_DIR$/includes/personaggio.hpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.cpp" afterPath="$PROJECT_DIR$/main.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mappa.cpp" afterPath="$PROJECT_DIR$/mappa.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mappa.hpp" afterPath="$PROJECT_DIR$/mappa.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stanza.hpp" afterPath="$PROJECT_DIR$/stanza.hpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,8 +32,8 @@
       <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="11" lean-forward="false" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+            <state relative-caret-position="34">
+              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -42,9 +42,19 @@
       <file leaf-file-name="mappa.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mappa.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="386" column="0" lean-forward="false" selection-start-line="386" selection-start-column="0" selection-end-line="386" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="203">
+              <caret line="41" column="26" lean-forward="false" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+              <folding>
+                <element signature="e#219#723#0" expanded="false" />
+                <element signature="e#743#794#0" expanded="false" />
+                <element signature="e#3451#7738#0" expanded="false" />
+                <element signature="e#7740#8477#0" expanded="false" />
+                <element signature="e#8479#8895#0" expanded="false" />
+                <element signature="e#8897#12442#0" expanded="false" />
+                <element signature="e#12444#13173#0" expanded="false" />
+                <element signature="e#13175#16291#0" expanded="false" />
+                <element signature="e#16293#16644#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -52,8 +62,8 @@
       <file leaf-file-name="stanza.hpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stanza.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="33" column="21" lean-forward="false" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
+            <state relative-caret-position="323">
+              <caret line="43" column="11" lean-forward="false" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
               <folding>
                 <element signature="e#39#58#0" expanded="true" />
               </folding>
@@ -64,8 +74,8 @@
       <file leaf-file-name="mappa.hpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mappa.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="31" column="11" lean-forward="false" selection-start-line="31" selection-start-column="11" selection-end-line="31" selection-end-column="11" />
+            <state relative-caret-position="204">
+              <caret line="24" column="13" lean-forward="true" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
               <folding>
                 <element signature="e#77#96#0" expanded="true" />
               </folding>
@@ -76,7 +86,7 @@
       <file leaf-file-name="stanza.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stanza.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1003">
+            <state relative-caret-position="-628">
               <caret line="59" column="9" lean-forward="false" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
               <folding />
             </state>
@@ -106,7 +116,7 @@
       <file leaf-file-name="personaggio.hpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/personaggio.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
+            <state relative-caret-position="272">
               <caret line="43" column="16" lean-forward="false" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
               <folding>
                 <element signature="e#44#63#0" expanded="true" />
@@ -118,8 +128,8 @@
       <file leaf-file-name="personaggio.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/includes/personaggio.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="601">
-              <caret line="215" column="2" lean-forward="true" selection-start-line="215" selection-start-column="2" selection-end-line="215" selection-end-column="2" />
+            <state relative-caret-position="-271">
+              <caret line="70" column="6" lean-forward="false" selection-start-line="70" selection-start-column="6" selection-end-line="70" selection-end-column="6" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -152,7 +162,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/includes/item.cpp" />
-        <option value="$PROJECT_DIR$/stanza.hpp" />
         <option value="$PROJECT_DIR$/includes/item.h" />
         <option value="$PROJECT_DIR$/includes/arma.h" />
         <option value="$PROJECT_DIR$/includes/personaggio.h" />
@@ -160,9 +169,10 @@
         <option value="$PROJECT_DIR$/stanza.cpp" />
         <option value="$PROJECT_DIR$/includes/item.hpp" />
         <option value="$PROJECT_DIR$/includes/personaggio.hpp" />
-        <option value="$PROJECT_DIR$/main.cpp" />
-        <option value="$PROJECT_DIR$/mappa.cpp" />
         <option value="$PROJECT_DIR$/includes/personaggio.cpp" />
+        <option value="$PROJECT_DIR$/mappa.cpp" />
+        <option value="$PROJECT_DIR$/main.cpp" />
+        <option value="$PROJECT_DIR$/stanza.hpp" />
         <option value="$PROJECT_DIR$/mappa.hpp" />
       </list>
     </option>
@@ -214,6 +224,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.toDoOptions" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -256,20 +267,20 @@
       <workItem from="1504538847193" duration="18000" />
       <workItem from="1504538899113" duration="130000" />
       <workItem from="1504790603260" duration="4802000" />
-      <workItem from="1504873362839" duration="1285000" />
+      <workItem from="1504873362839" duration="3298000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15083000" />
+    <option name="totallyTimeSpent" value="17096000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="129" y="0" width="1366" height="768" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24597365" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22108346" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29090908" sideWeight="0.496875" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.50757575" sideWeight="0.496875" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32933334" sideWeight="0.503125" order="16" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.32933334" sideWeight="0.496875" order="4" side_tool="false" content_ui="tabs" x="22" y="213" width="1280" height="705" />
@@ -315,7 +326,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6345">
           <caret line="423" column="22" lean-forward="false" selection-start-line="423" selection-start-column="22" selection-end-line="423" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#219#723#0" expanded="false" />
+            <element signature="e#743#794#0" expanded="false" />
+            <element signature="e#3451#7738#0" expanded="false" />
+            <element signature="e#7740#8477#0" expanded="false" />
+            <element signature="e#8479#8895#0" expanded="false" />
+            <element signature="e#8897#12442#0" expanded="false" />
+            <element signature="e#12444#13173#0" expanded="false" />
+            <element signature="e#13175#16291#0" expanded="false" />
+            <element signature="e#16293#16644#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -397,7 +418,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1719">
           <caret line="173" column="1" lean-forward="false" selection-start-line="173" selection-start-column="1" selection-end-line="173" selection-end-column="1" />
-          <folding />
+          <folding>
+            <element signature="e#219#723#0" expanded="false" />
+            <element signature="e#743#794#0" expanded="false" />
+            <element signature="e#3451#7738#0" expanded="false" />
+            <element signature="e#7740#8477#0" expanded="false" />
+            <element signature="e#8479#8895#0" expanded="false" />
+            <element signature="e#8897#12442#0" expanded="false" />
+            <element signature="e#12444#13173#0" expanded="false" />
+            <element signature="e#13175#16291#0" expanded="false" />
+            <element signature="e#16293#16644#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -425,7 +456,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6345">
           <caret line="423" column="22" lean-forward="false" selection-start-line="423" selection-start-column="22" selection-end-line="423" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#219#723#0" expanded="false" />
+            <element signature="e#743#794#0" expanded="false" />
+            <element signature="e#3451#7738#0" expanded="false" />
+            <element signature="e#7740#8477#0" expanded="false" />
+            <element signature="e#8479#8895#0" expanded="false" />
+            <element signature="e#8897#12442#0" expanded="false" />
+            <element signature="e#12444#13173#0" expanded="false" />
+            <element signature="e#13175#16291#0" expanded="false" />
+            <element signature="e#16293#16644#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -469,7 +510,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6345">
           <caret line="423" column="22" lean-forward="false" selection-start-line="423" selection-start-column="22" selection-end-line="423" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#219#723#0" expanded="false" />
+            <element signature="e#743#794#0" expanded="false" />
+            <element signature="e#3451#7738#0" expanded="false" />
+            <element signature="e#7740#8477#0" expanded="false" />
+            <element signature="e#8479#8895#0" expanded="false" />
+            <element signature="e#8897#12442#0" expanded="false" />
+            <element signature="e#12444#13173#0" expanded="false" />
+            <element signature="e#13175#16291#0" expanded="false" />
+            <element signature="e#16293#16644#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -548,22 +599,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="11" lean-forward="false" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stanza.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="59" column="9" lean-forward="false" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/includes/item.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -572,19 +607,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stanza.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="21" lean-forward="false" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
-          <folding>
-            <element signature="e#39#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/includes/personaggio.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
+        <state relative-caret-position="272">
           <caret line="43" column="16" lean-forward="false" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
           <folding>
             <element signature="e#44#63#0" expanded="true" />
@@ -594,31 +619,82 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/includes/personaggio.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="601">
-          <caret line="215" column="2" lean-forward="true" selection-start-line="215" selection-start-column="2" selection-end-line="215" selection-end-column="2" />
+        <state relative-caret-position="-271">
+          <caret line="70" column="6" lean-forward="false" selection-start-line="70" selection-start-column="6" selection-end-line="70" selection-end-column="6" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/stanza.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-628">
+          <caret line="59" column="9" lean-forward="false" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stanza.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="43" column="11" lean-forward="false" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
+          <folding>
+            <element signature="e#39#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/mappa.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="386" column="0" lean-forward="false" selection-start-line="386" selection-start-column="0" selection-end-line="386" selection-end-column="0" />
+        <state relative-caret-position="203">
+          <caret line="41" column="26" lean-forward="false" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+          <folding>
+            <element signature="e#219#723#0" expanded="false" />
+            <element signature="e#743#794#0" expanded="false" />
+            <element signature="e#3451#7738#0" expanded="false" />
+            <element signature="e#7740#8477#0" expanded="false" />
+            <element signature="e#8479#8895#0" expanded="false" />
+            <element signature="e#8897#12442#0" expanded="false" />
+            <element signature="e#12444#13173#0" expanded="false" />
+            <element signature="e#13175#16291#0" expanded="false" />
+            <element signature="e#16293#16644#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mappa.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="31" column="11" lean-forward="false" selection-start-line="31" selection-start-column="11" selection-end-line="31" selection-end-column="11" />
+        <state relative-caret-position="204">
+          <caret line="24" column="13" lean-forward="true" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding>
             <element signature="e#77#96#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

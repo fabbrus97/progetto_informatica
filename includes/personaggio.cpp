@@ -68,7 +68,7 @@ void personaggio::setArmaInUso(arma *new_armaInUso) {
  * riprovare di spostarsi nella stessa direzione.
  */
 report_movimento personaggio::muovi(int direzione) {
-    // TO_CHECK implementazione by simon:
+    //implementazione by simon:
 
     //anziché un intero, la posizione può essere un carattere
     //1=nord, 2=sud, 3=est, 4=ovest
