@@ -2,6 +2,7 @@
 #define PERSONAGGIO_H
 #include "item.hpp"
 #include "arma.hpp"
+#include "../mappa.hpp"
 
 #define DIREZIONE_SU 0
 #define DIREZIONE_SINISTRA 1
@@ -37,11 +38,10 @@ public:
     void setPuntiEsperienza(int new_puntiEsperienza);
     arma *getArmaInUso();
     void setArmaInUso(arma *new_armaInUso);
-    report_attacco attacca(int direzione); //da fare
-    report_movimento muovi(int direzione); //da fare
+    report_attacco attacca(mappa *map, int direzione); //da fare
+    report_movimento muovi(mappa *map, int direzione); //da fare
     bool raccogli(item *daRaccogliere); //da fare
     int infliggi(int danno); //da fare
-    void muovi_2(int direzione); //alternativa
 };
 
 typedef personaggio* ptr_personaggio;

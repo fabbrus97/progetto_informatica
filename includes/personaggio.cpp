@@ -67,12 +67,7 @@ void personaggio::setArmaInUso(arma *new_armaInUso) {
  * Il chiamante si preoccuperá di capire se l'item é raccoglibile o meno, e nel caso raccoglierlo e quindi
  * riprovare di spostarsi nella stessa direzione.
  */
-report_movimento personaggio::muovi(int direzione) {
-    // TO_CHECK implementazione by simon:
-
-    //anziché un intero, la posizione può essere un carattere
-    //1=nord, 2=sud, 3=est, 4=ovest
-
+report_movimento personaggio::muovi(mappa *map, int direzione) {
     report_movimento rm;
     rm.itemScontrato = NULL;
     rm.riuscito = false;
@@ -81,51 +76,44 @@ report_movimento personaggio::muovi(int direzione) {
     int y=getPositionY();
     int xx=getPositionXX();
     int yy=getPositionYY();
-    char errore[]="Impossibile attraversare";
 
     switch(direzione){
-        case 1:
-            if (mappa::p[x][y]->punti_stanza[xx-1][yy]->getAttraversabile()) {
-                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx - 1][yy]);
+        case DIREZIONE_SU:
+            if (map->p[y][x]->punti_stanza[yy-1][xx]->getAttraversabile()) {
+                map->sposta(this, map->p[y][x]->punti_stanza[yy - 1][xx]);
                 rm.riuscito = true;
             }
             else {
-                cout << errore << endl;
-                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx-1][yy];
+                rm.itemScontrato = map->p[y][x]->punti_stanza[yy-1][xx];
             }
             break;
-        case 2:
-            if (mappa::p[x][y]->punti_stanza[xx+1][yy]->getAttraversabile()) {
-                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx + 1][yy]);
+        case DIREZIONE_GIU:
+            if (map->p[y][x]->punti_stanza[yy+1][xx]->getAttraversabile()) {
+                map->sposta(this, map->p[y][x]->punti_stanza[yy + 1][xx]);
                 rm.riuscito = true;
             }
             else {
-                cout << errore << endl;
-                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx+1][yy];
+                rm.itemScontrato = map->p[y][x]->punti_stanza[yy+1][xx];
             }
             break;
-        case 3:
-            if (mappa::p[x][y]->punti_stanza[xx][yy+1]->getAttraversabile()) {
-                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx][yy+1]);
+        case DIREZIONE_SINISTRA:
+            if (map->p[y][x]->punti_stanza[yy][xx+1]->getAttraversabile()) {
+                map->sposta(this, map->p[y][x]->punti_stanza[yy][xx+1]);
                 rm.riuscito = true;
             }
             else {
-                cout << errore << endl;
-                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx][yy+1];
+                rm.itemScontrato = map->p[y][x]->punti_stanza[yy][xx+1];
             }
             break;
-        case 4:
-            if (mappa::p[x][y]->punti_stanza[xx][yy-1]->getAttraversabile()) {
-                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx][yy-1]);
+        case DIREZIONE_DESTRA:
+            if (map->p[y][x]->punti_stanza[yy][xx-1]->getAttraversabile()) {
+                map->sposta(this, map->p[y][x]->punti_stanza[yy][xx-1]);
                 rm.riuscito = true;
             }
             else {
-                cout << errore << endl;
-                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx][yy-1];
+                rm.itemScontrato = map->p[y][x]->punti_stanza[yy][xx-1];
             }
             break;
-        default:
-            cout << "Input errato" << endl;
     }
     return rm;
 }
@@ -175,7 +163,7 @@ void personaggio::muovi_2(int direzione) {
  * Quindi evoca il metodo personaggio::infliggi(int danno) del personaggio colpito
  *
  */
-report_attacco personaggio::attacca(int direzione) {
+report_attacco personaggio::attacca(mappa *map, int direzione) {
     report_attacco ra;
     ra.colpito = false;
     ra.pgColpito = NULL;
