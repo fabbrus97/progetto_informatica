@@ -45,7 +45,7 @@ protected:
     void print_map();
 
     void posiziona(ptr_item it, int xm, int ym, int xs, int ys);
-    static void sposta(ptr_item from, ptr_item to);
+    void sposta(ptr_item from, ptr_item to);
 };
 
 #endif
