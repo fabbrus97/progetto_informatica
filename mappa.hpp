@@ -43,6 +43,8 @@ protected:
     void add_doors(ptr_stanza room);
     void generate_map();
     void print_map();
+    static ptr_stanza find_room(int n_stanza);
+    static int getN_livello();
 
     void posiziona(ptr_item it, int xm, int ym, int xs, int ys);
     void sposta(ptr_item from, ptr_item to);
