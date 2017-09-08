@@ -27,7 +27,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente);
 bool confermaRaccoltaItem(item *it);
 void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
-void IAMob(personaggio *mob, personaggio *giocatore);
+void IAMob(personaggio *mob, personaggio *giocatore, livello *livelloCorrente);
 
 int main() {
     personaggio giocatore;
@@ -115,9 +115,9 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
 
     if(attacca) {
         if(giocatore->getArmaInUso() == NULL){
-            cout << "Prima di attaccare dovrei raccogliere un'arma\n";
+            cout << "Prima di attaccare dovresti raccogliere un'arma\n";
         } else {
-            report_attacco ra = giocatore->attacca(direzione);
+            report_attacco ra = giocatore->attacca(livelloCorrente->mappa,direzione);
             if(ra.pgColpito == NULL) {
                 cout << "Hai attaccato a vuoto\n";
             } else {
@@ -129,7 +129,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
 
         // TODO : report di attacco
     } else if(muovi) {
-        report_movimento rm = giocatore->muovi(direzione);
+        report_movimento rm = giocatore->muovi(livelloCorrente->mappa,direzione);
         if(rm.riuscito == true) {
             cout << "Ti sei mosso\n";
         } else {
@@ -138,7 +138,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                     if( confermaRaccoltaItem(rm.itemScontrato)
                     &&  giocatore->raccogli(rm.itemScontrato)
                     ){
-                        giocatore->muovi(direzione);
+                        giocatore->muovi(livelloCorrente->mappa,direzione);
                         // TODO : mettere a posto il report di raccolta
                         cout << "Hai raccolto...stocazzo\n";
                     } else {
@@ -244,12 +244,12 @@ void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente) {
         &&  livelloCorrente->mobs[t]->getPositionY() == giocatore->getPositionY()
         ) {
             //Muove il Mob solo se é nella stessa stanza del giocatore
-            IAMob(livelloCorrente->mobs[t], giocatore);
+            IAMob(livelloCorrente->mobs[t], giocatore,livelloCorrente);
         }
     }
 }
 
-void IAMob(personaggio *m, personaggio *g) {
+void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
     int dxx = g->getPositionXX() - m->getPositionXX();
     int dyy = g->getPositionYY() - m->getPositionYY();
     int absDxx = abs(dxx);
@@ -264,13 +264,13 @@ void IAMob(personaggio *m, personaggio *g) {
     ) {
         report_attacco ra;
         if (dxx < 0)
-            ra = m->attacca(DIREZIONE_SINISTRA);
+            ra = m->attacca(livelloCorrente->mappa,DIREZIONE_SINISTRA);
         else if (dxx > 0)
-            ra = m->attacca(DIREZIONE_DESTRA);
+            ra = m->attacca(livelloCorrente->mappa,DIREZIONE_DESTRA);
         else if (dyy < 0)
-            ra = m->attacca(DIREZIONE_SU);
+            ra = m->attacca(livelloCorrente->mappa,DIREZIONE_SU);
         else if(dyy > 0)
-            ra = m->attacca(DIREZIONE_GIU);
+            ra = m->attacca(livelloCorrente->mappa,DIREZIONE_GIU);
 
         if(ra.colpito == true && ra.pgColpito == g) {
             char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
@@ -285,14 +285,14 @@ void IAMob(personaggio *m, personaggio *g) {
         //NB il mob non sa cambiare stanza/livello e nemmeno attraversare gli ostacoli
         if(absDxx > absDyy) {
             if (dxx < 0)
-                rm = m->muovi(DIREZIONE_SINISTRA);
+                rm = m->muovi(livelloCorrente->mappa,DIREZIONE_SINISTRA);
             else
-                rm = m->muovi(DIREZIONE_DESTRA);
+                rm = m->muovi(livelloCorrente->mappa,DIREZIONE_DESTRA);
         } else {
             if (dyy < 0)
-                rm = m->muovi(DIREZIONE_SU);
+                rm = m->muovi(livelloCorrente->mappa,DIREZIONE_SU);
             else
-                rm = m->muovi(DIREZIONE_GIU);
+                rm = m->muovi(livelloCorrente->mappa,DIREZIONE_GIU);
         }
     }
 }
