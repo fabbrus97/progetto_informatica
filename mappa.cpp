@@ -389,7 +389,6 @@ ptr_stanza mappa::find_room(int n_stanza) {
  * e sostituito con l'item it
  */
 void mappa::posiziona(ptr_item it, int xm, int ym, int xs, int ys) {
-    cout << "Posiziona: " << xm << "," << ym << " " << xs << "," << ys << "\n";
     ptr_stanza stanza = p[ym][xm];
     ptr_item oldItem = stanza->punti_stanza[ys][xs];
     stanza->punti_stanza[ys][xs] = it;
