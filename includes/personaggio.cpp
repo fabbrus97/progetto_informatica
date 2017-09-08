@@ -1,6 +1,7 @@
 #include <cstdio>
 #include "personaggio.hpp"
 #include "gameobjects.hpp"
+#include "../mappa.hpp" //questo inclune forse è da spostare
 #define CONST_LENGTH 100
 
 personaggio::personaggio() {
@@ -67,12 +68,106 @@ void personaggio::setArmaInUso(arma *new_armaInUso) {
  * riprovare di spostarsi nella stessa direzione.
  */
 report_movimento personaggio::muovi(int direzione) {
+    // TO_CHECK implementazione by simon:
+
+    //anziché un intero, la posizione può essere un carattere
+    //1=nord, 2=sud, 3=est, 4=ovest
+
     report_movimento rm;
     rm.itemScontrato = NULL;
     rm.riuscito = false;
+
+    int x=getPositionX();
+    int y=getPositionY();
+    int xx=getPositionXX();
+    int yy=getPositionYY();
+    char errore[]="Impossibile attraversare";
+
+    switch(direzione){
+        case 1:
+            if (mappa::p[x][y]->punti_stanza[xx-1][yy]->getAttraversabile()) {
+                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx - 1][yy]);
+                rm.riuscito = true;
+            }
+            else {
+                cout << errore << endl;
+                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx-1][yy];
+            }
+            break;
+        case 2:
+            if (mappa::p[x][y]->punti_stanza[xx+1][yy]->getAttraversabile()) {
+                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx + 1][yy]);
+                rm.riuscito = true;
+            }
+            else {
+                cout << errore << endl;
+                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx+1][yy];
+            }
+            break;
+        case 3:
+            if (mappa::p[x][y]->punti_stanza[xx][yy+1]->getAttraversabile()) {
+                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx][yy+1]);
+                rm.riuscito = true;
+            }
+            else {
+                cout << errore << endl;
+                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx][yy+1];
+            }
+            break;
+        case 4:
+            if (mappa::p[x][y]->punti_stanza[xx][yy-1]->getAttraversabile()) {
+                mappa::sposta(this, mappa::p[x][y]->punti_stanza[xx][yy-1]);
+                rm.riuscito = true;
+            }
+            else {
+                cout << errore << endl;
+                rm.itemScontrato = mappa::p[x][y]->punti_stanza[xx][yy-1];
+            }
+            break;
+        default:
+            cout << "Input errato" << endl;
+    }
     return rm;
 }
 
+//possibile implementazione alternativa by simon:
+/*
+void personaggio::muovi_2(int direzione) {
+    //anziché un intero, la posizione può essere un carattere
+    //1=nord, 2=sud, 3=est, 4=ovest
+
+    int x=getPositionX();
+    int y=getPositionY();
+    int xx=getPositionXX();
+    int yy=getPositionYY();
+    char errore[]="Impossibile attraversare";
+
+    switch(direzione){
+        case 1:
+            if (p[x][y]->punti_stanza[xx-1][yy]->getAttraversabile())
+                p[x][y]->punti_stanza[xx-1][yy]=this;
+            else cout << errore << endl;
+            break;
+        case 2:
+            if (p[x][y]->punti_stanza[xx+1][yy]->getAttraversabile())
+                p[x][y]->punti_stanza[xx+1][yy]=this;
+            else cout << errore << endl;
+            break;
+        case 3:
+            if (p[x][y]->punti_stanza[xx][yy+1]->getAttraversabile())
+                p[x][y]->punti_stanza[xx][yy+1]=this;
+            else cout << errore << endl;
+            break;
+        case 4:
+            if (p[x][y]->punti_stanza[xx][yy-1]->getAttraversabile())
+                p[x][y]->punti_stanza[xx][yy-1]=this;
+            else cout << errore << endl;
+            break;
+        default:
+            cout << "Input errato" << endl;
+    }
+}
+*/
 // TODO
 /*
  * Data la gittata dell'arma attualmente in uso il personaggio tenta di attaccare nella scelta

@@ -29,7 +29,7 @@ protected:
     int j;
     //stanza nuova_stanza;
     public:
-    ptr_stanza** p;
+    static ptr_stanza** p;
 
     mappa(int n);
     mappa();
@@ -45,7 +45,7 @@ protected:
     void print_map();
 
     void posiziona(ptr_item it, int xm, int ym, int xs, int ys);
-    void sposta(ptr_item from, ptr_item to);
+    static void sposta(ptr_item from, ptr_item to);
 };
 
 #endif

@@ -41,6 +41,7 @@ public:
     report_movimento muovi(int direzione); //da fare
     bool raccogli(item *daRaccogliere); //da fare
     int infliggi(int danno); //da fare
+    void muovi_2(int direzione); //alternativa
 };
 
 typedef personaggio* ptr_personaggio;

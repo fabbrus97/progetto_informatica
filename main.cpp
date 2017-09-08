@@ -12,7 +12,7 @@
 using namespace std;
 
 struct livello{
-    mappa *mappa;
+    mappa* mappa;
     ptr_personaggio mobs[MAX_MOBS_X_LIV];
     int n_mobs; //numero di mob presenti nel livello
     int liv; //numero del livello da 1 a +inf
