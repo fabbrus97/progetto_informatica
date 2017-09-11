@@ -119,22 +119,29 @@ bool stanza::has_connection(ptr_stanza room){
     return (room->lista_connessioni!=NULL);
 }
 
-bool stanza::posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tentativo) {
-    if (tentativo==(MAX_RIGHE-2)*(MAX_COLONNE-2))
-        return false;
+bool stanza::posiziona_casualmente(ptr_item it) {
 
-    srand(time(0));
-    int x, y;
-    //x e y sono inizializzati in modo che siano un numero tra 1 e MAX_RIGHE-1 o MAX_COLONNE-1
-    y = (rand() % (MAX_RIGHE-1))+1;
-    x = (rand() % (MAX_COLONNE-1))+1;
+    int rand_i = (rand() % (MAX_RIGHE-1))+1;
+    int rand_j = (rand() % (MAX_COLONNE-1))+1;
 
-    if (stanza->punti_stanza[y][x]->getIcon()==ICON_PUNTO){
-        posiziona(oggetto,x,y);
-        return true;
-    } else
-        return posiziona_casualmente(stanza, oggetto, tentativo+1);
+    for(int i = rand_i; i < MAX_RIGHE-1; i++) {
+        for(int j = rand_j; j < MAX_COLONNE-1; j++) {
+            if(punti_stanza[i][j]->getIcon()==ICON_PUNTO) {
+                posiziona(it,j,i);
+                return true;
+            }
+        }
+    }
 
+    for(int i = rand_i; i > 0; i--) {
+        for(int j = rand_j; j > 0; j--) {
+            if(punti_stanza[i][j]->getIcon()==ICON_PUNTO) {
+                posiziona(it,j,i);
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void stanza::posiziona(ptr_item it, int x, int y) {
