@@ -20,7 +20,8 @@ personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUs
 }
 
 personaggio::~personaggio() {
-    delete armaInUso;
+    if(armaInUso != NULL)
+        delete armaInUso;
 }
 
 int personaggio::getPuntiVita() {
@@ -44,6 +45,9 @@ arma *personaggio::getArmaInUso() {
 }
 
 void personaggio::setArmaInUso(arma *new_armaInUso) {
+    if(armaInUso != NULL) {
+        delete armaInUso;
+    }
     armaInUso = new_armaInUso;
 }
 
@@ -136,19 +140,30 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
 
 // TODO
 /*
- * A questa funzione non importa dove si trovi l'oggetto da raccogliere,
- * semplicemente prende atto che puó farlo.
- * Se l'oggetto che sta cercando di raccogliere é per esempio una pozione di vita
- * allora prova ad usarla (non ancora implementate), se invece é un'arma la sostituisce
- * con quella attualmente in uso.
- * Al posto dell'oggetto raccolto ci mette un Punto.
- * Questa funzione NON si preoccupa di liberare la memoria dell'oggetto nel caso fosse stato usato,
- * bensí se sostituisce l'arma attualmente in uso, quella vecchia viene eliminata.
+ * raccoglie l'arma 'daRaccogliere' che si trova posizionata nella mappa 'map'
+ * quindi la sostituisce a quella correntemente usata dal personaggio
  *
  * ritorna true o false nel caso sia rispettivamente riuscito o meno
  * a raccogliere l'oggetto
  */
-bool personaggio::raccogli(item *daRaccogliere) {
+bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
+    if( daRaccogliere == NULL
+    ||  map == NULL
+    ) {
+        return false;
+    }
+
+    int x = daRaccogliere->getPositionX();
+    int y = daRaccogliere->getPositionY();
+    int xx = daRaccogliere->getPositionXX();
+    int yy = daRaccogliere->getPositionYY();
+
+    if(map->p[y][x]->punti_stanza[yy][xx] == daRaccogliere) {
+        map->esci(daRaccogliere);
+        setArmaInUso(daRaccogliere);
+        return true;
+    }
+
     return false;
 }
 
