@@ -116,11 +116,6 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
             break;
     }
 
-    x=getPositionX();
-    y=getPositionY();
-    xx=getPositionXX();
-    yy=getPositionYY();
-
     return rm;
 }
 
