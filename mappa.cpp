@@ -385,3 +385,26 @@ void mappa::esci(ptr_item it) {
     p[ym][xm]->punti_stanza[ys][xs] = NULL;
     posiziona( GameObjects::getNewPunto(), xm, ym, xs, ys );
 }
+
+ptr_stanza mappa::get_stanza_random() {
+    int rand_i = rand() % i;
+    int rand_j = rand() % j;
+
+    for(int tmp_i = rand_i; tmp_i < i; tmp_i++) {
+        for(int tmp_j = rand_j; tmp_j < j; tmp_j++) {
+            if(!p[tmp_i][tmp_j]->isIs_emtpy()) {
+                return p[tmp_i][tmp_j];
+            }
+        }
+    }
+
+    for(int tmp_i = rand_i; tmp_i >= 0; tmp_i--) {
+        for(int tmp_j = rand_j; tmp_j >= 0; tmp_j--) {
+            if(!p[tmp_i][tmp_j]->isIs_emtpy()) {
+                return p[tmp_i][tmp_j];
+            }
+        }
+    }
+
+    return NULL;
+}
