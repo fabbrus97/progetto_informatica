@@ -119,44 +119,6 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
     return rm;
 }
 
-//possibile implementazione alternativa by simon:
-/*
-void personaggio::muovi_2(int direzione) {
-    //anziché un intero, la posizione può essere un carattere
-    //1=nord, 2=sud, 3=est, 4=ovest
-
-    int x=getPositionX();
-    int y=getPositionY();
-    int xx=getPositionXX();
-    int yy=getPositionYY();
-    char errore[]="Impossibile attraversare";
-
-    switch(direzione){
-        case 1:
-            if (p[x][y]->punti_stanza[xx-1][yy]->getAttraversabile())
-                p[x][y]->punti_stanza[xx-1][yy]=this;
-            else cout << errore << endl;
-            break;
-        case 2:
-            if (p[x][y]->punti_stanza[xx+1][yy]->getAttraversabile())
-                p[x][y]->punti_stanza[xx+1][yy]=this;
-            else cout << errore << endl;
-            break;
-        case 3:
-            if (p[x][y]->punti_stanza[xx][yy+1]->getAttraversabile())
-                p[x][y]->punti_stanza[xx][yy+1]=this;
-            else cout << errore << endl;
-            break;
-        case 4:
-            if (p[x][y]->punti_stanza[xx][yy-1]->getAttraversabile())
-                p[x][y]->punti_stanza[xx][yy-1]=this;
-            else cout << errore << endl;
-            break;
-        default:
-            cout << "Input errato" << endl;
-    }
-}
-*/
 // TODO
 /*
  * Data la gittata dell'arma attualmente in uso il personaggio tenta di attaccare nella scelta
