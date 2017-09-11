@@ -73,7 +73,7 @@ void mappa::generate_all_rooms() {
         y = (rand() % i);
         x = j - 1;
         
-        ptr_stanza ultima_stanza = new stanza(y, x, (int) (n_livello * alfa));
+        ptr_stanza ultima_stanza = new stanza(x, y, (int) (n_livello * alfa));
 
         ultima_stanza->setIs_emtpy(false);
         ultima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
