@@ -138,9 +138,9 @@ bool stanza::posiziona_casualmente(ptr_stanza stanza, ptr_item oggetto, int tent
 }
 
 void stanza::posiziona(ptr_item it, int x, int y) {
-    ptr_item oldItem = punti_stanza[y][x];
+    if(punti_stanza[y][x] != NULL)
+        delete punti_stanza[y][x];
+
     punti_stanza[y][x] = it;
     it->setPositionX(getCoor_x(),getCoor_y(),x,y);
-    if(oldItem != NULL)
-        delete oldItem;
 }
