@@ -24,10 +24,12 @@ void init_giocatore(personaggio *);
 void game_loop(personaggio *);
 livello *getNewLivello(int l);
 int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente);
-bool confermaRaccoltaItem(item *it);
+bool confermaRaccoltaArma(personaggio *giocatore, arma *it);
 void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
 void IAMob(personaggio *mob, personaggio *giocatore, livello *livelloCorrente);
+
+void stampaSchedaPersonaggio(personaggio *giocatore);
 
 int main() {
     personaggio giocatore;
@@ -62,7 +64,11 @@ void game_loop(personaggio *giocatore) {
     );
 
     while(!end) {
+        cout << "Mappa livello " << livelloCorrente->liv << "\n";
         livelloCorrente->mappa->print_map();
+        stampaSchedaPersonaggio(giocatore);
+        cout << "\n";
+
         int cambioLiv = turnoGiocatore(giocatore,livelloCorrente);
 
         if(cambioLiv == 0) {
@@ -97,6 +103,7 @@ void game_loop(personaggio *giocatore) {
                 cout << "Sei sceso al livello " << livelloCorrente->liv << "\n";
             }
         }
+        cout << "\n";
     }
 }
 
@@ -118,6 +125,10 @@ livello *getNewLivello(int l) {
         liv->mappa->get_stanza_random()->posiziona_casualmente(liv->mobs[i]);
     }
 
+    liv->mappa->get_stanza_random()->posiziona_casualmente(
+        GameObjects::getNewArmaAnduril()
+    );
+
     return liv;
 }
 
@@ -129,7 +140,6 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
     bool attacca;
     bool muovi;
 
-    cout << "Livello: " << livelloCorrente->liv << "\n";
     cout << "É il tuo turno.\n";
     getGiocatoreInputs(&direzione,&attacca,&muovi);
 
@@ -155,14 +165,17 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
         } else {
             if(rm.itemScontrato != NULL) {
                 if(rm.itemScontrato->getRaccoglibile()) {
-                    if( confermaRaccoltaItem(rm.itemScontrato)
-                    &&  giocatore->raccogli(rm.itemScontrato)
+                    if( rm.itemScontrato->getIcon() == ICON_ARMA
+                    &&  confermaRaccoltaArma(giocatore, (arma *)rm.itemScontrato)
+                    &&  giocatore->raccogliArma(livelloCorrente->mappa, (arma *) rm.itemScontrato)
                     ){
                         giocatore->muovi(livelloCorrente->mappa,direzione);
                         // TODO : mettere a posto il report di raccolta
-                        cout << "Hai raccolto...stocazzo\n";
+                        char nomeItemScontrato[MAX_NOME_COMPLETO_LENGTH];
+                        rm.itemScontrato->getNomeCompleto(nomeItemScontrato);
+                        cout << "Hai raccolto '" << nomeItemScontrato << "'\n";
                     } else {
-                        cout << "Non sei riuscito a raccogliere l'oggetto\n";
+                        cout << "Non sei riuscito a raccogliere l'oggetto..\n";
                     }
                 } else {
                     switch (rm.itemScontrato->getIcon()) {
@@ -183,13 +196,27 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
     return 0;
 }
 
-bool confermaRaccoltaItem(item *it) {
+bool confermaRaccoltaArma(personaggio *giocatore, arma *armaDaRacc) {
     char inConferma;
     bool input_error;
     bool conferma;
+
+    arma *armaInUso = giocatore->getArmaInUso();
+
+    char nomeArmaInUso[MAX_NOME_COMPLETO_LENGTH];
+    char nomeArmaDaRacc[MAX_NOME_COMPLETO_LENGTH];
+
+    if(armaInUso != NULL){
+        armaInUso->getNomeCompleto(nomeArmaInUso);
+        armaDaRacc->getNomeCompleto(nomeArmaDaRacc);
+    } else {
+        return true;
+    }
+    cout << "Arma in uso : '" << nomeArmaInUso << "' (" << armaInUso->getDanniArma() << "d / " << armaInUso->getRange() << "r)\n";
+    cout << "Arma trovata: '" << nomeArmaDaRacc << "' (" << armaDaRacc->getDanniArma() << "d / " << armaDaRacc->getRange() << "r)\n";
     do {
         input_error = false;
-        cout<< "Sei sicuro di volere raccogliere questo oggetto?(y/n): ";
+        cout << "Sei sicuro di volere raccogliere questa arma? L'attuale in uso verrà persa.(y/n): ";
         cin >> inConferma;
         switch(inConferma) {
             case 'y':
@@ -318,5 +345,27 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
             else
                 rm = m->muovi(livelloCorrente->mappa,DIREZIONE_GIU);
         }
+    }
+}
+
+
+void stampaSchedaPersonaggio(personaggio *giocatore) {
+    char nomeCompleto[MAX_NOME_COMPLETO_LENGTH];
+    char armaNomeCompleto[MAX_NOME_COMPLETO_LENGTH];
+
+    giocatore->getNomeCompleto(nomeCompleto);
+    if(giocatore->getArmaInUso()) {
+        giocatore->getArmaInUso()->getNomeCompleto(armaNomeCompleto);
+    }
+
+    cout << "> " << nomeCompleto << "\n";
+    cout << "Vita: " << giocatore->getPuntiVita() << "\n";
+    cout << "Exp: " << giocatore->getPuntiEsperienza() << "\n";
+    if(giocatore->getArmaInUso() != NULL ) {
+        cout << "Arma: " << armaNomeCompleto << "\n";
+        cout << "- Danni: " << giocatore->getArmaInUso()->getDanniArma() << "d\n";
+        cout << "- Range: " << giocatore->getArmaInUso()->getRange() << "r\n";
+    } else {
+        cout << "Arma: <a mani vuote>\n";
     }
 }
