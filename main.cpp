@@ -3,7 +3,6 @@
 #include "mappa.hpp"
 #include "includes/gameobjects.hpp"
 #include "includes/personaggio.hpp"
-#include <cstdlib>
 
 //
 #define MAX_MOBS_X_LIV 70
@@ -112,13 +111,12 @@ livello *getNewLivello(int l) {
     liv->mappa = new mappa(l);
     liv->mappa->generate_map();
 
-    liv->n_mobs = MIN( 10*log(1+l), MAX_MOBS_X_LIV);
+    liv->n_mobs = MIN( 6*log(1+l), MAX_MOBS_X_LIV);
 
     for(int i=0; i<liv->n_mobs; i++) {
         liv->mobs[i] = GameObjects::getNewMob();
+        liv->mappa->get_stanza_random()->posiziona_casualmente(liv->mobs[i]);
     }
-
-    //TODO: posiziona i mob
 
     return liv;
 }
@@ -283,11 +281,9 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
     int absDxx = abs(dxx);
     int absDyy = abs(dyy);
 
-    if(m->getArmaInUso() == NULL)
-        return;
-
     // Se il giocatore é nel range di attacco del mob, allora il mob lo attacca
-    if( m->getPositionXX() == g->getPositionXX() && m->getArmaInUso()->getRange() >= absDyy
+    if( m->getArmaInUso() != NULL
+    &&  m->getPositionXX() == g->getPositionXX() && m->getArmaInUso()->getRange() >= absDyy
     &&  m->getPositionYY() == g->getPositionYY() && m->getArmaInUso()->getRange() >= absDxx
     ) {
         report_attacco ra;
