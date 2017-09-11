@@ -20,7 +20,8 @@ personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUs
 }
 
 personaggio::~personaggio() {
-    delete armaInUso;
+    if(armaInUso != NULL)
+        delete armaInUso;
 }
 
 int personaggio::getPuntiVita() {
@@ -44,6 +45,9 @@ arma *personaggio::getArmaInUso() {
 }
 
 void personaggio::setArmaInUso(arma *new_armaInUso) {
+    if(armaInUso != NULL) {
+        delete armaInUso;
+    }
     armaInUso = new_armaInUso;
 }
 
@@ -119,44 +123,6 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
     return rm;
 }
 
-//possibile implementazione alternativa by simon:
-/*
-void personaggio::muovi_2(int direzione) {
-    //anziché un intero, la posizione può essere un carattere
-    //1=nord, 2=sud, 3=est, 4=ovest
-
-    int x=getPositionX();
-    int y=getPositionY();
-    int xx=getPositionXX();
-    int yy=getPositionYY();
-    char errore[]="Impossibile attraversare";
-
-    switch(direzione){
-        case 1:
-            if (p[x][y]->punti_stanza[xx-1][yy]->getAttraversabile())
-                p[x][y]->punti_stanza[xx-1][yy]=this;
-            else cout << errore << endl;
-            break;
-        case 2:
-            if (p[x][y]->punti_stanza[xx+1][yy]->getAttraversabile())
-                p[x][y]->punti_stanza[xx+1][yy]=this;
-            else cout << errore << endl;
-            break;
-        case 3:
-            if (p[x][y]->punti_stanza[xx][yy+1]->getAttraversabile())
-                p[x][y]->punti_stanza[xx][yy+1]=this;
-            else cout << errore << endl;
-            break;
-        case 4:
-            if (p[x][y]->punti_stanza[xx][yy-1]->getAttraversabile())
-                p[x][y]->punti_stanza[xx][yy-1]=this;
-            else cout << errore << endl;
-            break;
-        default:
-            cout << "Input errato" << endl;
-    }
-}
-*/
 // TODO
 /*
  * Data la gittata dell'arma attualmente in uso il personaggio tenta di attaccare nella scelta
@@ -174,19 +140,30 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
 
 // TODO
 /*
- * A questa funzione non importa dove si trovi l'oggetto da raccogliere,
- * semplicemente prende atto che puó farlo.
- * Se l'oggetto che sta cercando di raccogliere é per esempio una pozione di vita
- * allora prova ad usarla (non ancora implementate), se invece é un'arma la sostituisce
- * con quella attualmente in uso.
- * Al posto dell'oggetto raccolto ci mette un Punto.
- * Questa funzione NON si preoccupa di liberare la memoria dell'oggetto nel caso fosse stato usato,
- * bensí se sostituisce l'arma attualmente in uso, quella vecchia viene eliminata.
+ * raccoglie l'arma 'daRaccogliere' che si trova posizionata nella mappa 'map'
+ * quindi la sostituisce a quella correntemente usata dal personaggio
  *
  * ritorna true o false nel caso sia rispettivamente riuscito o meno
  * a raccogliere l'oggetto
  */
-bool personaggio::raccogli(item *daRaccogliere) {
+bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
+    if( daRaccogliere == NULL
+    ||  map == NULL
+    ) {
+        return false;
+    }
+
+    int x = daRaccogliere->getPositionX();
+    int y = daRaccogliere->getPositionY();
+    int xx = daRaccogliere->getPositionXX();
+    int yy = daRaccogliere->getPositionYY();
+
+    if(map->p[y][x]->punti_stanza[yy][xx] == daRaccogliere) {
+        map->esci(daRaccogliere);
+        setArmaInUso(daRaccogliere);
+        return true;
+    }
+
     return false;
 }
 

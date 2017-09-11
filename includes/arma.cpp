@@ -5,7 +5,7 @@
 arma::arma(){}
 
 arma::arma(char nome[], int ra, int dam, int exp):
-    item(ICON_ARMA, true, true, 7, nome,  -1, -1, -1, -1)
+    item(ICON_ARMA, false, true, 7, nome,  -1, -1, -1, -1)
 {
     range = ra;
     danniArma = dam;
