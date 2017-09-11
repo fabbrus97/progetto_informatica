@@ -73,7 +73,7 @@ void mappa::generate_all_rooms() {
         y = (rand() % i);
         x = j - 1;
         
-        ptr_stanza ultima_stanza = new stanza(y, x, (int) (n_livello * alfa));
+        ptr_stanza ultima_stanza = new stanza(x, y, (int) (n_livello * alfa));
 
         ultima_stanza->setIs_emtpy(false);
         ultima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
@@ -370,12 +370,18 @@ void mappa::posiziona(ptr_item it, int xm, int ym, int xs, int ys) {
  * Quindi libera la memoria dell'item to
  */
 void mappa::sposta(ptr_item from, ptr_item to) {
-    int xm = from->getPositionX();
-    int ym = from->getPositionY();
-    int xs = from->getPositionXX();
-    int ys = from->getPositionYY();
-
+    esci(from);
     posiziona(from, to->getPositionX(), to->getPositionY(), to->getPositionXX(), to->getPositionYY());
+}
+
+void mappa::esci(ptr_item it) {
+    int xm = it->getPositionX();
+    int ym = it->getPositionY();
+    int xs = it->getPositionXX();
+    int ys = it->getPositionYY();
+
+    it->setPositionX(-1,-1,-1,-1);
+
     p[ym][xm]->punti_stanza[ys][xs] = NULL;
     posiziona( GameObjects::getNewPunto(), xm, ym, xs, ys );
 }

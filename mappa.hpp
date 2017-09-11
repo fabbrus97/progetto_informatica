@@ -48,6 +48,7 @@ protected:
 
     void posiziona(ptr_item it, int xm, int ym, int xs, int ys);
     void sposta(ptr_item from, ptr_item to);
+    void esci(ptr_item it);
 };
 
 #endif

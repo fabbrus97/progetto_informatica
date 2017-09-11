@@ -3,6 +3,7 @@
 #include "mappa.hpp"
 #include "includes/gameobjects.hpp"
 #include "includes/personaggio.hpp"
+#include <cstdlib>
 
 //
 #define MAX_MOBS_X_LIV 70
@@ -68,28 +69,35 @@ void game_loop(personaggio *giocatore) {
         if(cambioLiv == 0) {
             turnoDeiMob(giocatore,livelloCorrente);
         } else if(cambioLiv > 0) {
+            livelloCorrente->mappa->esci(giocatore);
             if(livelloCorrente->next == NULL) {
                 livello *nuovoLivello = getNewLivello( 1 + livelloCorrente->liv );
                 livelloCorrente->next = nuovoLivello;
                 nuovoLivello->prev = livelloCorrente;
             }
             livelloCorrente = livelloCorrente->next;
-            // TODO : Posizionare il giocatore nel livello
-            livelloCorrente->mappa->sposta(
-                    giocatore,
-                    livelloCorrente->mappa->find_first(0)->punti_stanza[1][1]
+            ptr_stanza st = livelloCorrente->mappa->find_first(0);
+            livelloCorrente->mappa->posiziona(
+                giocatore,
+                st->getCoor_x(),
+                st->getCoor_y(),
+                1,1
             );
+            cout << "Sei salito al livello " << livelloCorrente->liv << "\n";
         } else {
             if(livelloCorrente->prev != NULL) {
+                livelloCorrente->mappa->esci(giocatore);
                 livelloCorrente = livelloCorrente->prev;
-                // TODO : Posizionare il giocatore nel livello
-                livelloCorrente->mappa->sposta(
-                        giocatore,
-                        livelloCorrente->mappa->find_first(0)->punti_stanza[1][1]
+                ptr_stanza st = livelloCorrente->mappa->find_first(0);
+                livelloCorrente->mappa->posiziona(
+                    giocatore,
+                    st->getCoor_x(),
+                    st->getCoor_y(),
+                    1,1
                 );
+                cout << "Sei sceso al livello " << livelloCorrente->liv << "\n";
             }
         }
-
     }
 }
 
@@ -99,6 +107,7 @@ livello *getNewLivello(int l) {
     liv = new livello;
     liv->prev = NULL;
     liv->next = NULL;
+    liv->liv = l;
 
     liv->mappa = new mappa(l);
     liv->mappa->generate_map();
@@ -122,8 +131,8 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
     bool attacca;
     bool muovi;
 
+    cout << "Livello: " << livelloCorrente->liv << "\n";
     cout << "É il tuo turno.\n";
-
     getGiocatoreInputs(&direzione,&attacca,&muovi);
 
     if(attacca) {
@@ -172,8 +181,6 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                 cout << "Oggetto a NULL\n";
             }
         }
-        cout << "rmRiuscito: " << rm.riuscito << "\n";
-        cout << "rmItem: " << rm.itemScontrato << "\n";
     }
     return 0;
 }
