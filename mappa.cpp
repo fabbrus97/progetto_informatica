@@ -42,6 +42,14 @@ int mappa::getN_livello() {
     return n_livello;
 }
 
+int mappa::get_i(){
+    return i;
+}
+
+int mappa::get_j(){
+    return j;
+}
+
 bool mappa::check_room(int x, int y) {
     //ritorna true se una stanza esiste, false altrimenti
     return (y>=0 && y<i && x>=0 && x<j && p[y][x]!=NULL);
@@ -152,28 +160,6 @@ void mappa::add_doors(ptr_stanza room) {
 
         add_doors(p[room->getCoor_y()][room->getCoor_x()-1]);
     }
-}
-
-void mappa::print_map() {
-    //cout << "\033[37;46m"; //cl white, bg cyano
-    for (int tmp_i = 0; tmp_i < i; tmp_i++) {
-        for (int y = 0; y < MAX_RIGHE; y++) {
-            for (int tmp_j = 0; tmp_j < j; tmp_j++) {
-                stanza tmp = *p[tmp_i][tmp_j];
-
-                for (int x = 0; x < MAX_COLONNE; x++) {
-                    //std::stringstream s;
-                    //s << "\033[";
-                    //s << (tmp.punti_stanza[y][x]->getColore() + 30);
-                    //s << ";46m";
-                    //cout << s.str();
-                    cout << tmp.punti_stanza[y][x]->getIcon();
-                }
-            }
-            cout << endl;
-        }
-    }
-    //cout << "\033[37;40m"; //cl white, bg nero
 }
 
 ptr_stanza mappa::find_first(int row) {

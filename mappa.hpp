@@ -42,9 +42,10 @@ protected:
     void second_linking(ptr_stanza room, ptr_stanza known_room);
     void add_doors(ptr_stanza room);
     void generate_map();
-    void print_map();
     ptr_stanza find_room(int n_stanza);
     int getN_livello();
+    int get_i();
+    int get_j();
 
     void posiziona(ptr_item it, int xm, int ym, int xs, int ys);
     void sposta(ptr_item from, ptr_item to);
