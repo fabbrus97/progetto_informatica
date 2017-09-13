@@ -26,6 +26,8 @@ class personaggio : public item {
 protected:
     int puntiEsperienza;
     int puntiVita;
+    int difesa;
+    int attacco;
     arma *armaInUso;
 
 public:
@@ -36,6 +38,12 @@ public:
     void setPuntiVita (int new_puntiVita);
     int getPuntiEsperienza();
     void setPuntiEsperienza(int new_puntiEsperienza);
+    int getAttacco();
+    void setAttacco(int a);
+    void incAttacco();
+    int getDifesa();
+    void setDifesa(int d);
+    void incDifesa();
     arma *getArmaInUso();
     void setArmaInUso(arma *new_armaInUso);
     report_attacco attacca(mappa *map, int direzione); //da fare

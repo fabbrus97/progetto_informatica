@@ -10,6 +10,8 @@ personaggio::personaggio() {
     puntiEsperienza = 0;
     puntiVita = 100;
     armaInUso = NULL;
+    setDifesa(0);
+    setAttacco(0);
 }
 
 personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUso)
@@ -17,6 +19,8 @@ personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUs
     puntiEsperienza = pExp;
     puntiVita = pVita;
     armaInUso = inUso;
+    setDifesa(0);
+    setAttacco(0);
 }
 
 personaggio::~personaggio() {
@@ -38,6 +42,25 @@ int personaggio::getPuntiEsperienza() {
 
 void personaggio::setPuntiEsperienza(int new_puntiEsperienza) {
     puntiEsperienza = new_puntiEsperienza;
+}
+
+int personaggio::getAttacco() {
+    return attacco;
+}
+void personaggio::setAttacco(int a) {
+    attacco = a;
+}
+void personaggio::incAttacco() {
+    attacco++;
+}
+int personaggio::getDifesa() {
+    return difesa;
+}
+void personaggio::setDifesa(int d) {
+    difesa = d;
+}
+void personaggio::incDifesa() {
+    difesa++;
 }
 
 arma *personaggio::getArmaInUso() {
