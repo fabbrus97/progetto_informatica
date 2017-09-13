@@ -28,7 +28,8 @@ struct spawn_point {
 
 class mappa {
 protected:
-    int n_livello;
+    int contatore_stanze;
+    int n_stanze;
     int i;
     int j;
     //stanza nuova_stanza;
@@ -48,7 +49,6 @@ protected:
     void add_doors(ptr_stanza room);
     void generate_map();
     ptr_stanza find_room(int n_stanza);
-    int getN_livello();
     int get_i();
     int get_j();
 

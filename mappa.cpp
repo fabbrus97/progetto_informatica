@@ -8,14 +8,12 @@
 #include "includes/item.hpp"
 #include "includes/arma.hpp"
 //contatore stanze
-int contatore_stanze=1;
 
 mappa::mappa(int n) {
-    n_livello=n;
+    n_stanze = n>=1 ? n : 1;
+    contatore_stanze = 1;
 
     i=1; j=2;
-
-    int n_stanze=(int)(n_livello*alfa);
 
     while (i*j < n_stanze) {
         i = i + 1;
@@ -40,10 +38,6 @@ mappa::mappa(int n) {
 }
 
 mappa::mappa(){}
-
-int mappa::getN_livello() {
-    return n_livello;
-}
 
 int mappa::get_i(){
     return i;
@@ -71,7 +65,7 @@ void mappa::generate_all_rooms() {
     ptr_stanza prima_stanza = new stanza(x, y, 1);
     prima_stanza->setIs_emtpy(false);
 
-    if (n_livello == 1) {
+    if (n_stanze == 1) {
         prima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
         entrata.x = prima_stanza->getCoor_x();
         entrata.y = prima_stanza->getCoor_y();
@@ -89,11 +83,11 @@ void mappa::generate_all_rooms() {
 
     //se non siamo nel primo livello, generiamo l'ultima stanza (che va nell'ultima colonna);
     //cout << "adesso ci occupiamo dell'ultima stanza" << endl;
-    if (n_livello != 1) {
+    if (n_stanze != 1) {
         y = (rand() % i);
         x = j - 1;
         
-        ptr_stanza ultima_stanza = new stanza(x, y, (int) (n_livello * alfa));
+        ptr_stanza ultima_stanza = new stanza(x, y, n_stanze);
 
         ultima_stanza->setIs_emtpy(false);
         ultima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
@@ -113,7 +107,7 @@ void mappa::generate_all_rooms() {
         contatore_stanze++;
     }
     //continuiamo a generare stanze finché non raggiungiamo il massimo consentito dal livello
-    while (contatore_stanze <= (int) (n_livello * alfa)) {
+    while (contatore_stanze <= n_stanze) {
         y = (rand() % i);
         x = (rand() % j);
 
