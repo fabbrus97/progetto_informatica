@@ -3,6 +3,7 @@
 #include "mappa.hpp"
 #include "includes/gameobjects.hpp"
 #include "includes/personaggio.hpp"
+#include "termcolor.hpp"
 
 //
 #define MAX_MOBS_X_LIV 70
@@ -28,6 +29,7 @@ bool confermaRaccoltaArma(personaggio *giocatore, arma *it);
 void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
 void IAMob(personaggio *mob, personaggio *giocatore, livello *livelloCorrente);
+void print_map(mappa *map);
 
 void stampaSchedaPersonaggio(personaggio *giocatore);
 
@@ -66,7 +68,7 @@ void game_loop(personaggio *giocatore) {
 
     while(!end) {
         cout << "Mappa livello " << livelloCorrente->liv << "\n";
-        livelloCorrente->mappa->print_map();
+        print_map(livelloCorrente->mappa);
         stampaSchedaPersonaggio(giocatore);
         cout << "\n";
 
@@ -367,5 +369,42 @@ void stampaSchedaPersonaggio(personaggio *giocatore) {
         cout << "- Range: " << giocatore->getArmaInUso()->getRange() << "r\n";
     } else {
         cout << "Arma: <a mani vuote>\n";
+    }
+}
+
+void print_map(mappa *map) {
+    for (int i = 0; i < map->get_i(); i++) {
+        for (int y = 0; y < MAX_RIGHE; y++) {
+            for (int j = 0; j < map->get_j(); j++) {
+                ptr_stanza tmp = map->p[i][j];
+
+                for (int x = 0; x < MAX_COLONNE; x++) {
+                    char icon = tmp->punti_stanza[y][x]->getIcon();
+
+                    //cout << termcolor::on_white;
+                    switch(icon) {
+                        case ICON_LIV_PREC:
+                        case ICON_LIV_SUCC:
+                        case ICON_PORTA:
+                            cout << termcolor::cyan;
+                            break;
+                        case ICON_GIOCATORE:
+                            cout << termcolor::green;
+                            break;
+                        case ICON_MOB:
+                            cout << termcolor::red;
+                            break;
+                        case ICON_ARMA:
+                            cout << termcolor::yellow;
+                            break;
+                        default:
+                            cout << termcolor::grey;
+                            break;
+                    }
+                    cout << icon << termcolor::reset;
+                }
+            }
+            cout << endl;
+        }
     }
 }
