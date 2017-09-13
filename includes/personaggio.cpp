@@ -4,8 +4,9 @@
 #include "../mappa.hpp" //questo inclune forse è da spostare
 #define CONST_LENGTH 100
 
-personaggio::personaggio() {
-    icon = ICON_MOB;
+personaggio::personaggio()
+    :item(ICON_MOB, false, false)
+{
     setNomeCompleto("Mob");
     setPuntiEsperienza(0);
     setPuntiVita(MAX_PUNTI_VITA);
