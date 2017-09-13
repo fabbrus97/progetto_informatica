@@ -12,6 +12,10 @@ typedef stanza* ptr_stanza;
 
 struct connessioni{
     ptr_stanza stanza_puntata;
+    ptr_item porta; //questa è la porta della stanza di partenza
+    int x;
+    int y;
+    //queste sono le coordinate di arrivo della stanza puntata
     connessioni *next;
 };
 typedef connessioni * ptr_connessioni;

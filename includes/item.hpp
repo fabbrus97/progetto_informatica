@@ -21,6 +21,9 @@ protected:
     int posizioneY; //coordinata y rispetto alla mappa
     int posizioneXX; //coordinata x rispetto alla stanza
     int posizioneYY; //coordinata y rispetto alla stanza
+
+    int teletrasporto[4];
+
 public:
     item();
     item(char icon, bool isAttraversabile, bool isRaccoglibile);

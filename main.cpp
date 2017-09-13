@@ -54,7 +54,7 @@ void init_giocatore(personaggio *giocatore) {
 
 void game_loop(personaggio *giocatore) {
     bool end = false;
-    livello *primoLivello = getNewLivello(1);
+    livello *primoLivello = getNewLivello(5);
     livello *livelloCorrente = primoLivello;
 
     // TODO : Posizionare il giocatore nel livello
