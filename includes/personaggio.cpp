@@ -9,7 +9,7 @@ personaggio::personaggio() {
     setNomeCompleto("Mob");
     setPuntiEsperienza(0);
     setPuntiVita(MAX_PUNTI_VITA);
-    setArmaInUso(NULL);
+    armaInUso = NULL;
 
     setDifesa(0);
     setAttacco(0);
@@ -19,7 +19,7 @@ personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUs
         :item(icon, false, false, 7, nome, -1, -1, -1, -1) {
     setPuntiEsperienza(pExp);
     setPuntiVita(pVita);
-    setArmaInUso(inUso);
+    armaInUso = inUso;
 
     setDifesa(0);
     setAttacco(0);
