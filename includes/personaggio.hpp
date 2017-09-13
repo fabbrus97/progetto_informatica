@@ -49,8 +49,8 @@ public:
     arma *getArmaInUso();
     void setArmaInUso(arma *new_armaInUso);
     report_attacco attacca(mappa *map, int direzione); //da fare
-    report_movimento muovi(mappa *map, int direzione); //da fare
-    bool raccogliArma(mappa *map, arma *daRaccogliere); //da fare
+    report_movimento muovi(mappa *map, int direzione);
+    bool raccogliArma(mappa *map, arma *daRaccogliere);
     int infliggi(int danno); //da fare
 };
 
