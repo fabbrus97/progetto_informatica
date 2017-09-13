@@ -167,99 +167,110 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
     int coorYY = getPositionYY();
     int coorX = getPositionX();
     int coorY = getPositionY();
-    int watchMaxRighe = coorY;
-    int watchMaxColonne = coorX;
-    ptr_item puntatore = map->p[coorX][coorY]->punti_stanza[coorXX][coorYY];
-    ptr_item mobColpito = map->p[coorXX][coorYY]->punti_stanza[coorX][coorY];
+    int currentYY = coorYY;
+    int currentXX = coorXX;
     report_attacco ra;
+
+    ptr_item puntatore = this;
+    ptr_personaggio mobColpito;
+
     ra.colpito = false;
     ra.pgColpito = NULL;
     ra.danniInflitti = 0;
-    if (direzione == DIREZIONE_SU)
+
+    if(getArmaInUso() == NULL)
+        return ra;
+
+    if (direzione == DIREZIONE_GIU)
     {
-        while (!ra.colpito || watchMaxRighe < (MAX_RIGHE - 1 ))
+        while (!ra.colpito && currentYY < (MAX_RIGHE - 2 ))
         {
             if (puntatore->getIcon() == ICON_MOB)
             {
-                mobColpito = (personaggio *)map->p[coorX][coorY]->punti_stanza[puntatore->getPositionXX()][getPositionYY()];
-                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                mobColpito = (personaggio *)puntatore;
+                if (fabs(getPositionYY() - mobColpito->getPositionYY()) <= getArmaInUso()->getRange())
                 {
                     ra.pgColpito = (personaggio *)mobColpito;
                     ra.colpito = true;
-                    ra.danniInflitti = personaggio::getArmaInUso()->getDanniArma();
+                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                } else {
+                    return ra;
                 }
             }
             else
             {
-                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX][coorYY + 1];
-                watchMaxRighe = watchMaxRighe + 1;
+                currentYY = currentYY + 1;
+                puntatore = map->p[coorYY][coorXX]->punti_stanza[currentYY][coorX];
             }
         }
-        puntatore = NULL;
     }
     else if (direzione == DIREZIONE_DESTRA)
     {
-        while (!ra.colpito || watchMaxColonne < ((MAX_COLONNE - 1) - coorX))
+        while (!ra.colpito && currentXX < (MAX_COLONNE - 2))
         {
             if (puntatore -> getIcon() == ICON_MOB)
             {
-                mobColpito = (personaggio *)map->p[coorX][coorY]->punti_stanza[puntatore->getPositionXX()][getPositionYY()];
-                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                mobColpito = (personaggio *)puntatore;
+                if (fabs(getPositionXX() - mobColpito->getPositionXX()) <= getArmaInUso()->getRange())
                 {
                     ra.pgColpito = (personaggio *) mobColpito;
                     ra.colpito = true;
-                    ra.danniInflitti = getArmaInUso()->getDanniArma();
+                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                } else {
+                    return ra;
                 }
             }
             else
             {
-                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX+1][coorYY];
-                watchMaxColonne = watchMaxColonne + 1;
+                currentXX = currentXX + 1;
+                puntatore = map->p[coorY][coorX]->punti_stanza[coorYY][currentXX];
             }
         }
-        puntatore = NULL;
     }
-    else if (direzione == DIREZIONE_GIU)
+    else if (direzione == DIREZIONE_SU)
     {
-        while (!ra.colpito || watchMaxRighe < ((MAX_RIGHE - 1) - watchMaxRighe))
+        while (!ra.colpito && currentYY > 0)
         {
             if (puntatore->getIcon() == ICON_MOB)
             {
-                mobColpito = (personaggio *)map->p[coorX][coorY]->punti_stanza[puntatore->getPositionXX()][getPositionYY()];
-                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                mobColpito = (personaggio *)puntatore;
+                if (fabs(getPositionYY() - mobColpito->getPositionYY()) <= getArmaInUso()->getRange())
                 {
                     ra.pgColpito = (personaggio *)mobColpito;
                     ra.colpito = true;
-                    ra.danniInflitti = getArmaInUso()->getDanniArma();
+                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                } else {
+                    return ra;
                 }
             }
             else
             {
-                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX][coorYY - 1];
-                watchMaxRighe = watchMaxRighe + 1;
+                currentYY = currentYY - 1;
+                puntatore = map->p[coorY][coorX]->punti_stanza[currentYY][coorXX];
             }
         }
-        puntatore = NULL;
     }
     else if (direzione == DIREZIONE_SINISTRA)
     {
-        while (!ra.colpito || watchMaxColonne < ((MAX_COLONNE - 1) - watchMaxColonne))
+        while (!ra.colpito && currentXX > 0)
         {
             if (puntatore->getIcon() == ICON_MOB)
             {
-                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                mobColpito = (personaggio *)puntatore;
+                if (fabs(getPositionXX() - mobColpito->getPositionXX()) <= getArmaInUso()->getRange())
                 {
-                    ra.pgColpito = (personaggio *) mobColpito;
+                    ra.pgColpito = mobColpito;
                     ra.colpito = true;
-                    ra.danniInflitti = getArmaInUso()->getDanniArma();
+                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                } else {
+                    return ra;
                 }
             }
             else
             {
-                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX - 1][coorYY];
-                watchMaxColonne = watchMaxColonne + 1;
+                currentXX = currentXX - 1;
+                puntatore = map->p[coorY][coorX]->punti_stanza[coorYY][currentXX];
             }
-            puntatore = NULL;
         }
     }
     return ra;
@@ -309,11 +320,11 @@ bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
  *
  * La funzione ritorna il danno effettivamente inflitto (al momento pari a 'danno')
  */
-int personaggio::infliggi(int danno) {
+int personaggio::infliggi(int danno) {/*
     int dannoEffettivo = MAX_PUNTI_VITA * danno / (MAX_PUNTI_VITA + difesa);
     setPuntiVita(
         getPuntiVita() - dannoEffettivo
     );
 
-    return dannoEffettivo;
+    return dannoEffettivo;*/ return danno;
 }
