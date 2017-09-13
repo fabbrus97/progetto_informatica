@@ -45,6 +45,7 @@ void init_giocatore(personaggio *giocatore) {
     cout << "Come ti chiami?\n";
     cin >> nome;
     giocatore->setNomeCompleto(nome);
+    giocatore->setArmaInUso(GameObjects::getNewSpadaRotta());
 
     giocatore->setIcon(ICON_GIOCATORE);
 }

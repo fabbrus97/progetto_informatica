@@ -32,6 +32,7 @@ public:
     static ptr_item getNewLivSucc();
     static ptr_item getNewLivPrec();
 
+    static ptr_arma getNewSpadaRotta();
     static ptr_arma getNewArmaAnduril();
     static ptr_arma getNewArmaGlamdring();
     static ptr_arma getNewArmaPugnaleMorgul();

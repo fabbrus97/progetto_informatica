@@ -31,6 +31,9 @@ ptr_item GameObjects::getNewLivPrec() {
 }
 
 // ARMI
+ptr_arma GameObjects::getNewSpadaRotta() {
+    return new arma("Spada rotta",1,1,0);
+}
 ptr_arma GameObjects::getNewArmaAnduril() {
     return new arma("Spada di Aragorn",1,5,0); //spada di Aragorn
 }
