@@ -213,5 +213,10 @@ bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
  * La funzione ritorna il danno effettivamente inflitto (al momento pari a 'danno')
  */
 int personaggio::infliggi(int danno) {
+    int dannoEffettivo = MAX_PUNTI_VITA * danno / (MAX_PUNTI_VITA + difesa);
+    setPuntiVita(
+        getPuntiVita() - dannoEffettivo
+    );
 
+    return dannoEffettivo;
 }
