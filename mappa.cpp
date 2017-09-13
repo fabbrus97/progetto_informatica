@@ -8,14 +8,12 @@
 #include "includes/item.hpp"
 #include "includes/arma.hpp"
 //contatore stanze
-int contatore_stanze=1;
 
 mappa::mappa(int n) {
-    n_livello=n;
+    n_stanze = n>=1 ? n : 1;
+    contatore_stanze = 1;
 
     i=1; j=2;
-
-    int n_stanze=(int)(n_livello*alfa);
 
     while (i*j < n_stanze) {
         i = i + 1;
@@ -29,17 +27,24 @@ mappa::mappa(int n) {
         p[tmp] = new ptr_stanza[j];
     }
     //inizializza l'array a NULL
-    for (int y=i-1; y>=0; y--)
-        for (int x=j-1; x>=0; x--) {
+    for (int y=i-1; y>=0; y--) {
+        for (int x = j - 1; x >= 0; x--) {
             p[y][x] = NULL;
-
         }
+    }
+
+    entrata.x = entrata.y = entrata.xx = entrata.yy = -1;
+    uscita.x = uscita.y = uscita.xx = uscita.yy = -1;
 }
 
 mappa::mappa(){}
 
-int mappa::getN_livello() {
-    return n_livello;
+int mappa::get_i(){
+    return i;
+}
+
+int mappa::get_j(){
+    return j;
 }
 
 bool mappa::check_room(int y, int x) {
@@ -60,8 +65,17 @@ void mappa::generate_all_rooms() {
     ptr_stanza prima_stanza = new stanza(x, y, 1);
     prima_stanza->setIs_emtpy(false);
 
-    if (n_livello == 1) {
+    if (n_stanze == 1) {
         prima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
+        entrata.x = prima_stanza->getCoor_x();
+        entrata.y = prima_stanza->getCoor_y();
+        entrata.xx = 1;
+        entrata.yy = 3;
+
+        uscita.x = prima_stanza->getCoor_x();
+        uscita.y = prima_stanza->getCoor_y();
+        uscita.xx = MAX_COLONNE-2;
+        uscita.yy = MAX_RIGHE/2;
     }
 
     p[y][x] = prima_stanza;
@@ -69,23 +83,31 @@ void mappa::generate_all_rooms() {
 
     //se non siamo nel primo livello, generiamo l'ultima stanza (che va nell'ultima colonna);
     //cout << "adesso ci occupiamo dell'ultima stanza" << endl;
-    if (n_livello != 1) {
+    if (n_stanze != 1) {
         y = (rand() % i);
         x = j - 1;
         
-        ptr_stanza ultima_stanza = new stanza(x, y, (int) (n_livello * alfa));
+        ptr_stanza ultima_stanza = new stanza(x, y, n_stanze);
 
         ultima_stanza->setIs_emtpy(false);
         ultima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
+        uscita.x = ultima_stanza->getCoor_x();
+        uscita.y = ultima_stanza->getCoor_y();
+        uscita.xx = MAX_COLONNE-2;
+        uscita.yy = MAX_RIGHE/2;
 
         //aggiungiamo anche la porta per tornare al livello precedente;
         prima_stanza->posiziona(GameObjects::getNewLivPrec(),0,3);
+        entrata.x = prima_stanza->getCoor_x();
+        entrata.y = prima_stanza->getCoor_y();
+        entrata.xx = 1;
+        entrata.yy = 3;
 
         p[y][x] = ultima_stanza;
         contatore_stanze++;
     }
     //continuiamo a generare stanze finché non raggiungiamo il massimo consentito dal livello
-    while (contatore_stanze <= (int) (n_livello * alfa)) {
+    while (contatore_stanze <= n_stanze) {
         y = (rand() % i);
         x = (rand() % j);
 
@@ -178,28 +200,6 @@ void mappa::add_doors(ptr_stanza room) {
 
         add_doors(p[room->getCoor_y()][room->getCoor_x()-1]);
     }
-}
-
-void mappa::print_map() {
-    //cout << "\033[37;46m"; //cl white, bg cyano
-    for (int tmp_i = 0; tmp_i < i; tmp_i++) {
-        for (int y = 0; y < MAX_RIGHE; y++) {
-            for (int tmp_j = 0; tmp_j < j; tmp_j++) {
-                stanza tmp = *p[tmp_i][tmp_j];
-
-                for (int x = 0; x < MAX_COLONNE; x++) {
-                    //std::stringstream s;
-                    //s << "\033[";
-                    //s << (tmp.punti_stanza[y][x]->getColore() + 30);
-                    //s << ";46m";
-                    //cout << s.str();
-                    cout << tmp.punti_stanza[y][x]->getIcon();
-                }
-            }
-            cout << endl;
-        }
-    }
-    //cout << "\033[37;40m"; //cl white, bg nero
 }
 
 ptr_stanza mappa::find_first(int row) {

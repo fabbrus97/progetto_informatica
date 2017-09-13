@@ -7,16 +7,22 @@
 personaggio::personaggio() {
     icon = ICON_MOB;
     setNomeCompleto("Mob");
-    puntiEsperienza = 0;
-    puntiVita = 100;
+    setPuntiEsperienza(0);
+    setPuntiVita(MAX_PUNTI_VITA);
     armaInUso = NULL;
+
+    setDifesa(0);
+    setAttacco(0);
 }
 
 personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUso)
         :item(icon, false, false, 7, nome, -1, -1, -1, -1) {
-    puntiEsperienza = pExp;
-    puntiVita = pVita;
+    setPuntiEsperienza(pExp);
+    setPuntiVita(pVita);
     armaInUso = inUso;
+
+    setDifesa(0);
+    setAttacco(0);
 }
 
 personaggio::~personaggio() {
@@ -29,7 +35,12 @@ int personaggio::getPuntiVita() {
 }
 
 void personaggio::setPuntiVita(int new_puntiVita) {
-    puntiVita = new_puntiVita;
+    if(new_puntiVita > MAX_PUNTI_VITA)
+        puntiVita = MAX_PUNTI_VITA;
+    else if(new_puntiVita < 0)
+        puntiVita = 0;
+    else
+        puntiVita = new_puntiVita;
 }
 
 int personaggio::getPuntiEsperienza() {
@@ -38,6 +49,25 @@ int personaggio::getPuntiEsperienza() {
 
 void personaggio::setPuntiEsperienza(int new_puntiEsperienza) {
     puntiEsperienza = new_puntiEsperienza;
+}
+
+int personaggio::getAttacco() {
+    return attacco;
+}
+void personaggio::setAttacco(int a) {
+    attacco = a;
+}
+void personaggio::incAttacco() {
+    attacco++;
+}
+int personaggio::getDifesa() {
+    return difesa;
+}
+void personaggio::setDifesa(int d) {
+    difesa = d;
+}
+void personaggio::incDifesa() {
+    difesa++;
 }
 
 arma *personaggio::getArmaInUso() {
@@ -183,5 +213,10 @@ bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
  * La funzione ritorna il danno effettivamente inflitto (al momento pari a 'danno')
  */
 int personaggio::infliggi(int danno) {
+    int dannoEffettivo = MAX_PUNTI_VITA * danno / (MAX_PUNTI_VITA + difesa);
+    setPuntiVita(
+        getPuntiVita() - dannoEffettivo
+    );
 
+    return dannoEffettivo;
 }

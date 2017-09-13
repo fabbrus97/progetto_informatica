@@ -22,14 +22,20 @@ const double alfa=1.5;
  * classe mappa
  */
 
+struct spawn_point {
+    int x,y,xx,yy;
+};
+
 class mappa {
 protected:
-    int n_livello;
+    int contatore_stanze;
+    int n_stanze;
     int i;
     int j;
     //stanza nuova_stanza;
     public:
     ptr_stanza** p;
+    spawn_point entrata, uscita;
 
     mappa(int n);
     mappa();
@@ -42,9 +48,9 @@ protected:
     void second_linking(ptr_stanza room, ptr_stanza known_room);
     void add_doors(ptr_stanza room);
     void generate_map();
-    void print_map();
     ptr_stanza find_room(int n_stanza);
-    int getN_livello();
+    int get_i();
+    int get_j();
 
     void posiziona(ptr_item it, int xm, int ym, int xs, int ys);
     void sposta(ptr_item from, ptr_item to);

@@ -3,6 +3,7 @@
 #include "mappa.hpp"
 #include "includes/gameobjects.hpp"
 #include "includes/personaggio.hpp"
+#include "termcolor.hpp"
 
 //
 #define MAX_MOBS_X_LIV 70
@@ -28,6 +29,7 @@ bool confermaRaccoltaArma(personaggio *giocatore, arma *it);
 void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
 void IAMob(personaggio *mob, personaggio *giocatore, livello *livelloCorrente);
+void print_map(mappa *map);
 
 void stampaSchedaPersonaggio(personaggio *giocatore);
 
@@ -45,6 +47,7 @@ void init_giocatore(personaggio *giocatore) {
     cout << "Come ti chiami?\n";
     cin >> nome;
     giocatore->setNomeCompleto(nome);
+    giocatore->setArmaInUso(GameObjects::getNewSpadaRotta());
 
     giocatore->setIcon(ICON_GIOCATORE);
 }
@@ -57,15 +60,15 @@ void game_loop(personaggio *giocatore) {
     // TODO : Posizionare il giocatore nel livello
     livelloCorrente->mappa->posiziona(
         giocatore,
-        livelloCorrente->mappa->find_first(0)->getCoor_x(),
-        livelloCorrente->mappa->find_first(0)->getCoor_y(),
-        18,
-        5
+        livelloCorrente->mappa->entrata.x,
+        livelloCorrente->mappa->entrata.y,
+        livelloCorrente->mappa->entrata.xx,
+        livelloCorrente->mappa->entrata.yy
     );
 
     while(!end) {
         cout << "Mappa livello " << livelloCorrente->liv << "\n";
-        livelloCorrente->mappa->print_map();
+        print_map(livelloCorrente->mappa);
         stampaSchedaPersonaggio(giocatore);
         cout << "\n";
 
@@ -81,24 +84,24 @@ void game_loop(personaggio *giocatore) {
                 nuovoLivello->prev = livelloCorrente;
             }
             livelloCorrente = livelloCorrente->next;
-            ptr_stanza st = livelloCorrente->mappa->find_first(0);
             livelloCorrente->mappa->posiziona(
                 giocatore,
-                st->getCoor_x(),
-                st->getCoor_y(),
-                1,1
+                livelloCorrente->mappa->entrata.x,
+                livelloCorrente->mappa->entrata.y,
+                livelloCorrente->mappa->entrata.xx,
+                livelloCorrente->mappa->entrata.yy
             );
             cout << "Sei salito al livello " << livelloCorrente->liv << "\n";
         } else {
             if(livelloCorrente->prev != NULL) {
                 livelloCorrente->mappa->esci(giocatore);
                 livelloCorrente = livelloCorrente->prev;
-                ptr_stanza st = livelloCorrente->mappa->find_first(0);
                 livelloCorrente->mappa->posiziona(
                     giocatore,
-                    st->getCoor_x(),
-                    st->getCoor_y(),
-                    1,1
+                    livelloCorrente->mappa->uscita.x,
+                    livelloCorrente->mappa->uscita.y,
+                    livelloCorrente->mappa->uscita.xx,
+                    livelloCorrente->mappa->uscita.yy
                 );
                 cout << "Sei sceso al livello " << livelloCorrente->liv << "\n";
             }
@@ -115,7 +118,7 @@ livello *getNewLivello(int l) {
     liv->next = NULL;
     liv->liv = l;
 
-    liv->mappa = new mappa(l);
+    liv->mappa = new mappa( 2.8*log(1+l) );
     liv->mappa->generate_map();
 
     liv->n_mobs = MIN( 6*log(1+l), MAX_MOBS_X_LIV);
@@ -348,7 +351,6 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
     }
 }
 
-
 void stampaSchedaPersonaggio(personaggio *giocatore) {
     char nomeCompleto[MAX_NOME_COMPLETO_LENGTH];
     char armaNomeCompleto[MAX_NOME_COMPLETO_LENGTH];
@@ -367,5 +369,42 @@ void stampaSchedaPersonaggio(personaggio *giocatore) {
         cout << "- Range: " << giocatore->getArmaInUso()->getRange() << "r\n";
     } else {
         cout << "Arma: <a mani vuote>\n";
+    }
+}
+
+void print_map(mappa *map) {
+    for (int i = 0; i < map->get_i(); i++) {
+        for (int y = 0; y < MAX_RIGHE; y++) {
+            for (int j = 0; j < map->get_j(); j++) {
+                ptr_stanza tmp = map->p[i][j];
+
+                for (int x = 0; x < MAX_COLONNE; x++) {
+                    char icon = tmp->punti_stanza[y][x]->getIcon();
+
+                    //cout << termcolor::on_white;
+                    switch(icon) {
+                        case ICON_LIV_PREC:
+                        case ICON_LIV_SUCC:
+                        case ICON_PORTA:
+                            cout << termcolor::cyan;
+                            break;
+                        case ICON_GIOCATORE:
+                            cout << termcolor::green;
+                            break;
+                        case ICON_MOB:
+                            cout << termcolor::red;
+                            break;
+                        case ICON_ARMA:
+                            cout << termcolor::yellow;
+                            break;
+                        default:
+                            cout << termcolor::grey;
+                            break;
+                    }
+                    cout << icon << termcolor::reset;
+                }
+            }
+            cout << endl;
+        }
     }
 }
