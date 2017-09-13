@@ -310,7 +310,6 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
     int dyy = g->getPositionYY() - m->getPositionYY();
     int absDxx = abs(dxx);
     int absDyy = abs(dyy);
-
     // Se il giocatore é nel range di attacco del mob, allora il mob lo attacca
     if( m->getArmaInUso() != NULL
     &&  m->getPositionXX() == g->getPositionXX() && m->getArmaInUso()->getRange() >= absDyy
@@ -338,15 +337,17 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
         //in questo modo si muove a "zig zag" verso il giocatore
         //NB il mob non sa cambiare stanza/livello e nemmeno attraversare gli ostacoli
         if(absDxx > absDyy) {
-            if (dxx < 0)
-                rm = m->muovi(livelloCorrente->mappa,DIREZIONE_SINISTRA);
-            else
-                rm = m->muovi(livelloCorrente->mappa,DIREZIONE_DESTRA);
+            if (dxx < 0) {
+                rm = m->muovi(livelloCorrente->mappa, DIREZIONE_SINISTRA);
+            } else {
+                rm = m->muovi(livelloCorrente->mappa, DIREZIONE_DESTRA);
+            }
         } else {
-            if (dyy < 0)
-                rm = m->muovi(livelloCorrente->mappa,DIREZIONE_SU);
-            else
+            if (dyy < 0) {
+                rm = m->muovi(livelloCorrente->mappa, DIREZIONE_SU);
+            } else {
                 rm = m->muovi(livelloCorrente->mappa,DIREZIONE_GIU);
+            }
         }
     }
 }
@@ -381,7 +382,7 @@ void print_map(mappa *map) {
                 for (int x = 0; x < MAX_COLONNE; x++) {
                     char icon = tmp->punti_stanza[y][x]->getIcon();
 
-                    //cout << termcolor::on_white;
+                    cout << termcolor::on_grey;
                     switch(icon) {
                         case ICON_LIV_PREC:
                         case ICON_LIV_SUCC:
@@ -398,7 +399,7 @@ void print_map(mappa *map) {
                             cout << termcolor::yellow;
                             break;
                         default:
-                            cout << termcolor::grey;
+                            cout << termcolor::white;
                             break;
                     }
                     cout << icon << termcolor::reset;

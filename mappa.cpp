@@ -82,7 +82,6 @@ void mappa::generate_all_rooms() {
     contatore_stanze++;
 
     //se non siamo nel primo livello, generiamo l'ultima stanza (che va nell'ultima colonna);
-    //cout << "adesso ci occupiamo dell'ultima stanza" << endl;
     if (n_stanze != 1) {
         y = (rand() % i);
         x = j - 1;
@@ -352,9 +351,6 @@ void mappa::second_linking(ptr_stanza room, ptr_stanza known_room) {
             return second_linking(find_first(room->getCoor_y() + 1), NULL);
         } else { //caso 3: le stanze non sono nella stessa colonna, bisogna generare una nuova stanza
             //genera la nuova stanza
-            cout << "mmmmh, meglio creare una nuova stanza" << endl;
-            cout << "questo perché room è nella posizione cartesiana " << room->getCoor_x() << "," << room->getCoor_y();
-            cout << " mentre tmp è nella pos. cart. " << tmp->getCoor_x() << "," << tmp->getCoor_y() << endl;
 
             ptr_stanza nuova_stanza = new stanza(room->getCoor_x(), tmp->getCoor_y(), contatore_stanze);
             //genero una nuova stanza nella stessa colonna di room e nella stessa riga di tmp
