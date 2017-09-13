@@ -33,7 +33,12 @@ int personaggio::getPuntiVita() {
 }
 
 void personaggio::setPuntiVita(int new_puntiVita) {
-    puntiVita = new_puntiVita;
+    if(new_puntiVita > MAX_PUNTI_VITA)
+        puntiVita = MAX_PUNTI_VITA;
+    else if(new_puntiVita < 0)
+        puntiVita = 0;
+    else
+        puntiVita = new_puntiVita;
 }
 
 int personaggio::getPuntiEsperienza() {

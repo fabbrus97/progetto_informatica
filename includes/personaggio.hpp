@@ -9,6 +9,8 @@
 #define DIREZIONE_DESTRA 3
 #define DIREZIONE_GIU 4
 
+#define MAX_PUNTI_VITA 100
+
 class personaggio;
 
 struct report_attacco {
