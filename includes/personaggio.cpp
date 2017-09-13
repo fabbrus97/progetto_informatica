@@ -161,11 +161,107 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
  * Quindi evoca il metodo personaggio::infliggi(int danno) del personaggio colpito
  *
  */
+
 report_attacco personaggio::attacca(mappa *map, int direzione) {
+    int coorXX = getPositionXX();
+    int coorYY = getPositionYY();
+    int coorX = getPositionX();
+    int coorY = getPositionY();
+    int watchMaxRighe = coorY;
+    int watchMaxColonne = coorX;
+    ptr_item puntatore = map->p[coorX][coorY]->punti_stanza[coorXX][coorYY];
+    ptr_item mobColpito = map->p[coorXX][coorYY]->punti_stanza[coorX][coorY];
     report_attacco ra;
     ra.colpito = false;
     ra.pgColpito = NULL;
     ra.danniInflitti = 0;
+    if (direzione == DIREZIONE_SU)
+    {
+        while (!ra.colpito || watchMaxRighe < (MAX_RIGHE - 1 ))
+        {
+            if (puntatore->getIcon() == ICON_MOB)
+            {
+                mobColpito = (personaggio *)map->p[coorX][coorY]->punti_stanza[puntatore->getPositionXX()][getPositionYY()];
+                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                {
+                    ra.pgColpito = (personaggio *)mobColpito;
+                    ra.colpito = true;
+                    ra.danniInflitti = personaggio::getArmaInUso()->getDanniArma();
+                }
+            }
+            else
+            {
+                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX][coorYY + 1];
+                watchMaxRighe = watchMaxRighe + 1;
+            }
+        }
+        puntatore = NULL;
+    }
+    else if (direzione == DIREZIONE_DESTRA)
+    {
+        while (!ra.colpito || watchMaxColonne < ((MAX_COLONNE - 1) - coorX))
+        {
+            if (puntatore -> getIcon() == ICON_MOB)
+            {
+                mobColpito = (personaggio *)map->p[coorX][coorY]->punti_stanza[puntatore->getPositionXX()][getPositionYY()];
+                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                {
+                    ra.pgColpito = (personaggio *) mobColpito;
+                    ra.colpito = true;
+                    ra.danniInflitti = getArmaInUso()->getDanniArma();
+                }
+            }
+            else
+            {
+                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX+1][coorYY];
+                watchMaxColonne = watchMaxColonne + 1;
+            }
+        }
+        puntatore = NULL;
+    }
+    else if (direzione == DIREZIONE_GIU)
+    {
+        while (!ra.colpito || watchMaxRighe < ((MAX_RIGHE - 1) - watchMaxRighe))
+        {
+            if (puntatore->getIcon() == ICON_MOB)
+            {
+                mobColpito = (personaggio *)map->p[coorX][coorY]->punti_stanza[puntatore->getPositionXX()][getPositionYY()];
+                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                {
+                    ra.pgColpito = (personaggio *)mobColpito;
+                    ra.colpito = true;
+                    ra.danniInflitti = getArmaInUso()->getDanniArma();
+                }
+            }
+            else
+            {
+                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX][coorYY - 1];
+                watchMaxRighe = watchMaxRighe + 1;
+            }
+        }
+        puntatore = NULL;
+    }
+    else if (direzione == DIREZIONE_SINISTRA)
+    {
+        while (!ra.colpito || watchMaxColonne < ((MAX_COLONNE - 1) - watchMaxColonne))
+        {
+            if (puntatore->getIcon() == ICON_MOB)
+            {
+                if (fabs(getPositionYY() - mobColpito->getPositionYY()) < getArmaInUso()->getRange())
+                {
+                    ra.pgColpito = (personaggio *) mobColpito;
+                    ra.colpito = true;
+                    ra.danniInflitti = getArmaInUso()->getDanniArma();
+                }
+            }
+            else
+            {
+                puntatore = map->p[coorXX][coorYY]->punti_stanza[coorXX - 1][coorYY];
+                watchMaxColonne = watchMaxColonne + 1;
+            }
+            puntatore = NULL;
+        }
+    }
     return ra;
 }
 
