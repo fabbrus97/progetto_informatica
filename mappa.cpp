@@ -29,11 +29,14 @@ mappa::mappa(int n) {
         p[tmp] = new ptr_stanza[j];
     }
     //inizializza l'array a NULL
-    for (int y=i-1; y>=0; y--)
-        for (int x=j-1; x>=0; x--) {
+    for (int y=i-1; y>=0; y--) {
+        for (int x = j - 1; x >= 0; x--) {
             p[y][x] = NULL;
-
         }
+    }
+
+    entrata.x = entrata.y = entrata.xx = entrata.yy = -1;
+    uscita.x = uscita.y = uscita.xx = uscita.yy = -1;
 }
 
 mappa::mappa(){}
@@ -70,6 +73,15 @@ void mappa::generate_all_rooms() {
 
     if (n_livello == 1) {
         prima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
+        entrata.x = prima_stanza->getCoor_x();
+        entrata.y = prima_stanza->getCoor_y();
+        entrata.xx = 1;
+        entrata.yy = 3;
+
+        uscita.x = prima_stanza->getCoor_x();
+        uscita.y = prima_stanza->getCoor_y();
+        uscita.xx = MAX_COLONNE-2;
+        uscita.yy = MAX_RIGHE/2;
     }
 
     p[y][x] = prima_stanza;
@@ -85,9 +97,17 @@ void mappa::generate_all_rooms() {
 
         ultima_stanza->setIs_emtpy(false);
         ultima_stanza->posiziona(GameObjects::getNewLivSucc(),MAX_COLONNE-1, MAX_RIGHE/2);
+        uscita.x = ultima_stanza->getCoor_x();
+        uscita.y = ultima_stanza->getCoor_y();
+        uscita.xx = MAX_COLONNE-2;
+        uscita.yy = MAX_RIGHE/2;
 
         //aggiungiamo anche la porta per tornare al livello precedente;
         prima_stanza->posiziona(GameObjects::getNewLivPrec(),0,3);
+        entrata.x = prima_stanza->getCoor_x();
+        entrata.y = prima_stanza->getCoor_y();
+        entrata.xx = 1;
+        entrata.yy = 3;
 
         p[y][x] = ultima_stanza;
         contatore_stanze++;

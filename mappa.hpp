@@ -22,6 +22,10 @@ const double alfa=1.5;
  * classe mappa
  */
 
+struct spawn_point {
+    int x,y,xx,yy;
+};
+
 class mappa {
 protected:
     int n_livello;
@@ -30,6 +34,7 @@ protected:
     //stanza nuova_stanza;
     public:
     ptr_stanza** p;
+    spawn_point entrata, uscita;
 
     mappa(int n);
     mappa();

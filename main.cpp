@@ -57,10 +57,10 @@ void game_loop(personaggio *giocatore) {
     // TODO : Posizionare il giocatore nel livello
     livelloCorrente->mappa->posiziona(
         giocatore,
-        livelloCorrente->mappa->find_first(0)->getCoor_x(),
-        livelloCorrente->mappa->find_first(0)->getCoor_y(),
-        18,
-        5
+        livelloCorrente->mappa->entrata.x,
+        livelloCorrente->mappa->entrata.y,
+        livelloCorrente->mappa->entrata.xx,
+        livelloCorrente->mappa->entrata.yy
     );
 
     while(!end) {
@@ -81,24 +81,24 @@ void game_loop(personaggio *giocatore) {
                 nuovoLivello->prev = livelloCorrente;
             }
             livelloCorrente = livelloCorrente->next;
-            ptr_stanza st = livelloCorrente->mappa->find_first(0);
             livelloCorrente->mappa->posiziona(
                 giocatore,
-                st->getCoor_x(),
-                st->getCoor_y(),
-                1,1
+                livelloCorrente->mappa->entrata.x,
+                livelloCorrente->mappa->entrata.y,
+                livelloCorrente->mappa->entrata.xx,
+                livelloCorrente->mappa->entrata.yy
             );
             cout << "Sei salito al livello " << livelloCorrente->liv << "\n";
         } else {
             if(livelloCorrente->prev != NULL) {
                 livelloCorrente->mappa->esci(giocatore);
                 livelloCorrente = livelloCorrente->prev;
-                ptr_stanza st = livelloCorrente->mappa->find_first(0);
                 livelloCorrente->mappa->posiziona(
                     giocatore,
-                    st->getCoor_x(),
-                    st->getCoor_y(),
-                    1,1
+                    livelloCorrente->mappa->uscita.x,
+                    livelloCorrente->mappa->uscita.y,
+                    livelloCorrente->mappa->uscita.xx,
+                    livelloCorrente->mappa->uscita.yy
                 );
                 cout << "Sei sceso al livello " << livelloCorrente->liv << "\n";
             }
@@ -347,7 +347,6 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
         }
     }
 }
-
 
 void stampaSchedaPersonaggio(personaggio *giocatore) {
     char nomeCompleto[MAX_NOME_COMPLETO_LENGTH];
