@@ -4,12 +4,11 @@
 
 arma::arma(){}
 
-arma::arma(char nome[], int ra, int dam, int exp):
+arma::arma(char nome[], int ra, int dam):
     item(ICON_ARMA, false, true, 7, nome,  -1, -1, -1, -1)
 {
     range = ra;
     danniArma = dam;
-    exp_richiesti = exp;
 }
 
 int arma::getRange()
@@ -22,19 +21,9 @@ int arma::getDanniArma()
     return danniArma;
 }
 
-int arma::getExpRichiesti()
-{
-    return exp_richiesti;
-}
-
 void arma::setDanniArma(int damage)
 {
     danniArma = damage;
-}
-
-void arma::setExpRichiesti(int exp)
-{
-    exp_richiesti = exp;
 }
 
 void arma::setRange(int ra)
