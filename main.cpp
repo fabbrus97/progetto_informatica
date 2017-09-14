@@ -214,8 +214,7 @@ void bonusGiocatoreNuovoLivello(personaggio *giocatore) {
                     break;
                 default:
                     input_error = true;
-                    cout << "Comando sconosciuto..m"
-                            "\n";
+                    cout << "Comando sconosciuto..\n";
             }
         } while(input_error);
         puntiDaInserire--;
