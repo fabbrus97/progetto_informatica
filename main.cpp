@@ -121,15 +121,31 @@ livello *getNewLivello(int l) {
     liv->mappa = new mappa( 2.8*log(1+l) );
     liv->mappa->generate_map();
 
-    liv->n_mobs = MIN( 6*log(1+l), MAX_MOBS_X_LIV);
+    liv->n_mobs = MIN( 4*log(1+l), MAX_MOBS_X_LIV);
+
+    typedef ptr_personaggio (*Ptr_Personaggio_Function) ();
+    Ptr_Personaggio_Function mob_x_lv[4][3] = {
+            {GameObjects::getNewMaialeZombie,GameObjects::getNewMaialeZombie,GameObjects::getNewMaialeZombie},
+            {GameObjects::getNewMaialeZombie,GameObjects::getNewScheletroDiZurgul,GameObjects::getNewScheletroDiZurgul},
+            {GameObjects::getNewMaialeZombie,GameObjects::getNewScheletroDiZurgul,GameObjects::getNewDemoneSpadaccino},
+            {GameObjects::getNewDemoneSpadaccino,GameObjects::getNewDemoneSpadaccino,GameObjects::getNewGiganteDelleAnde}
+    };
 
     for(int i=0; i<liv->n_mobs; i++) {
-        liv->mobs[i] = GameObjects::getNewMob();
+        liv->mobs[i] = mob_x_lv[ (int)MIN( 0.4*l, 4) ][rand()%3](); //cambi a 2-4-6-8
         liv->mappa->get_stanza_random()->posiziona_casualmente(liv->mobs[i]);
     }
 
+    typedef ptr_arma (*Ptr_Arma_Function) ();
+    Ptr_Arma_Function armi_x_lv[4][3] = {
+            {GameObjects::getNewSpadaScaltra,GameObjects::getNewSpadaScaltra,GameObjects::getNewSpadaAnduril},
+            {GameObjects::getNewSpadaScaltra,GameObjects::getNewSpadaAnduril,GameObjects::getNewSpadaGlamdring},
+            {GameObjects::getNewSpadaGlamdring,GameObjects::getNewSpadaGlamdring,GameObjects::getNewArmaPugnaleMorgul},
+            {GameObjects::getNewArmaPugnaleMorgul,GameObjects::getNewArmaPugnaleMorgul,GameObjects::getNewArcoDorato}
+    };
+
     liv->mappa->get_stanza_random()->posiziona_casualmente(
-        GameObjects::getNewArmaAnduril()
+        armi_x_lv[ (int)MIN( 0.4*l, 4) ][rand()%3]() //cambi a 2-4-6-8
     );
 
     return liv;
@@ -312,8 +328,9 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
     int absDyy = abs(dyy);
     // Se il giocatore é nel range di attacco del mob, allora il mob lo attacca
     if( m->getArmaInUso() != NULL
-    &&  m->getPositionXX() == g->getPositionXX() && m->getArmaInUso()->getRange() >= absDyy
-    &&  m->getPositionYY() == g->getPositionYY() && m->getArmaInUso()->getRange() >= absDxx
+    &&  (   m->getPositionXX() == g->getPositionXX() && m->getArmaInUso()->getRange() >= absDyy
+        ||  m->getPositionYY() == g->getPositionYY() && m->getArmaInUso()->getRange() >= absDxx
+        )
     ) {
         report_attacco ra;
         if (dxx < 0)
@@ -328,7 +345,10 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
         if(ra.colpito == true && ra.pgColpito == g) {
             char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
             m->getNomeCompleto(nomeAttaccato);
-            cout << "'" << nomeAttaccato << "' ti ha inflitto" << ra.danniInflitti << " danni\n";
+            cout << "'" << nomeAttaccato << "' "
+                 <<"(" << m->getPuntiVita() << "/" << m->getMaxPuntiVita() << ") "
+                 << "ti ha inflitto " << ra.danniInflitti << " danni\n"
+            ;
         }
 
     // Altrimenti si muove verso di lui
@@ -362,8 +382,9 @@ void stampaSchedaPersonaggio(personaggio *giocatore) {
     }
 
     cout << "> " << nomeCompleto << "\n";
-    cout << "Vita: " << giocatore->getPuntiVita() << "\n";
-    cout << "Exp: " << giocatore->getPuntiEsperienza() << "\n";
+    cout << "Vita: " << giocatore->getPuntiVita() << "/" << giocatore->getMaxPuntiVita() << "\n";
+    cout << "Attacco: " << giocatore->getAttacco() << "\n";
+    cout << "Difesa: " << giocatore->getDifesa() << "\n";
     if(giocatore->getArmaInUso() != NULL ) {
         cout << "Arma: " << armaNomeCompleto << "\n";
         cout << "- Danni: " << giocatore->getArmaInUso()->getDanniArma() << "d\n";
