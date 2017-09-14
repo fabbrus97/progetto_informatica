@@ -14,8 +14,6 @@
 
 using namespace std;
 
-const double alfa=1.5;
-
 //void aggiungi_stanza_a_lista_connessioni(ptr_stanza stanza_di_cui_modificare_lista, ptr_stanza stanza_da_aggiungere);
 
 /*
