@@ -193,7 +193,7 @@ void bonusGiocatoreNuovoLivello(personaggio *giocatore) {
     cout << "Ti senti meglio!\n";
     giocatore->setPuntiVita(giocatore->getMaxPuntiVita());
 
-    while(puntiDaInserire >= 0) {
+    while(puntiDaInserire > 0) {
         cout << "Hai " << puntiDaInserire << " punti da inserire.\n";
         cout << "Dove vuoi inserire il prossimo punto? (a)attaco o (d)difesa? ";
         bool input_error;
@@ -205,15 +205,20 @@ void bonusGiocatoreNuovoLivello(personaggio *giocatore) {
                 case 'a':
                 case 'A':
                     giocatore->incAttacco();
+                    cout << "Attacco Incrementato!\n";
                     break;
                 case 'd':
                 case 'D':
                     giocatore->incDifesa();
+                    cout << "Difesa Incrementata!\n";
                     break;
                 default:
                     input_error = true;
+                    cout << "Comando sconosciuto..m"
+                            "\n";
             }
         } while(input_error);
+        puntiDaInserire--;
     }
 }
 
