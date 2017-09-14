@@ -48,7 +48,7 @@ int main() {
 void init_giocatore(personaggio *giocatore) {
 
     char nome[64];
-    cout << "Come ti chiami?\n";
+    cout << "Come ti chiami?" << endl;
     cin >> nome;
     giocatore->setNomeCompleto(nome);
     giocatore->setArmaInUso(GameObjects::getNewSpadaRotta());
@@ -71,7 +71,7 @@ void game_loop(personaggio *giocatore) {
     );
 
     while(giocatore->getPuntiVita() > 0 && !fineGioco) {
-        cout << "Mappa livello " << livelloCorrente->liv << "\n";
+        cout << "Mappa livello " << livelloCorrente->liv << endl;
         print_map(livelloCorrente->mappa);
         stampaSchedaPersonaggio(giocatore);
         cout << "\n";
@@ -120,7 +120,7 @@ void game_loop(personaggio *giocatore) {
                 livelloCorrente->mappa->entrata.xx,
                 livelloCorrente->mappa->entrata.yy
             );
-            cout << "Sei salito al livello " << livelloCorrente->liv << "\n";
+            cout << "Sei salito al livello " << livelloCorrente->liv << endl;
 
         } else {
             if(livelloCorrente->prev != NULL) {
@@ -133,16 +133,21 @@ void game_loop(personaggio *giocatore) {
                     livelloCorrente->mappa->uscita.xx,
                     livelloCorrente->mappa->uscita.yy
                 );
-                cout << "Sei sceso al livello " << livelloCorrente->liv << "\n";
+                cout << "Sei sceso al livello " << livelloCorrente->liv << endl;
             }
         }
-        cout << "\n";
+        cout << endl;
+        cout << "Vai al prossimo turno..(invio)";
+        cin.clear();
+        cin.ignore(10000,'\n');
+        cin.get();
+        cout << endl;
     }
 
     if(giocatore->getPuntiVita() == 0) {
         cout << "Sei Morto..\n";
     } else {
-        cout << "I veri eroi non si fermano mai alla prima vittoria..\n";
+        cout << "I veri eroi non si fermano mai alla prima vittoria.." << endl;
     }
 
 }
@@ -190,11 +195,11 @@ livello *getNewLivello(int l) {
 void bonusGiocatoreNuovoLivello(personaggio *giocatore) {
     int puntiDaInserire = 3;
 
-    cout << "Ti senti meglio!\n";
+    cout << "Ti senti meglio!" << endl;
     giocatore->setPuntiVita(giocatore->getMaxPuntiVita());
 
     while(puntiDaInserire > 0) {
-        cout << "Hai " << puntiDaInserire << " punti da inserire.\n";
+        cout << "Hai " << puntiDaInserire << " punti da inserire." << endl;
         cout << "Dove vuoi inserire il prossimo punto? (a)attaco o (d)difesa? ";
         bool input_error;
         do {
@@ -205,16 +210,16 @@ void bonusGiocatoreNuovoLivello(personaggio *giocatore) {
                 case 'a':
                 case 'A':
                     giocatore->incAttacco();
-                    cout << "Attacco Incrementato!\n";
+                    cout << "Attacco Incrementato!" << endl;
                     break;
                 case 'd':
                 case 'D':
                     giocatore->incDifesa();
-                    cout << "Difesa Incrementata!\n";
+                    cout << "Difesa Incrementata!" << endl;
                     break;
                 default:
                     input_error = true;
-                    cout << "Comando sconosciuto..\n";
+                    cout << "Comando sconosciuto.." << endl;
             }
         } while(input_error);
         puntiDaInserire--;
@@ -229,27 +234,35 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
     bool attacca;
     bool muovi;
 
-    cout << "É il tuo turno.\n";
+    cout << "É il tuo turno." << endl;
     getGiocatoreInputs(&direzione,&attacca,&muovi);
 
     if(attacca) {
         if(giocatore->getArmaInUso() == NULL){
-            cout << "Prima di attaccare dovresti raccogliere un'arma\n";
+            cout << "Prima di attaccare dovresti raccogliere un'arma" << endl;
         } else {
             report_attacco ra = giocatore->attacca(livelloCorrente->mappa,direzione);
             if(ra.pgColpito == NULL) {
-                cout << "Hai attaccato a vuoto\n";
+                cout << "Hai attaccato a vuoto" << endl;
             } else {
                 char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
                 ra.pgColpito->getNomeCompleto(nomeAttaccato);
-                cout << "Hai inflitto'" << ra.danniInflitti << " danni a '" << nomeAttaccato << "'\n";
+                cout << termcolor::green;
+                cout << "Hai inflitto " << ra.danniInflitti << " danni a '" << nomeAttaccato << " "
+                    <<  "(" << ra.pgColpito->getPuntiVita() << "/" << ra.pgColpito->getMaxPuntiVita() << ")'" << endl;
+                if(ra.pgColpito->getPuntiVita() == 0) {
+                    cout << nomeAttaccato << " è morto!" << endl;
+                    livelloCorrente->mappa->esci(ra.pgColpito);
+                    delete ra.pgColpito;
+                }
+                cout << termcolor::reset;
             }
         }
 
     } else if(muovi) {
         report_movimento rm = giocatore->muovi(livelloCorrente->mappa,direzione);
         if(rm.riuscito == true) {
-            cout << "Ti sei mosso\n";
+            cout << "Ti sei mosso" << endl;
         } else {
             if(rm.itemScontrato != NULL) {
                 if(rm.itemScontrato->getRaccoglibile()) {
@@ -260,9 +273,9 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                         giocatore->muovi(livelloCorrente->mappa,direzione);
                         char nomeItemScontrato[MAX_NOME_COMPLETO_LENGTH];
                         rm.itemScontrato->getNomeCompleto(nomeItemScontrato);
-                        cout << "Hai raccolto '" << nomeItemScontrato << "'\n";
+                        cout << termcolor::green << "Hai raccolto '" << nomeItemScontrato << "'" << endl << termcolor::reset;
                     } else {
-                        cout << "Non sei riuscito a raccogliere l'oggetto..\n";
+                        cout << "Non sei riuscito a raccogliere l'oggetto.." << endl;
                     }
                 } else {
                     switch (rm.itemScontrato->getIcon()) {
@@ -275,8 +288,6 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                             break;
                     }
                 }
-            } else {
-                cout << "Oggetto a NULL\n";
             }
         }
     }
@@ -299,8 +310,8 @@ bool confermaRaccoltaArma(personaggio *giocatore, arma *armaDaRacc) {
     } else {
         return true;
     }
-    cout << "Arma in uso : '" << nomeArmaInUso << "' (" << armaInUso->getDanniArma() << "d / " << armaInUso->getRange() << "r)\n";
-    cout << "Arma trovata: '" << nomeArmaDaRacc << "' (" << armaDaRacc->getDanniArma() << "d / " << armaDaRacc->getRange() << "r)\n";
+    cout << "Arma in uso : '" << nomeArmaInUso << "' (" << armaInUso->getDanniArma() << "d / " << armaInUso->getRange() << "r)" << endl;
+    cout << "Arma trovata: '" << nomeArmaDaRacc << "' (" << armaDaRacc->getDanniArma() << "d / " << armaDaRacc->getRange() << "r)" << endl;
     do {
         input_error = false;
         cout << "Sei sicuro di volere raccogliere questa arma? L'attuale in uso verrà persa.(y/n): ";
@@ -316,7 +327,7 @@ bool confermaRaccoltaArma(personaggio *giocatore, arma *armaDaRacc) {
                 break;
             default:
                 input_error=true;
-                cout << "Comando sconosciuto\n";
+                cout << "Comando sconosciuto" << endl;
         }
     } while(input_error);
     return conferma;
@@ -345,7 +356,7 @@ void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi) {
                 break;
             default:
                 input_error = true;
-                cout << "Azione non consentita\n";
+                cout << "Azione non consentita" << endl;
         }
     } while(input_error);
 
@@ -373,7 +384,7 @@ void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi) {
                 break;
             default:
                 input_error = true;
-                cout << "Direzione inesistente\n";
+                cout << "Direzione inesistente" << endl;
         }
     } while(input_error);
 }
@@ -387,9 +398,9 @@ void cambiaStanzaGiocatore(livello *livelloCorrente, personaggio *giocatore, ptr
         if(c->porta == porta) {
             ptr_item to = c->stanza_puntata->punti_stanza[c->y][c->x];
             if(to->getIcon() == ICON_MOB) {
-                cout << "WOW! Hai spappolato un mob!";
+                cout << "WOW! Hai spappolato un mob!" << endl;
             } else if(to->getIcon() == ICON_ARMA) {
-                cout << "Evidentemente quest'arma non faceva per te..";
+                cout << "Evidentemente quest'arma non faceva per te.." << endl;
             }
             livelloCorrente->mappa->sposta(giocatore, to);
             ok = true;
@@ -434,10 +445,12 @@ void IAMob(personaggio *m, personaggio *g, livello *livelloCorrente) {
         if(ra.colpito == true && ra.pgColpito == g) {
             char nomeAttaccato[MAX_NOME_COMPLETO_LENGTH];
             m->getNomeCompleto(nomeAttaccato);
+            cout << termcolor::red;
             cout << "'" << nomeAttaccato << "' "
                  <<"(" << m->getPuntiVita() << "/" << m->getMaxPuntiVita() << ") "
-                 << "ti ha inflitto " << ra.danniInflitti << " danni\n"
+                 << "ti ha inflitto " << ra.danniInflitti << " danni" << endl
             ;
+            cout << termcolor::reset;
         }
 
     // Altrimenti si muove verso di lui
@@ -470,16 +483,16 @@ void stampaSchedaPersonaggio(personaggio *giocatore) {
         giocatore->getArmaInUso()->getNomeCompleto(armaNomeCompleto);
     }
 
-    cout << "> " << nomeCompleto << "\n";
-    cout << "Vita: " << giocatore->getPuntiVita() << "/" << giocatore->getMaxPuntiVita() << "\n";
-    cout << "Attacco: " << giocatore->getAttacco() << "\n";
-    cout << "Difesa: " << giocatore->getDifesa() << "\n";
+    cout << "> " << nomeCompleto << endl;
+    cout << "Vita: " << giocatore->getPuntiVita() << "/" << giocatore->getMaxPuntiVita() << endl;
+    cout << "Attacco: " << giocatore->getAttacco() << endl;
+    cout << "Difesa: " << giocatore->getDifesa() << endl;
     if(giocatore->getArmaInUso() != NULL ) {
-        cout << "Arma: " << armaNomeCompleto << "\n";
-        cout << "- Danni: " << giocatore->getArmaInUso()->getDanniArma() << "d\n";
-        cout << "- Range: " << giocatore->getArmaInUso()->getRange() << "r\n";
+        cout << "Arma: " << armaNomeCompleto << endl;
+        cout << "- Danni: " << giocatore->getArmaInUso()->getDanniArma() << "d" << endl;
+        cout << "- Range: " << giocatore->getArmaInUso()->getRange() << "r" << endl;
     } else {
-        cout << "Arma: <a mani vuote>\n";
+        cout << "Arma: <a mani vuote>" << endl;
     }
 }
 
