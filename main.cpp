@@ -262,6 +262,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
     } else if(muovi) {
         report_movimento rm = giocatore->muovi(livelloCorrente->mappa,direzione);
         if(rm.riuscito == true) {
+            print_map(livelloCorrente->mappa);
             cout << "Ti sei mosso" << endl;
         } else {
             if(rm.itemScontrato != NULL) {
@@ -273,7 +274,8 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                         giocatore->muovi(livelloCorrente->mappa,direzione);
                         char nomeItemScontrato[MAX_NOME_COMPLETO_LENGTH];
                         rm.itemScontrato->getNomeCompleto(nomeItemScontrato);
-                        cout << termcolor::green << "Hai raccolto '" << nomeItemScontrato << "'" << endl << termcolor::reset;
+                        print_map(livelloCorrente->mappa);
+                        cout << "Hai raccolto '" << nomeItemScontrato << "'" << endl;
                     } else {
                         cout << "Non sei riuscito a raccogliere l'oggetto.." << endl;
                     }
@@ -285,6 +287,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                             return -1;
                         case ICON_PORTA:
                             cambiaStanzaGiocatore(livelloCorrente,giocatore,rm.itemScontrato);
+                            print_map(livelloCorrente->mappa);
                             break;
                     }
                 }
@@ -497,6 +500,7 @@ void stampaSchedaPersonaggio(personaggio *giocatore) {
 }
 
 void print_map(mappa *map) {
+    cout << string(100, '\n');
     for (int i = 0; i < map->get_i(); i++) {
         for (int y = 0; y < MAX_RIGHE; y++) {
             for (int j = 0; j < map->get_j(); j++) {
