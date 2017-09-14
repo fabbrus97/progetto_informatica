@@ -32,13 +32,21 @@ public:
     static ptr_item getNewLivSucc();
     static ptr_item getNewLivPrec();
 
+    static ptr_arma getNewArcoDiOssa();
+    static ptr_arma getNewCatene();
+    static ptr_arma getNewSpadaScaltra();
+    static ptr_arma getNewAsciaGigante();
+
     static ptr_arma getNewSpadaRotta();
-    static ptr_arma getNewArmaAnduril();
-    static ptr_arma getNewArmaGlamdring();
+    static ptr_arma getNewSpadaAnduril();
+    static ptr_arma getNewSpadaGlamdring();
     static ptr_arma getNewArmaPugnaleMorgul();
+    static ptr_arma getNewArcoDorato();
 
-    static ptr_personaggio getNewMob();
+    static ptr_personaggio getNewMaialeZombie();
+    static ptr_personaggio getNewScheletroDiZurgul();
+    static ptr_personaggio getNewZurgulIncatenato();
+    static ptr_personaggio getNewDemoneSpadaccino();
+    static ptr_personaggio getNewGiganteDelleAnde();
 };
-
-
 #endif
