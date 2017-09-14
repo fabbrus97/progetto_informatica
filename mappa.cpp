@@ -141,8 +141,8 @@ void mappa::add_doors(ptr_stanza room) {
         p[room->getCoor_y()][room->getCoor_x()+1]->lista_connessioni->porta=
                 p[room->getCoor_y()][room->getCoor_x()+1]->punti_stanza[MAX_RIGHE/2][0];
         room->lista_connessioni->x=1; room->lista_connessioni->y=(MAX_RIGHE/2); //ATTENZIONE sono coordinate cartesiane, non matriciali
-        p[room->getCoor_y()][room->getCoor_x()+1]->lista_connessioni->x=MAX_RIGHE-2;
-        p[room->getCoor_y()][room->getCoor_x()+1]->lista_connessioni->y=MAX_COLONNE/2;
+        p[room->getCoor_y()][room->getCoor_x()+1]->lista_connessioni->x=MAX_COLONNE-2;
+        p[room->getCoor_y()][room->getCoor_x()+1]->lista_connessioni->y=MAX_RIGHE/2;
 
         add_doors(p[room->getCoor_y()][room->getCoor_x()+1]);
     }
@@ -194,7 +194,7 @@ void mappa::add_doors(ptr_stanza room) {
         room->lista_connessioni->porta=room->punti_stanza[MAX_RIGHE/2][0];
         p[room->getCoor_y()][room->getCoor_x()-1]->lista_connessioni->porta=p[room->getCoor_y()][room->getCoor_x()-1]->punti_stanza[MAX_RIGHE/2][MAX_COLONNE-1];
         room->lista_connessioni->x=MAX_COLONNE-2; room->lista_connessioni->y=MAX_RIGHE/2; //ATTENZIONE sono coordinate cartesiane, non matriciali
-        p[room->getCoor_y()][room->getCoor_x()-1]->lista_connessioni->x=MAX_COLONNE-2;
+        p[room->getCoor_y()][room->getCoor_x()-1]->lista_connessioni->x=1;
         p[room->getCoor_y()][room->getCoor_x()-1]->lista_connessioni->y=MAX_RIGHE/2;
 
         add_doors(p[room->getCoor_y()][room->getCoor_x()-1]);
