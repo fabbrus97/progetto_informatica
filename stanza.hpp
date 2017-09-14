@@ -4,8 +4,8 @@
 #include <iostream>
 #include "includes/item.hpp"
 
-#define MAX_RIGHE 10
-#define MAX_COLONNE 20
+#define MAX_RIGHE 7
+#define MAX_COLONNE 14
 
 class stanza;
 typedef stanza* ptr_stanza;
