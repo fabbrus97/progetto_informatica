@@ -200,7 +200,7 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
             else
             {
                 currentYY = currentYY + 1;
-                puntatore = map->p[coorYY][coorXX]->punti_stanza[currentYY][coorX];
+                puntatore = map->p[coorY][coorX]->punti_stanza[currentYY][coorXX];
             }
         }
     }
@@ -320,11 +320,11 @@ bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
  *
  * La funzione ritorna il danno effettivamente inflitto (al momento pari a 'danno')
  */
-int personaggio::infliggi(int danno) {/*
+int personaggio::infliggi(int danno) {
     int dannoEffettivo = MAX_PUNTI_VITA * danno / (MAX_PUNTI_VITA + difesa);
     setPuntiVita(
         getPuntiVita() - dannoEffettivo
     );
 
-    return dannoEffettivo;*/ return danno;
+    return dannoEffettivo;
 }
