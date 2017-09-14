@@ -10,6 +10,8 @@
 #define MAX(a,b) (a>b?a:b)
 #define MIN(a,b) (a<b?a:b)
 
+#define ULTIMO_LIVELLO 10
+
 using namespace std;
 
 struct livello{
@@ -24,9 +26,11 @@ struct livello{
 void init_giocatore(personaggio *);
 void game_loop(personaggio *);
 livello *getNewLivello(int l);
+void bonusGiocatoreNuovoLivello(personaggio *giocatore);
 int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente);
 bool confermaRaccoltaArma(personaggio *giocatore, arma *it);
 void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
+void cambiaStanzaGiocatore(livello *livelloCorrente, personaggio *giocatore, ptr_item porta);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
 void IAMob(personaggio *mob, personaggio *giocatore, livello *livelloCorrente);
 void print_map(mappa *map);
@@ -53,7 +57,7 @@ void init_giocatore(personaggio *giocatore) {
 }
 
 void game_loop(personaggio *giocatore) {
-    bool end = false;
+    bool fineGioco = false;
     livello *primoLivello = getNewLivello(1);
     livello *livelloCorrente = primoLivello;
 
@@ -66,7 +70,7 @@ void game_loop(personaggio *giocatore) {
         livelloCorrente->mappa->entrata.yy
     );
 
-    while(!end) {
+    while(giocatore->getPuntiVita() > 0 && !fineGioco) {
         cout << "Mappa livello " << livelloCorrente->liv << "\n";
         print_map(livelloCorrente->mappa);
         stampaSchedaPersonaggio(giocatore);
@@ -82,6 +86,31 @@ void game_loop(personaggio *giocatore) {
                 livello *nuovoLivello = getNewLivello( 1 + livelloCorrente->liv );
                 livelloCorrente->next = nuovoLivello;
                 nuovoLivello->prev = livelloCorrente;
+
+                if(nuovoLivello->liv == ULTIMO_LIVELLO) {
+                    cout << "Hai vinto! Vuoi continuare comunque a giocare? (y/n): ";
+                    bool input_error;
+                    do {
+                        char in;
+                        input_error = false;
+                        cin >> in;
+                        switch (in){
+                            case 'y':
+                            case 'Y':
+                                fineGioco = false;
+                                break;
+                            case 'n':
+                            case 'N':
+                                fineGioco = true;
+                                break;
+                            default:
+                                input_error = true;
+                        }
+                    } while(input_error);
+                }
+                if(!fineGioco) {
+                    bonusGiocatoreNuovoLivello(giocatore);
+                }
             }
             livelloCorrente = livelloCorrente->next;
             livelloCorrente->mappa->posiziona(
@@ -92,6 +121,7 @@ void game_loop(personaggio *giocatore) {
                 livelloCorrente->mappa->entrata.yy
             );
             cout << "Sei salito al livello " << livelloCorrente->liv << "\n";
+
         } else {
             if(livelloCorrente->prev != NULL) {
                 livelloCorrente->mappa->esci(giocatore);
@@ -108,6 +138,13 @@ void game_loop(personaggio *giocatore) {
         }
         cout << "\n";
     }
+
+    if(giocatore->getPuntiVita() == 0) {
+        cout << "Sei Morto..\n";
+    } else {
+        cout << "I veri eroi non si fermano mai alla prima vittoria..\n";
+    }
+
 }
 
 livello *getNewLivello(int l) {
@@ -118,7 +155,7 @@ livello *getNewLivello(int l) {
     liv->next = NULL;
     liv->liv = l;
 
-    liv->mappa = new mappa( 2.8*log(1+l) );
+    liv->mappa = new mappa( 4.2*log(1+l) );
     liv->mappa->generate_map();
 
     liv->n_mobs = MIN( 4*log(1+l), MAX_MOBS_X_LIV);
@@ -132,7 +169,7 @@ livello *getNewLivello(int l) {
     };
 
     for(int i=0; i<liv->n_mobs; i++) {
-        liv->mobs[i] = mob_x_lv[ (int)MIN( 0.4*l, 4) ][rand()%3](); //cambi a 2-4-6-8
+        liv->mobs[i] = mob_x_lv[ (int)MIN( 0.4*l, 3) ][rand()%3](); //cambi a 2-4-6-8
         liv->mappa->get_stanza_random()->posiziona_casualmente(liv->mobs[i]);
     }
 
@@ -145,10 +182,39 @@ livello *getNewLivello(int l) {
     };
 
     liv->mappa->get_stanza_random()->posiziona_casualmente(
-        armi_x_lv[ (int)MIN( 0.4*l, 4) ][rand()%3]() //cambi a 2-4-6-8
+        armi_x_lv[ (int)MIN( 0.4*l, 3) ][rand()%3]() //cambi a 2-4-6-8
     );
-
     return liv;
+}
+
+void bonusGiocatoreNuovoLivello(personaggio *giocatore) {
+    int puntiDaInserire = 3;
+
+    cout << "Ti senti meglio!\n";
+    giocatore->setPuntiVita(giocatore->getMaxPuntiVita());
+
+    while(puntiDaInserire >= 0) {
+        cout << "Hai " << puntiDaInserire << " punti da inserire.\n";
+        cout << "Dove vuoi inserire il prossimo punto? (a)attaco o (d)difesa? ";
+        bool input_error;
+        do {
+            char in;
+            input_error = false;
+            cin >> in;
+            switch (in){
+                case 'a':
+                case 'A':
+                    giocatore->incAttacco();
+                    break;
+                case 'd':
+                case 'D':
+                    giocatore->incDifesa();
+                    break;
+                default:
+                    input_error = true;
+            }
+        } while(input_error);
+    }
 }
 
 // se <0 scendo di 1 livello
@@ -176,7 +242,6 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
             }
         }
 
-        // TODO : report di attacco
     } else if(muovi) {
         report_movimento rm = giocatore->muovi(livelloCorrente->mappa,direzione);
         if(rm.riuscito == true) {
@@ -189,7 +254,6 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                     &&  giocatore->raccogliArma(livelloCorrente->mappa, (arma *) rm.itemScontrato)
                     ){
                         giocatore->muovi(livelloCorrente->mappa,direzione);
-                        // TODO : mettere a posto il report di raccolta
                         char nomeItemScontrato[MAX_NOME_COMPLETO_LENGTH];
                         rm.itemScontrato->getNomeCompleto(nomeItemScontrato);
                         cout << "Hai raccolto '" << nomeItemScontrato << "'\n";
@@ -203,7 +267,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                         case ICON_LIV_PREC:
                             return -1;
                         case ICON_PORTA:
-                            // TODO : Segui la porta
+                            cambiaStanzaGiocatore(livelloCorrente,giocatore,rm.itemScontrato);
                             break;
                     }
                 }
@@ -308,6 +372,27 @@ void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi) {
                 cout << "Direzione inesistente\n";
         }
     } while(input_error);
+}
+
+void cambiaStanzaGiocatore(livello *livelloCorrente, personaggio *giocatore, ptr_item porta) {
+    ptr_stanza stanzaCorrente = livelloCorrente->mappa->p[giocatore->getPositionY()][giocatore->getPositionX()];
+    connessioni *c = stanzaCorrente->lista_connessioni;
+    bool ok = false;
+
+    while(c!=NULL && !ok) {
+        if(c->porta == porta) {
+            ptr_item to = c->stanza_puntata->punti_stanza[c->y][c->x];
+            if(to->getIcon() == ICON_MOB) {
+                cout << "WOW! Hai spappolato un mob!";
+            } else if(to->getIcon() == ICON_ARMA) {
+                cout << "Evidentemente quest'arma non faceva per te..";
+            }
+            livelloCorrente->mappa->sposta(giocatore, to);
+            ok = true;
+        } else {
+            c = c->next;
+        }
+    }
 }
 
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente) {
