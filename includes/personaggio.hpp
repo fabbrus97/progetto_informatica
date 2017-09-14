@@ -9,8 +9,6 @@
 #define DIREZIONE_DESTRA 3
 #define DIREZIONE_GIU 4
 
-#define MAX_PUNTI_VITA 100
-
 class personaggio;
 
 struct report_attacco {
@@ -26,8 +24,8 @@ struct report_movimento {
 
 class personaggio : public item {
 protected:
-    int puntiEsperienza;
     int puntiVita;
+    int maxPuntiVita;
     int difesa;
     int attacco;
     arma *armaInUso;
@@ -38,8 +36,8 @@ public:
     ~personaggio();
     int getPuntiVita();
     void setPuntiVita (int new_puntiVita);
-    int getPuntiEsperienza();
-    void setPuntiEsperienza(int new_puntiEsperienza);
+    int getMaxPuntiVita();
+    void setMaxPuntiVita (int new_maxPuntiVita);
     int getAttacco();
     void setAttacco(int a);
     void incAttacco();

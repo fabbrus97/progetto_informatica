@@ -8,8 +8,8 @@ personaggio::personaggio()
     :item(ICON_MOB, false, false)
 {
     setNomeCompleto("Mob");
-    setPuntiEsperienza(0);
-    setPuntiVita(MAX_PUNTI_VITA);
+    maxPuntiVita = 100;
+    setPuntiVita(maxPuntiVita);
     armaInUso = NULL;
 
     setDifesa(0);
@@ -18,7 +18,6 @@ personaggio::personaggio()
 
 personaggio::personaggio(char icon, char nome[], int pExp, int pVita, arma *inUso)
         :item(icon, false, false, 7, nome, -1, -1, -1, -1) {
-    setPuntiEsperienza(pExp);
     setPuntiVita(pVita);
     armaInUso = inUso;
 
@@ -36,20 +35,20 @@ int personaggio::getPuntiVita() {
 }
 
 void personaggio::setPuntiVita(int new_puntiVita) {
-    if(new_puntiVita > MAX_PUNTI_VITA)
-        puntiVita = MAX_PUNTI_VITA;
+    if(new_puntiVita > maxPuntiVita)
+        puntiVita = maxPuntiVita;
     else if(new_puntiVita < 0)
         puntiVita = 0;
     else
         puntiVita = new_puntiVita;
 }
 
-int personaggio::getPuntiEsperienza() {
-    return puntiEsperienza;
+int personaggio::getMaxPuntiVita() {
+    return maxPuntiVita;
 }
-
-void personaggio::setPuntiEsperienza(int new_puntiEsperienza) {
-    puntiEsperienza = new_puntiEsperienza;
+void personaggio::setMaxPuntiVita (int new_maxPuntiVita) {
+    maxPuntiVita = new_maxPuntiVita;
+    setPuntiVita(maxPuntiVita);
 }
 
 int personaggio::getAttacco() {
@@ -82,7 +81,6 @@ void personaggio::setArmaInUso(arma *new_armaInUso) {
     armaInUso = new_armaInUso;
 }
 
-// TODO
 /*
  * Il personaggio prova a muoversi di una casella nella direzione scelta:
  * Se l'item presente nella casella in cui il personaggio sta tentando di
@@ -154,7 +152,6 @@ report_movimento personaggio::muovi(mappa *map, int direzione) {
     return rm;
 }
 
-// TODO
 /*
  * Data la gittata dell'arma attualmente in uso il personaggio tenta di attaccare nella scelta
  * colpendo solo il personaggio piú vicino che rientra nella gittata.
@@ -172,7 +169,6 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
     report_attacco ra;
 
     ptr_item puntatore = this;
-    ptr_personaggio mobColpito;
 
     ra.colpito = false;
     ra.pgColpito = NULL;
@@ -181,18 +177,20 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
     if(getArmaInUso() == NULL)
         return ra;
 
+    int dannoTotale = getArmaInUso()->getDanniArma() + attacco;
+    dannoTotale = dannoTotale + dannoTotale*(rand()%20)/100;
+
     if (direzione == DIREZIONE_GIU)
     {
         while (!ra.colpito && currentYY < (MAX_RIGHE - 2 ))
         {
-            if (puntatore->getIcon() == ICON_MOB)
+            if (puntatore != this && (puntatore->getIcon() == ICON_MOB || puntatore->getIcon() == ICON_GIOCATORE))
             {
-                mobColpito = (personaggio *)puntatore;
-                if (fabs(getPositionYY() - mobColpito->getPositionYY()) <= getArmaInUso()->getRange())
+                if (fabs(getPositionYY() - puntatore->getPositionYY()) <= getArmaInUso()->getRange())
                 {
-                    ra.pgColpito = (personaggio *)mobColpito;
+                    ra.pgColpito = (personaggio *)puntatore;
                     ra.colpito = true;
-                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                    ra.danniInflitti = ra.pgColpito->infliggi(dannoTotale);
                 } else {
                     return ra;
                 }
@@ -208,14 +206,13 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
     {
         while (!ra.colpito && currentXX < (MAX_COLONNE - 2))
         {
-            if (puntatore -> getIcon() == ICON_MOB)
+            if (puntatore != this && (puntatore->getIcon() == ICON_MOB || puntatore->getIcon() == ICON_GIOCATORE))
             {
-                mobColpito = (personaggio *)puntatore;
-                if (fabs(getPositionXX() - mobColpito->getPositionXX()) <= getArmaInUso()->getRange())
+                if (fabs(getPositionXX() - puntatore->getPositionXX()) <= getArmaInUso()->getRange())
                 {
-                    ra.pgColpito = (personaggio *) mobColpito;
+                    ra.pgColpito = (personaggio *) puntatore;
                     ra.colpito = true;
-                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                    ra.danniInflitti = ra.pgColpito->infliggi(dannoTotale);
                 } else {
                     return ra;
                 }
@@ -231,14 +228,13 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
     {
         while (!ra.colpito && currentYY > 0)
         {
-            if (puntatore->getIcon() == ICON_MOB)
+            if (puntatore != this && (puntatore->getIcon() == ICON_MOB || puntatore->getIcon() == ICON_GIOCATORE))
             {
-                mobColpito = (personaggio *)puntatore;
-                if (fabs(getPositionYY() - mobColpito->getPositionYY()) <= getArmaInUso()->getRange())
+                if (fabs(getPositionYY() - puntatore->getPositionYY()) <= getArmaInUso()->getRange())
                 {
-                    ra.pgColpito = (personaggio *)mobColpito;
+                    ra.pgColpito = (personaggio *)puntatore;
                     ra.colpito = true;
-                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                    ra.danniInflitti = ra.pgColpito->infliggi(dannoTotale);
                 } else {
                     return ra;
                 }
@@ -254,14 +250,13 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
     {
         while (!ra.colpito && currentXX > 0)
         {
-            if (puntatore->getIcon() == ICON_MOB)
+            if (puntatore != this && (puntatore->getIcon() == ICON_MOB || puntatore->getIcon() == ICON_GIOCATORE))
             {
-                mobColpito = (personaggio *)puntatore;
-                if (fabs(getPositionXX() - mobColpito->getPositionXX()) <= getArmaInUso()->getRange())
+                if (fabs(getPositionXX() - puntatore->getPositionXX()) <= getArmaInUso()->getRange())
                 {
-                    ra.pgColpito = mobColpito;
+                    ra.pgColpito = (personaggio *) puntatore;
                     ra.colpito = true;
-                    ra.danniInflitti = mobColpito->infliggi(getArmaInUso()->getDanniArma());
+                    ra.danniInflitti = ra.pgColpito->infliggi(dannoTotale);
                 } else {
                     return ra;
                 }
@@ -276,7 +271,6 @@ report_attacco personaggio::attacca(mappa *map, int direzione) {
     return ra;
 }
 
-// TODO
 /*
  * raccoglie l'arma 'daRaccogliere' che si trova posizionata nella mappa 'map'
  * quindi la sostituisce a quella correntemente usata dal personaggio
@@ -305,7 +299,6 @@ bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
     return false;
 }
 
-// TODO
 /*
  * Questo metodo viene invocato per infliggere danno al personaggio corrente.
  * L'uso di un metodo apposito per questa funzione rende possibile l'eventuale implementazione
@@ -321,7 +314,7 @@ bool personaggio::raccogliArma(mappa *map, arma *daRaccogliere) {
  * La funzione ritorna il danno effettivamente inflitto (al momento pari a 'danno')
  */
 int personaggio::infliggi(int danno) {
-    int dannoEffettivo = MAX_PUNTI_VITA * danno / (MAX_PUNTI_VITA + difesa);
+    int dannoEffettivo = maxPuntiVita * danno / (maxPuntiVita + difesa);
     setPuntiVita(
         getPuntiVita() - dannoEffettivo
     );
