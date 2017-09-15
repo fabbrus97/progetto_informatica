@@ -254,7 +254,6 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                 if(ra.pgColpito->getPuntiVita() == 0) {
                     cout << nomeAttaccato << " è morto!" << endl;
                     livelloCorrente->mappa->esci(ra.pgColpito);
-                    delete ra.pgColpito;
                 }
                 cout << termcolor::reset;
             }
@@ -418,8 +417,9 @@ void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente) {
     for(int t=0; t<livelloCorrente->n_mobs; t++){
         if( livelloCorrente->mobs[t]->getPositionX() == giocatore->getPositionX()
         &&  livelloCorrente->mobs[t]->getPositionY() == giocatore->getPositionY()
+        &&  livelloCorrente->mobs[t]->getPuntiVita() > 0
         ) {
-            //Muove il Mob solo se é nella stessa stanza del giocatore
+            //Muove il Mob solo se é vivo e nella stessa stanza del giocatore
             IAMob(livelloCorrente->mobs[t], giocatore,livelloCorrente);
         }
     }
