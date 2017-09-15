@@ -4,6 +4,7 @@
 #include "includes/gameobjects.hpp"
 #include "includes/personaggio.hpp"
 #include "termcolor.hpp"
+#include <cstdlib>
 
 //
 #define MAX_MOBS_X_LIV 70
@@ -33,7 +34,8 @@ void getGiocatoreInputs(int *direzione, bool *attacca, bool *muovi);
 void cambiaStanzaGiocatore(livello *livelloCorrente, personaggio *giocatore, ptr_item porta);
 void turnoDeiMob(personaggio *giocatore, livello *livelloCorrente);
 void IAMob(personaggio *mob, personaggio *giocatore, livello *livelloCorrente);
-void print_map(mappa *map);
+void print_map(livello *lv);
+void clear_screen();
 
 void stampaSchedaPersonaggio(personaggio *giocatore);
 
@@ -71,8 +73,7 @@ void game_loop(personaggio *giocatore) {
     );
 
     while(giocatore->getPuntiVita() > 0 && !fineGioco) {
-        cout << "Mappa livello " << livelloCorrente->liv << endl;
-        print_map(livelloCorrente->mappa);
+        print_map(livelloCorrente);
         stampaSchedaPersonaggio(giocatore);
         cout << "\n";
 
@@ -195,11 +196,11 @@ livello *getNewLivello(int l) {
 void bonusGiocatoreNuovoLivello(personaggio *giocatore) {
     int puntiDaInserire = 3;
 
-    cout << "Ti senti meglio!" << endl;
+    cout << termcolor::green << "Ti senti meglio!" << termcolor::reset << endl;
     giocatore->setPuntiVita(giocatore->getMaxPuntiVita());
 
     while(puntiDaInserire > 0) {
-        cout << "Hai " << puntiDaInserire << " punti da inserire." << endl;
+        cout << "Hai " << termcolor::green << puntiDaInserire << " punti " << termcolor::reset << "da inserire."<< endl;
         cout << "Dove vuoi inserire il prossimo punto? (a)attaco o (d)difesa? ";
         bool input_error;
         do {
@@ -262,7 +263,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
     } else if(muovi) {
         report_movimento rm = giocatore->muovi(livelloCorrente->mappa,direzione);
         if(rm.riuscito == true) {
-            print_map(livelloCorrente->mappa);
+            print_map(livelloCorrente);
             cout << "Ti sei mosso" << endl;
         } else {
             if(rm.itemScontrato != NULL) {
@@ -274,7 +275,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                         giocatore->muovi(livelloCorrente->mappa,direzione);
                         char nomeItemScontrato[MAX_NOME_COMPLETO_LENGTH];
                         rm.itemScontrato->getNomeCompleto(nomeItemScontrato);
-                        print_map(livelloCorrente->mappa);
+                        print_map(livelloCorrente);
                         cout << "Hai raccolto '" << nomeItemScontrato << "'" << endl;
                     } else {
                         cout << "Non sei riuscito a raccogliere l'oggetto.." << endl;
@@ -287,7 +288,7 @@ int turnoGiocatore(personaggio *giocatore, livello *livelloCorrente) {
                             return -1;
                         case ICON_PORTA:
                             cambiaStanzaGiocatore(livelloCorrente,giocatore,rm.itemScontrato);
-                            print_map(livelloCorrente->mappa);
+                            print_map(livelloCorrente);
                             break;
                     }
                 }
@@ -499,8 +500,12 @@ void stampaSchedaPersonaggio(personaggio *giocatore) {
     }
 }
 
-void print_map(mappa *map) {
-    cout << string(100, '\n');
+void print_map(livello *liv) {
+    mappa *map = liv->mappa;
+
+    clear_screen();
+    cout << "Mappa livello " << liv->liv << endl;
+
     for (int i = 0; i < map->get_i(); i++) {
         for (int y = 0; y < MAX_RIGHE; y++) {
             for (int j = 0; j < map->get_j(); j++) {
@@ -535,4 +540,13 @@ void print_map(mappa *map) {
             cout << endl;
         }
     }
+}
+
+void clear_screen(){
+    #ifdef WINDOWS
+        system("cls");
+    #else
+        // Assume POSIX
+        system ("clear");
+    #endif
 }
