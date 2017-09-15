@@ -161,7 +161,11 @@ livello *getNewLivello(int l) {
     liv->next = NULL;
     liv->liv = l;
 
-    liv->mappa = new mappa( 4.2*log(1+l) );
+    if(l == 1) {
+        liv->mappa = new mappa( 1 );
+    } else {
+        liv->mappa = new mappa( 4.2*log(1+l) );
+    }
     liv->mappa->generate_map();
 
     liv->n_mobs = MIN( 4*log(1+l), MAX_MOBS_X_LIV);
