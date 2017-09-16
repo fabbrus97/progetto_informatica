@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
-project(github)
+project(progetto_informatica)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-fpermissive -std=c++0x")
+
 set(SOURCE_FILES
         includes/arma.cpp
         includes/arma.hpp
@@ -17,6 +18,7 @@ set(SOURCE_FILES
         mappa.cpp
         mappa.hpp
         stanza.cpp
-        stanza.hpp)
+        stanza.hpp
+        termcolor.hpp)
 
-add_executable(github ${SOURCE_FILES})
+add_executable(progetto_informatica ${SOURCE_FILES})
