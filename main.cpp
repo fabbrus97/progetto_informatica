@@ -408,6 +408,8 @@ void cambiaStanzaGiocatore(livello *livelloCorrente, personaggio *giocatore, ptr
                 //forse qui ci va del codice per gestire la morte del mob, tipo
                 //qualcosa per gestire l'array dei mob
                 cout << "WOW! Hai spappolato un mob!" << endl;
+                livelloCorrente->mappa->esci(to);
+                ((ptr_personaggio) to)->setPuntiVita(0);
             } else if(to->getIcon() == ICON_ARMA) {
                 cout << "Evidentemente quest'arma non faceva per te.." << endl;
             }
