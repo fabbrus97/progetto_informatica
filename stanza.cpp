@@ -18,25 +18,25 @@ stanza::stanza(int x, int y, int n_room){
 
     //costruiamo i muri
     for (int i=0; i<MAX_RIGHE; i++){
-        punti_stanza[i][0]=new item(ICON_MURO,false,false);
-        punti_stanza[i][0]->setPositionX(x, y, 0, i);
+        punti_stanza[i][0] = GameObjects::getNewMuro();
+        punti_stanza[i][0]->setPosition(x, y, 0, i);
 
-        punti_stanza[i][MAX_COLONNE-1]=new item(ICON_MURO,false,false);
-        punti_stanza[i][MAX_COLONNE-1]->setPositionX(x, y, MAX_COLONNE-1, i);
+        punti_stanza[i][MAX_COLONNE-1] = GameObjects::getNewMuro();
+        punti_stanza[i][MAX_COLONNE-1]->setPosition(x, y, MAX_COLONNE-1, i);
     }
     for (int j=1; j<MAX_COLONNE-1; j++){
-        punti_stanza[0][j]=new item(ICON_MURO,false,false);
-        punti_stanza[0][j]->setPositionX(x, y, j, 0);
+        punti_stanza[0][j] = GameObjects::getNewMuro();
+        punti_stanza[0][j]->setPosition(x, y, j, 0);
 
-        punti_stanza[MAX_RIGHE-1][j]=new item(ICON_MURO,false,false);
-        punti_stanza[MAX_RIGHE-1][j]->setPositionX(x, y, j, MAX_RIGHE-1);
+        punti_stanza[MAX_RIGHE-1][j] = GameObjects::getNewMuro();
+        punti_stanza[MAX_RIGHE-1][j]->setPosition(x, y, j, MAX_RIGHE-1);
     }
 
     //costruiamo l'interno della stanza
     for (int i=1; i<MAX_RIGHE-1; i++)
         for (int j=1; j<MAX_COLONNE-1; j++) {
-            punti_stanza[i][j] = new item(ICON_PUNTO,true,false);
-            punti_stanza[i][j]->setPositionX(x, y, j, i);
+            punti_stanza[i][j] = GameObjects::getNewPunto();
+            punti_stanza[i][j]->setPosition(x, y, j, i);
         }
 
 }
@@ -57,7 +57,8 @@ stanza::stanza(int x, int y) {
     //inizializza l'array a NULL
     for (int i = 0; i < MAX_RIGHE; i++)
         for (int j = 0; j < MAX_COLONNE; j++) {
-            punti_stanza[i][j] = new item(ICON_SPAZIO, false, false, 0, "Vuoto", coor_x, coor_y, j, i);
+            punti_stanza[i][j] = GameObjects::getNewSpazio();
+            punti_stanza[i][j]->setPosition(coor_x,coor_y,j,i);
         }
 }
 
@@ -149,5 +150,5 @@ void stanza::posiziona(ptr_item it, int x, int y) {
         delete punti_stanza[y][x];
 
     punti_stanza[y][x] = it;
-    it->setPositionX(getCoor_x(),getCoor_y(),x,y);
+    it->setPosition(getCoor_x(),getCoor_y(),x,y);
 }

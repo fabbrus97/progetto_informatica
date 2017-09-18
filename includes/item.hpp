@@ -40,7 +40,7 @@ public:
     int getPositionY();
     int getPositionXX();
     int getPositionYY();
-    void setPositionX(int newPositionX, int newPositionY, int newPositionXX, int newPositionYY);
+    void setPosition(int newPositionX, int newPositionY, int newPositionXX, int newPositionYY);
 };
 
 typedef item * ptr_item;

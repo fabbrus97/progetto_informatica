@@ -420,7 +420,7 @@ void mappa::esci(ptr_item it) {
     int xs = it->getPositionXX();
     int ys = it->getPositionYY();
 
-    it->setPositionX(-1,-1,-1,-1);
+    it->setPosition(-1,-1,-1,-1);
 
     p[ym][xm]->punti_stanza[ys][xs] = NULL;
     posiziona( GameObjects::getNewPunto(), xm, ym, xs, ys );

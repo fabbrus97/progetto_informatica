@@ -9,25 +9,25 @@
 
 //PUNTI MAPPA
 ptr_item GameObjects::getNewMuro() {
-    return new item(ICON_MURO,false,false,0,"Muro");
+    return new item(ICON_MURO,false,false,"Muro");
 }
 ptr_item GameObjects::getNewSpazio() {
-    return new item(ICON_SPAZIO,false,false,0,"Vuoto");
+    return new item(ICON_SPAZIO,false,false,"Vuoto");
 }
 ptr_item GameObjects::getNewPunto() {
-    return new item(ICON_PUNTO,true,false,0,"Punto");
+    return new item(ICON_PUNTO,true,false,"Punto");
 }
 ptr_item GameObjects::getNewPorta() {
-    return new item(ICON_PORTA,false,false,0,"Porta");
+    return new item(ICON_PORTA,false,false,"Porta");
 }
 ptr_item GameObjects::getNewTunnel() {
-    return new item(ICON_TUNNEL,false,false,0,"Tunnel");
+    return new item(ICON_TUNNEL,false,false,"Tunnel");
 }
 ptr_item GameObjects::getNewLivSucc() {
-    return new item(ICON_LIV_SUCC,false,false,0,"Scale Livello Successivo");
+    return new item(ICON_LIV_SUCC,false,false,"Scale Livello Successivo");
 }
 ptr_item GameObjects::getNewLivPrec() {
-    return new item(ICON_LIV_PREC,false,false,0,"Scale Livello Precedente");
+    return new item(ICON_LIV_PREC,false,false,"Scale Livello Precedente");
 }
 
 // ARMI
