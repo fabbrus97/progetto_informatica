@@ -9,7 +9,6 @@ class item
 protected:
     char nomeCompleto[MAX_NOME_COMPLETO_LENGTH];
     char icon;
-    int colore; //0-8
     /* Se un Item é attraversabile NON puó essere anche raccoglibile,
      * questo perché se é attraversabile allora l'item verrá cancellato
      * quando il personaggio ci andrá sopra poiché nelle stanze ogni punto
@@ -27,11 +26,9 @@ protected:
 public:
     item();
     item(char icon, bool isAttraversabile, bool isRaccoglibile);
-    item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore);
-    item(char icon, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[]);
-    item(char icona, bool isAttraversabile, bool isRaccoglibile, int colore, char nome[], int positionX, int positionY, int positionXX, int positionYY);
+    item(char icon, bool isAttraversabile, bool isRaccoglibile, char nome[]);
+    item(char icona, bool isAttraversabile, bool isRaccoglibile, char nome[], int positionX, int positionY, int positionXX, int positionYY);
     char getIcon();
-    int getColore();
     bool getAttraversabile();
     bool getRaccoglibile();
     void setNomeCompleto (char newNomeCompleto[]);
@@ -44,9 +41,6 @@ public:
     int getPositionXX();
     int getPositionYY();
     void setPositionX(int newPositionX, int newPositionY, int newPositionXX, int newPositionYY);
-    /*void setPositionY(int newPositionY);
-    void setPositionXX(int newPositionXX);
-    void setPositionYY(int newPositionYY);*/
 };
 
 typedef item * ptr_item;
